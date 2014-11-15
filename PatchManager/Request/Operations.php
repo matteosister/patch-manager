@@ -53,7 +53,7 @@ class Operations
      * @throws InvalidJsonRequestContent
      * @throws MissingOperationRequest
      *
-     * @return null|Sequence
+     * @return Sequence
      */
     public function all()
     {
@@ -61,13 +61,10 @@ class Operations
         if (! $currentRequest->isMethod('PATCH')) {
             return new Sequence();
         }
-        $parsedContent =$this->parseJson($currentRequest->getContent());
-        if (! is_array($parsedContent)) {
+        $operations =$this->parseJson($currentRequest->getContent());
+        if (! is_array($operations)) {
             throw new MissingOperationRequest();
         }
-        if ($this->isAssociative($parsedContent)) {
-            $parsedContent = [$parsedContent];
-        }
-        return new Sequence($parsedContent);
+        return new Sequence($this->isAssociative($operations) ? [$operations] : $operations);
     }
 }
