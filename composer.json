@@ -1,5 +1,5 @@
 {
-    "name": "cypress/patch-manager-bundle",
+    "name": "cypresslab/patch-manager-bundle",
     "description": "Symfony2 bundle to handle patch requests",
     "keywords": ["symfony2", "bundle", "rest", "patch", "api"],
     "type": "symfony-bundle",
