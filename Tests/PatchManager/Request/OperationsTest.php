@@ -2,11 +2,11 @@
 
 namespace Cypress\PatchManagerBundle\Tests\PatchManager\Request;
 
-use Cypress\PatchManagerBundle\Exception\InvalidJsonRequestContent;
 use Cypress\PatchManagerBundle\PatchManager\Request\Operations;
+use Cypress\PatchManagerBundle\Tests\PatchManagerTestCase;
 use Mockery as m;
 
-class OperationsTest extends \PHPUnit_Framework_TestCase
+class OperationsTest extends PatchManagerTestCase
 {
     /**
      * @var m\MockInterface
@@ -51,7 +51,7 @@ class OperationsTest extends \PHPUnit_Framework_TestCase
 
     public function test_correct_operations_number_with_multiple_operation()
     {
-        $this->currentRequest->shouldReceive('getContent')->andReturn('[{"op": "data"}, {"op": "data"}]');
+        $this->currentRequest->shouldReceive('getContent')->andReturn('[{"op": "data"},{"op": "data"}]');
         $this->assertCount(2, $this->service->all());
     }
 
@@ -64,10 +64,21 @@ class OperationsTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $this->service->all());
     }
 
-    public function parseProvider()
+    /**
+     * @expectedException \Cypress\PatchManagerBundle\Exception\MissingOperationNameRequest
+     */
+    public function test_exeception_with_operation_without_op()
     {
-        return [
-            [InvalidJsonRequestContent::class, '']
-        ];
+        $this->currentRequest->shouldReceive('getContent')->andReturn('{"op_wrong": "data"}');
+        $this->service->all();
+    }
+
+    /**
+     * @expectedException \Cypress\PatchManagerBundle\Exception\MissingOperationNameRequest
+     */
+    public function test_exeception_with_multiple_operation_without_op()
+    {
+        $this->currentRequest->shouldReceive('getContent')->andReturn('[{"op": "data"},{"op_wrong": "data"}]');
+        $this->service->all();
     }
 }
