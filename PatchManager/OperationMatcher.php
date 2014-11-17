@@ -43,10 +43,11 @@ class OperationMatcher
      */
     public function getMatchedOperations()
     {
+        $handlers = $this->handlers;
         return $this->operations
             ->all()
-            ->foldLeft(new Sequence(), function (Sequence $matchedOperations, $operationData) {
-                $handler = $this->handlers->find(function(PatchOperationHandler $handler) use ($operationData) {
+            ->foldLeft(new Sequence(), function (Sequence $matchedOperations, $operationData) use ($handlers) {
+                $handler = $handlers->find(function(PatchOperationHandler $handler) use ($operationData) {
                     return $operationData[Operations::OP_KEY_NAME] === $handler->getName();
                 });
                 if ($handler->isDefined()) {

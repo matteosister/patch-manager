@@ -11,25 +11,17 @@ use PhpCollection\Sequence;
 class PatchManager
 {
     /**
-     * @var Operations
+     * @var OperationMatcher
      */
-    private $operations;
+    private $operationMatcher;
 
     /**
-     * @var Sequence
+     * @param OperationMatcher $operationMatcher
      */
-    private $handlers;
-
-    /**
-     * @param Operations $operations
-     */
-    public function __construct(Operations $operations)
+    public function __construct(OperationMatcher $operationMatcher)
     {
-        $this->handlers = new Sequence();
-        $this->operations = $operations;
+        $this->operationMatcher = $operationMatcher;
     }
-
-
 
     /**
      * @param Patchable $subject
@@ -38,17 +30,21 @@ class PatchManager
      */
     public function handle(Patchable $subject)
     {
-        $events = [];
-        $this->operations->all()
-            ->map($this->handleOperation($events));
-        return $events;
+        $this->operationMatcher
+            ->getMatchedOperations()
+            ->map($this->handleOperation($subject));
     }
 
-    private function handleOperation(&$events = [])
+    /**
+     * calls the handle method for every patch manager maching an operation
+     *
+     * @param Patchable $subject
+     * @return callable
+     */
+    private function handleOperation(Patchable $subject)
     {
-        return function ($operationData) use (&$events) {
-            var_dump('handle');
-            var_dump($operationData);
+        return function (MatchedPatchOperation $matchedPatchOperation) use ($subject) {
+            $matchedPatchOperation->process($subject);
         };
     }
 }

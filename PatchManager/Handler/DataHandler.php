@@ -3,23 +3,27 @@
 namespace Cypress\PatchManagerBundle\PatchManager\Handler;
 
 use Cypress\PatchManagerBundle\PatchManager\Patchable;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-interface PatchOperationHandler
+class DataHandler implements PatchOperationHandler
 {
     /**
      * the operation name
      *
      * @return string
      */
-    public function getName();
+    public function getName()
+    {
+        return 'data';
+    }
 
     /**
      * @param Patchable $patchable
-     * @param array $operationData
-     *
-     * @return
      */
-    public function handle(Patchable $patchable, array $operationData);
+    public function handle(Patchable $patchable, array $operationData)
+    {
+        $pa = new PropertyAccessor();
+    }
 
     /**
      * returns an array of keys required by the operation to be fulfilled
@@ -30,5 +34,8 @@ interface PatchOperationHandler
      *
      * @return array
      */
-    public function getRequiredKeys();
+    public function getRequiredKeys()
+    {
+        return array('property', 'value');
+    }
 }
