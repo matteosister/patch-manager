@@ -46,14 +46,17 @@ class OperationMatcher
         $handlers = $this->handlers;
         return $this->operations
             ->all()
-            ->foldLeft(new Sequence(), function (Sequence $matchedOperations, $operationData) use ($handlers) {
-                $handler = $handlers->find(function(PatchOperationHandler $handler) use ($operationData) {
-                    return $operationData[Operations::OP_KEY_NAME] === $handler->getName();
-                });
-                if ($handler->isDefined()) {
-                    $matchedOperations->add(MatchedPatchOperation::create($operationData, $handler->get()));
+            ->foldLeft(
+                new Sequence(),
+                function (Sequence $matchedOperations, OperationData $operationData) use ($handlers) {
+                    $handler = $handlers->find(function(PatchOperationHandler $handler) use ($operationData) {
+                        return $operationData->get(Operations::OP_KEY_NAME)->getOrElse(null) === $handler->getName();
+                    });
+                    if ($handler->isDefined()) {
+                        $matchedOperations->add(MatchedPatchOperation::create($operationData, $handler->get()));
+                    }
+                    return $matchedOperations;
                 }
-                return $matchedOperations;
-            });
+            );
     }
 }

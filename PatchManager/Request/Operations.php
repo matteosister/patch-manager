@@ -5,6 +5,7 @@ namespace Cypress\PatchManagerBundle\PatchManager\Request;
 use Cypress\PatchManagerBundle\Exception\InvalidJsonRequestContent;
 use Cypress\PatchManagerBundle\Exception\MissingOperationNameRequest;
 use Cypress\PatchManagerBundle\Exception\MissingOperationRequest;
+use Cypress\PatchManagerBundle\PatchManager\OperationData;
 use PhpCollection\Sequence;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -70,9 +71,12 @@ class Operations
             throw new MissingOperationRequest();
         }
         $operations = new Sequence($this->isAssociative($operations) ? array($operations) : $operations);
+        $operations = $operations->map(function ($operationData) {
+            return new OperationData($operationData);
+        });
         $operationsWithoutOpKey = $operations->filterNot($this->operationWithKey());
         if (! $operationsWithoutOpKey->isEmpty()) {
-            /** @var array $operationData */
+            /** @var OperationData $operationData */
             $operationData = $operationsWithoutOpKey->first()->get();
             throw new MissingOperationNameRequest($operationData);
         }
@@ -85,8 +89,8 @@ class Operations
      */
     private function operationWithKey($key = self::OP_KEY_NAME)
     {
-        return function ($operationData) use ($key) {
-            return array_key_exists($key, $operationData);
+        return function (OperationData $operationData) use ($key) {
+            return $operationData->containsKey($key);
         };
     }
 }

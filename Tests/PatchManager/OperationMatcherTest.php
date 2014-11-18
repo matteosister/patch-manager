@@ -3,6 +3,7 @@
 namespace Cypress\PatchManagerBundle\Tests\PatchManager;
 
 use Cypress\PatchManagerBundle\PatchManager\MatchedPatchOperation;
+use Cypress\PatchManagerBundle\PatchManager\OperationData;
 use Cypress\PatchManagerBundle\PatchManager\OperationMatcher;
 use Cypress\PatchManagerBundle\PatchManager\Request\Operations;
 use Cypress\PatchManagerBundle\Tests\PatchManagerTestCase;
@@ -25,7 +26,7 @@ class OperationMatcherTest extends PatchManagerTestCase
     {
         $operations = m::mock('Cypress\PatchManagerBundle\PatchManager\Request\Operations');
         $this->ops = new Sequence();
-        $this->ops->add(array('op' => 'data'));
+        $this->ops->add(new OperationData(array('op' => 'data')));
         $operations->shouldReceive('all')->andReturn($this->ops)->byDefault();
         $this->matcher = new OperationMatcher($operations);
     }
@@ -56,7 +57,7 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function test_getMatchedOperations_with_multiple_operations_matching()
     {
-        $this->ops->add(array('op' => 'data'));
+        $this->ops->add(new OperationData(array('op' => 'data')));
         $this->matcher->addHandler($this->mockHandler('data'));
         $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
         $mpos = $this->matcher->getMatchedOperations();
@@ -65,7 +66,7 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function test_getMatchedOperations_with_multiple_operations_matching_multiple_handlers()
     {
-        $this->ops->add(array('op' => 'method'));
+        $this->ops->add(new OperationData(array('op' => 'method')));
         $this->matcher->addHandler($this->mockHandler('data'));
         $this->matcher->addHandler($this->mockHandler('method'));
         $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());

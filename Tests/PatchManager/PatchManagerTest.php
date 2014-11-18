@@ -4,6 +4,7 @@ namespace Cypress\PatchManagerBundle\Tests\PatchManager;
 
 use Cypress\PatchManagerBundle\PatchManager\Handler\DataHandler;
 use Cypress\PatchManagerBundle\PatchManager\MatchedPatchOperation;
+use Cypress\PatchManagerBundle\PatchManager\OperationData;
 use Cypress\PatchManagerBundle\PatchManager\Patchable;
 use Cypress\PatchManagerBundle\PatchManager\PatchManager;
 use Cypress\PatchManagerBundle\Tests\PatchManagerTestCase;
@@ -35,7 +36,7 @@ class PatchManagerTest extends PatchManagerTestCase
      */
     public function test_handle_without_required_keys()
     {
-        $mpo = MatchedPatchOperation::create(array('op' => 'data', 'property' => 'a'), new DataHandler());
+        $mpo = MatchedPatchOperation::create(new OperationData(array('op' => 'data', 'property' => 'a')), new DataHandler());
         $this->operationMatcher->shouldReceive('getMatchedOperations')
             ->andReturn(new Sequence(array($mpo)))->byDefault();
         $this->patchManager->handle(new SubjectA());

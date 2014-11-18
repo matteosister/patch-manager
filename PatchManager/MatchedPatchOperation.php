@@ -20,21 +20,21 @@ class MatchedPatchOperation
     private $handler;
 
     /**
-     * @param array $operationData
+     * @param OperationData $operationData
      * @param PatchOperationHandler $handler
      */
-    private function __construct(array $operationData, PatchOperationHandler $handler)
+    private function __construct(OperationData $operationData, PatchOperationHandler $handler)
     {
         $this->operationData = $operationData;
         $this->handler = $handler;
     }
 
     /**
-     * @param array $operationData
+     * @param OperationData $operationData
      * @param PatchOperationHandler $handler
      * @return MatchedPatchOperation
      */
-    public static function create(array $operationData, PatchOperationHandler $handler)
+    public static function create(OperationData $operationData, PatchOperationHandler $handler)
     {
         return new self($operationData, $handler);
     }
@@ -59,15 +59,16 @@ class MatchedPatchOperation
         $this->handler->handle($patchable, $this->operationData);
     }
 
+    /**
+     * @throws MissingKeysRequest
+     */
     private function validate()
     {
-        $opData = $this->operationData;
-        unset($opData[Operations::OP_KEY_NAME]);
-        $keys = array_keys($opData);
-        $requiredKeys = new Sequence($this->handler->getRequiredKeys());
-        $missingKeys = $requiredKeys->filterNot(function ($key) use ($keys) { return in_array($key, $keys); });
-        if ($missingKeys->count() > 0) {
-            throw new MissingKeysRequest($opData, $missingKeys);
+        if (! $this->operationData->containsKeys($this->handler->getRequiredKeys())) {
+            throw new MissingKeysRequest(
+                $this->operationData,
+                $this->operationData->diffKeys($this->handler->getRequiredKeys())
+            );
         }
     }
 }

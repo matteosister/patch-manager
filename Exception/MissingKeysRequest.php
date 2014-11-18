@@ -3,14 +3,15 @@
 
 namespace Cypress\PatchManagerBundle\Exception;
 
+use Cypress\PatchManagerBundle\PatchManager\OperationData;
 use Exception;
-use PhpCollection\Sequence;
+use PhpCollection\AbstractSequence;
 
 class MissingKeysRequest extends \Exception
 {
     public function __construct(
-        array $operationData,
-        Sequence $missingKeys,
+        OperationData $operationData,
+        AbstractSequence $missingKeys,
         $message = "",
         $code = 0,
         Exception $previous = null
