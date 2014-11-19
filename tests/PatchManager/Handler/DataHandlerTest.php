@@ -3,20 +3,75 @@
 
 namespace PatchManager\Handler;
 
-
+use PatchManager\OperationData;
+use PatchManager\Patchable;
 use PatchManager\Tests\PatchManagerTestCase;
 
 class DataHandlerTest extends PatchManagerTestCase
 {
+    /**
+     * @var DataHandler
+     */
+    private $handler;
+
+    public function setUp()
+    {
+        $this->handler = new DataHandler();
+    }
+
     public function test_getName()
     {
-        $handler = new DataHandler();
-        $this->assertEquals('data', $handler->getName());
+        $this->assertEquals('data', $this->handler->getName());
     }
 
     public function test_getRequiredKeys()
     {
-        $handler = new DataHandler();
-        $this->assertEquals(array('property', 'value'), $handler->getRequiredKeys());
+        $this->assertEquals(array('property', 'value'), $this->handler->getRequiredKeys());
     }
-} 
+
+    public function test_handle()
+    {
+        $subject = new Subject();
+        $this->assertNull($subject->getA());
+        $this->handler->handle($subject, new OperationData(array('op' => 'data', 'property' => 'a', 'value' => 1)));
+        $this->assertEquals(1, $subject->getA());
+    }
+
+    public function test_handle_with_magic_call()
+    {
+        $this->handler->useMagicCall(true);
+        $subject = new Subject();
+        $this->assertNull($subject->getB());
+        $this->handler->handle($subject, new OperationData(array('op' => 'data', 'property' => 'b', 'value' => 1)));
+        $this->assertEquals(1, $subject->getB());
+    }
+}
+
+class Subject implements Patchable
+{
+    private $a;
+
+    private $b;
+
+    public function setA($v)
+    {
+        $this->a = $v;
+    }
+
+    public function getA()
+    {
+        return $this->a;
+    }
+
+    public function getB()
+    {
+        return $this->b;
+    }
+
+    public function __call($method, $args)
+    {
+        if ('setB' === $method) {
+            $this->b = $args[0];
+        }
+    }
+}

@@ -8,14 +8,14 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DataHandler implements PatchOperationHandler
 {
+    protected $magicCall = false;
+
     /**
-     * the operation name
-     *
-     * @return string
+     * @param mixed $magicCall
      */
-    public function getName()
+    public function useMagicCall($magicCall)
     {
-        return 'data';
+        $this->magicCall = $magicCall;
     }
 
     /**
@@ -24,7 +24,22 @@ class DataHandler implements PatchOperationHandler
      */
     public function handle(Patchable $patchable, OperationData $operationData)
     {
-        $pa = new PropertyAccessor();
+        $pa = new PropertyAccessor($this->magicCall);
+        $pa->setValue(
+            $patchable,
+            $operationData->get('property')->get(),
+            $operationData->get('value')->get()
+        );
+    }
+
+    /**
+     * the operation name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'data';
     }
 
     /**
