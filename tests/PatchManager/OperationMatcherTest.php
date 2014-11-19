@@ -5,7 +5,6 @@ namespace PatchManager\Tests;
 use PatchManager\MatchedPatchOperation;
 use PatchManager\OperationData;
 use PatchManager\OperationMatcher;
-use PatchManager\Request\Operations;
 use Mockery as m;
 use PhpCollection\Sequence;
 

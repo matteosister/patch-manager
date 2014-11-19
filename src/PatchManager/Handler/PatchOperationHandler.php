@@ -2,6 +2,7 @@
 
 namespace PatchManager\Handler;
 
+use PatchManager\OperationData;
 use PatchManager\Patchable;
 
 interface PatchOperationHandler
@@ -15,11 +16,11 @@ interface PatchOperationHandler
 
     /**
      * @param Patchable $patchable
-     * @param array $operationData
+     * @param OperationData $operationData
      *
      * @return
      */
-    public function handle(Patchable $patchable, array $operationData);
+    public function handle(Patchable $patchable, OperationData $operationData);
 
     /**
      * returns an array of keys required by the operation to be fulfilled

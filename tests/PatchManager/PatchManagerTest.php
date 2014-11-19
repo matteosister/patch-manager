@@ -5,7 +5,7 @@ namespace PatchManager\Tests;
 use PatchManager\Handler\DataHandler;
 use PatchManager\MatchedPatchOperation;
 use PatchManager\OperationData;
-use PatchManager\Patchable;
+use PatchManager\Patchable as IPatchable;
 use PatchManager\PatchManager;
 use PhpCollection\Sequence;
 use Mockery as m;
@@ -42,7 +42,7 @@ class PatchManagerTest extends PatchManagerTestCase
     }
 }
 
-class SubjectA implements Patchable
+class SubjectA implements IPatchable
 {
     private $a = 1;
 }

@@ -3,8 +3,6 @@
 namespace PatchManager;
 
 use PatchManager\Exception\MissingOperationRequest;
-use PatchManager\Request\Operations;
-use PhpCollection\Sequence;
 
 /**
  * The main entry point for the PatchManager bundle
@@ -33,19 +31,8 @@ class PatchManager
     {
         $this->operationMatcher
             ->getMatchedOperations()
-            ->map($this->handleOperation($subject));
-    }
-
-    /**
-     * calls the handle method for every patch manager maching an operation
-     *
-     * @param Patchable $subject
-     * @return callable
-     */
-    private function handleOperation(Patchable $subject)
-    {
-        return function (MatchedPatchOperation $matchedPatchOperation) use ($subject) {
-            $matchedPatchOperation->process($subject);
-        };
+            ->map(function (MatchedPatchOperation $matchedPatchOperation) use ($subject) {
+                $matchedPatchOperation->process($subject);
+            });
     }
 }

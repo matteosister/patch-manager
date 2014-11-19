@@ -4,8 +4,6 @@ namespace PatchManager;
 
 use PatchManager\Exception\MissingKeysRequest;
 use PatchManager\Handler\PatchOperationHandler;
-use PatchManager\Request\Operations;
-use PhpCollection\Sequence;
 
 class MatchedPatchOperation
 {
@@ -52,17 +50,9 @@ class MatchedPatchOperation
      * call handle on the handler
      *
      * @param Patchable $patchable
-     */
-    public function process(Patchable $patchable)
-    {
-        $this->validate();
-        $this->handler->handle($patchable, $this->operationData);
-    }
-
-    /**
      * @throws MissingKeysRequest
      */
-    private function validate()
+    public function process(Patchable $patchable)
     {
         if (! $this->operationData->containsKeys($this->handler->getRequiredKeys())) {
             throw new MissingKeysRequest(
@@ -70,5 +60,6 @@ class MatchedPatchOperation
                 $this->operationData->diffKeys($this->handler->getRequiredKeys())
             );
         }
+        $this->handler->handle($patchable, $this->operationData);
     }
 }

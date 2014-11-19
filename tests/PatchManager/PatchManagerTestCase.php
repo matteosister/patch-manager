@@ -2,7 +2,6 @@
 
 namespace PatchManager\Tests;
 
-use PatchManager\Handler\PatchOperationHandler;
 use PatchManager\MatchedPatchOperation;
 use Mockery as m;
 
@@ -14,6 +13,7 @@ abstract class PatchManagerTestCase extends \PHPUnit_Framework_TestCase
         if (! is_null($name)) {
             $handler->shouldReceive('getName')->andReturn($name)->byDefault();
         }
+        $handler->shouldReceive('getRequiredKeys')->andReturn(array())->byDefault();
         return $handler;
     }
 
