@@ -1,6 +1,6 @@
 <?php
 
-namespace Cypress\PatchManagerBundle\Exception;
+namespace PatchManager\Exception;
 
 class PatchManagerException extends \Exception
 {

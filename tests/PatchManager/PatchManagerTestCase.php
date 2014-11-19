@@ -1,16 +1,16 @@
 <?php
 
-namespace Cypress\PatchManagerBundle\Tests;
+namespace PatchManager\Tests;
 
-use Cypress\PatchManagerBundle\PatchManager\Handler\PatchOperationHandler;
-use Cypress\PatchManagerBundle\PatchManager\MatchedPatchOperation;
+use PatchManager\Handler\PatchOperationHandler;
+use PatchManager\MatchedPatchOperation;
 use Mockery as m;
 
-class PatchManagerTestCase extends \PHPUnit_Framework_TestCase
+abstract class PatchManagerTestCase extends \PHPUnit_Framework_TestCase
 {
     protected function mockHandler($name = null)
     {
-        $handler = m::mock('Cypress\PatchManagerBundle\PatchManager\Handler\PatchOperationHandler');
+        $handler = m::mock('PatchManager\Handler\PatchOperationHandler');
         if (! is_null($name)) {
             $handler->shouldReceive('getName')->andReturn($name)->byDefault();
         }

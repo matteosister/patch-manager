@@ -20,6 +20,6 @@ before_script:
   - $(which php) composer.phar --dev --no-progress --no-interaction install
 
 script:
-  - vendor/bin/phpunit
+  - bin/phpunit
 
   

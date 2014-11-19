@@ -1,8 +1,9 @@
 <?php
 
-namespace Cypress\PatchManagerBundle\PatchManager;
+namespace PatchManager;
 
-use Cypress\PatchManagerBundle\PatchManager\Request\Operations;
+use PatchManager\Exception\MissingOperationRequest;
+use PatchManager\Request\Operations;
 use PhpCollection\Sequence;
 
 /**
@@ -26,7 +27,7 @@ class PatchManager
     /**
      * @param Patchable $subject
      * @return array
-     * @throws \Cypress\PatchManagerBundle\Exception\MissingOperationRequest
+     * @throws MissingOperationRequest
      */
     public function handle(Patchable $subject)
     {

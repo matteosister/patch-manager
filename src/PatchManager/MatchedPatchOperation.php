@@ -1,16 +1,16 @@
 <?php
 
-namespace Cypress\PatchManagerBundle\PatchManager;
+namespace PatchManager;
 
-use Cypress\PatchManagerBundle\Exception\MissingKeysRequest;
-use Cypress\PatchManagerBundle\PatchManager\Handler\PatchOperationHandler;
-use Cypress\PatchManagerBundle\PatchManager\Request\Operations;
+use PatchManager\Exception\MissingKeysRequest;
+use PatchManager\Handler\PatchOperationHandler;
+use PatchManager\Request\Operations;
 use PhpCollection\Sequence;
 
 class MatchedPatchOperation
 {
     /**
-     * @var array
+     * @var OperationData
      */
     private $operationData;
 

@@ -1,9 +1,8 @@
 <?php
 
-namespace PatchManager;
+namespace PatchManager\Tests;
 
-use Cypress\PatchManagerBundle\PatchManager\OperationData;
-use Cypress\PatchManagerBundle\Tests\PatchManagerTestCase;
+use PatchManager\OperationData;
 use PhpCollection\Sequence;
 
 class OperationDataTest extends PatchManagerTestCase

@@ -1,12 +1,9 @@
 <?php
 
+namespace PatchManager\Tests;
 
-namespace PatchManager;
-
-
-use Cypress\PatchManagerBundle\PatchManager\MatchedPatchOperation;
-use Cypress\PatchManagerBundle\PatchManager\OperationData;
-use Cypress\PatchManagerBundle\Tests\PatchManagerTestCase;
+use PatchManager\MatchedPatchOperation;
+use PatchManager\OperationData;
 
 class MatchedPatchOperationTest extends PatchManagerTestCase
 {

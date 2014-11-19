@@ -1,15 +1,14 @@
 <?php
 
-namespace Cypress\PatchManagerBundle\Tests\PatchManager;
+namespace PatchManager\Tests;
 
-use Cypress\PatchManagerBundle\PatchManager\Handler\DataHandler;
-use Cypress\PatchManagerBundle\PatchManager\MatchedPatchOperation;
-use Cypress\PatchManagerBundle\PatchManager\OperationData;
-use Cypress\PatchManagerBundle\PatchManager\Patchable;
-use Cypress\PatchManagerBundle\PatchManager\PatchManager;
-use Cypress\PatchManagerBundle\Tests\PatchManagerTestCase;
-use Mockery as m;
+use PatchManager\Handler\DataHandler;
+use PatchManager\MatchedPatchOperation;
+use PatchManager\OperationData;
+use PatchManager\Patchable;
+use PatchManager\PatchManager;
 use PhpCollection\Sequence;
+use Mockery as m;
 
 class PatchManagerTest extends PatchManagerTestCase
 {
@@ -25,14 +24,14 @@ class PatchManagerTest extends PatchManagerTestCase
 
     public function setUp()
     {
-        $this->operationMatcher = m::mock('Cypress\PatchManagerBundle\PatchManager\OperationMatcher');
+        $this->operationMatcher = m::mock('PatchManager\OperationMatcher');
         $this->operationMatcher->shouldReceive('getMatchedOperations')
             ->andReturn(new Sequence())->byDefault();
         $this->patchManager = new PatchManager($this->operationMatcher);
     }
 
     /**
-     * @expectedException \Cypress\PatchManagerBundle\Exception\MissingKeysRequest
+     * @expectedException \PatchManager\Exception\MissingKeysRequest
      */
     public function test_handle_without_required_keys()
     {

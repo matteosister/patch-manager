@@ -1,8 +1,8 @@
 <?php
 
-namespace Cypress\PatchManagerBundle\PatchManager\Handler;
+namespace PatchManager\Handler;
 
-use Cypress\PatchManagerBundle\PatchManager\Patchable;
+use PatchManager\Patchable;
 
 interface PatchOperationHandler
 {

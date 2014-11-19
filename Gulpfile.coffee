@@ -2,7 +2,7 @@ gulp = require('gulp')
 exec = require('child_process').exec
 
 gulp.task 'phpunit', (cb) ->
-    exec 'vendor/bin/phpunit', (err, stdout) ->
+    exec 'bin/phpunit', (err, stdout) ->
         if (err)
             console.log err
         console.log stdout

@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Cypress\PatchManagerBundle\Exception;
+namespace PatchManager\Exception;
 
-use Cypress\PatchManagerBundle\PatchManager\OperationData;
+use PatchManager\OperationData;
 use Exception;
 use PhpCollection\AbstractSequence;
 

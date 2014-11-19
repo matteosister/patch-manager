@@ -1,12 +1,11 @@
 <?php
 
-namespace Cypress\PatchManagerBundle\Tests\PatchManager;
+namespace PatchManager\Tests;
 
-use Cypress\PatchManagerBundle\PatchManager\MatchedPatchOperation;
-use Cypress\PatchManagerBundle\PatchManager\OperationData;
-use Cypress\PatchManagerBundle\PatchManager\OperationMatcher;
-use Cypress\PatchManagerBundle\PatchManager\Request\Operations;
-use Cypress\PatchManagerBundle\Tests\PatchManagerTestCase;
+use PatchManager\MatchedPatchOperation;
+use PatchManager\OperationData;
+use PatchManager\OperationMatcher;
+use PatchManager\Request\Operations;
 use Mockery as m;
 use PhpCollection\Sequence;
 
@@ -24,7 +23,7 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function setUp()
     {
-        $operations = m::mock('Cypress\PatchManagerBundle\PatchManager\Request\Operations');
+        $operations = m::mock('PatchManager\Request\Operations');
         $this->ops = new Sequence();
         $this->ops->add(new OperationData(array('op' => 'data')));
         $operations->shouldReceive('all')->andReturn($this->ops)->byDefault();
@@ -50,7 +49,7 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->assertCount(1, $this->matcher->getMatchedOperations());
         $mpos = $this->matcher->getMatchedOperations();
         $this->assertInstanceOf(
-            'Cypress\PatchManagerBundle\PatchManager\MatchedPatchOperation',
+            'PatchManager\MatchedPatchOperation',
             $mpos->find($this->handlerNameMatcher('data'))->get()
         );
     }
@@ -73,7 +72,7 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->assertCount(2, $this->matcher->getMatchedOperations());
         $mpos = $this->matcher->getMatchedOperations();
         $this->assertInstanceOf(
-            'Cypress\PatchManagerBundle\PatchManager\MatchedPatchOperation',
+            'PatchManager\MatchedPatchOperation',
             $mpos->find($this->handlerNameMatcher('data'))->get()
         );
     }

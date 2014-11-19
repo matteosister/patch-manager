@@ -1,11 +1,11 @@
 <?php
 
-namespace Cypress\PatchManagerBundle\PatchManager\Request;
+namespace PatchManager\Request;
 
-use Cypress\PatchManagerBundle\Exception\InvalidJsonRequestContent;
-use Cypress\PatchManagerBundle\Exception\MissingOperationNameRequest;
-use Cypress\PatchManagerBundle\Exception\MissingOperationRequest;
-use Cypress\PatchManagerBundle\PatchManager\OperationData;
+use PatchManager\Exception\InvalidJsonRequestContent;
+use PatchManager\Exception\MissingOperationNameRequest;
+use PatchManager\Exception\MissingOperationRequest;
+use PatchManager\OperationData;
 use PhpCollection\Sequence;
 use Symfony\Component\HttpFoundation\RequestStack;
 
