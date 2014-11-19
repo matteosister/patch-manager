@@ -1,3 +1,11 @@
+dependencies:
+  pre:
+    - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
+
+machine:
+  php:
+    version: 5.6.2
+
 test:
   override:
     - bin/phpunit --coverage-clover=coverage.clover
