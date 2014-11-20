@@ -24,7 +24,7 @@ class OperationMatcherTest extends PatchManagerTestCase
     {
         $operations = m::mock('PatchManager\Request\Operations');
         $this->ops = new Sequence();
-        $this->ops->add(new OperationData(array('op' => 'data')));
+        $this->ops->add(array('op' => 'data'));
         $operations->shouldReceive('all')->andReturn($this->ops)->byDefault();
         $this->matcher = new OperationMatcher($operations);
     }
@@ -55,7 +55,7 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function test_getMatchedOperations_with_multiple_operations_matching()
     {
-        $this->ops->add(new OperationData(array('op' => 'data')));
+        $this->ops->add(array('op' => 'data'));
         $this->matcher->addHandler($this->mockHandler('data'));
         $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
         $mpos = $this->matcher->getMatchedOperations();
@@ -64,7 +64,7 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function test_getMatchedOperations_with_multiple_operations_matching_multiple_handlers()
     {
-        $this->ops->add(new OperationData(array('op' => 'method')));
+        $this->ops->add(array('op' => 'method'));
         $this->matcher->addHandler($this->mockHandler('data'));
         $this->matcher->addHandler($this->mockHandler('method'));
         $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());

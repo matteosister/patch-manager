@@ -2,22 +2,25 @@
 
 namespace PatchManager\Handler;
 
+use Finite\Factory\FactoryInterface;
 use PatchManager\OperationData;
 use PatchManager\Patchable;
 use PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-class DataHandler implements PatchOperationHandler
+class FiniteHandler implements PatchOperationHandler
 {
-    protected $magicCall = false;
+    /**
+     * @var FactoryInterface
+     */
+    private $factoryInterface;
 
     /**
-     * @param mixed $magicCall
+     * @param FactoryInterface $factoryInterface
      */
-    public function useMagicCall($magicCall)
+    public function __construct(FactoryInterface $factoryInterface)
     {
-        $this->magicCall = $magicCall;
+        $this->factoryInterface = $factoryInterface;
     }
 
     /**
@@ -26,12 +29,12 @@ class DataHandler implements PatchOperationHandler
      */
     public function handle(Patchable $patchable, OperationData $operationData)
     {
-        $pa = new PropertyAccessor($this->magicCall);
-        $pa->setValue(
-            $patchable,
-            $operationData->get('property')->get(),
-            $operationData->get('value')->get()
-        );
+        $sm = $this->factoryInterface->get($patchable);
+        $transition = $operationData->get('transition')->get();
+        if ($operationData->get('check')->get() && ! $sm->can($transition)) {
+            return;
+        }
+        $sm->apply($transition);
     }
 
     /**
@@ -41,7 +44,7 @@ class DataHandler implements PatchOperationHandler
      */
     public function getName()
     {
-        return 'data';
+        return 'sm';
     }
 
     /**
@@ -53,6 +56,9 @@ class DataHandler implements PatchOperationHandler
      */
     public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $optionsResolver->setRequired(array('property', 'value'));
+        $optionsResolver
+            ->setRequired(array('transition'))
+            ->setOptional(array('check'))
+            ->setDefaults(array('check' => false));
     }
 }

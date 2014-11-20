@@ -8,20 +8,8 @@ gulp.task 'phpunit', (cb) ->
         console.log stdout
         cb()
 
-gulp.task 'phpspec', (cb) ->
-    exec 'bin/phpspec run --format=dot', (err, stdout) ->
-        if (err)
-            console.log err
-        console.log stdout
-        cb()
-
-gulp.task 'watch-unit', (event) ->
+gulp.task 'watch', (event) ->
     watcher = gulp.watch ['**/*.php'], ['phpunit']
     watcher.on 'change', (event) ->
 
-gulp.task 'watch-spec', (event) ->
-    watcher = gulp.watch ['**/*.php'], ['phpspec']
-    watcher.on 'change', (event) ->
-
-
-gulp.task 'default', ['watch-spec']
+gulp.task 'default', ['watch']

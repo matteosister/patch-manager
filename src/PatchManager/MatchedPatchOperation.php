@@ -2,8 +2,7 @@
 
 namespace PatchManager;
 
-use PatchManager\Exception\MissingKeysRequest;
-use PatchManager\Handler\PatchOperationHandler;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MatchedPatchOperation
 {
@@ -18,21 +17,21 @@ class MatchedPatchOperation
     private $handler;
 
     /**
-     * @param OperationData $operationData
+     * @param array $operationData
      * @param PatchOperationHandler $handler
      */
-    private function __construct(OperationData $operationData, PatchOperationHandler $handler)
+    private function __construct(array $operationData, PatchOperationHandler $handler)
     {
         $this->operationData = $operationData;
         $this->handler = $handler;
     }
 
     /**
-     * @param OperationData $operationData
+     * @param array $operationData
      * @param PatchOperationHandler $handler
      * @return MatchedPatchOperation
      */
-    public static function create(OperationData $operationData, PatchOperationHandler $handler)
+    public static function create(array $operationData, PatchOperationHandler $handler)
     {
         return new self($operationData, $handler);
     }
@@ -50,16 +49,13 @@ class MatchedPatchOperation
      * call handle on the handler
      *
      * @param Patchable $patchable
-     * @throws MissingKeysRequest
      */
     public function process(Patchable $patchable)
     {
-        if (! $this->operationData->containsKeys($this->handler->getRequiredKeys())) {
-            throw new MissingKeysRequest(
-                $this->operationData,
-                $this->operationData->diffKeys($this->handler->getRequiredKeys())
-            );
-        }
-        $this->handler->handle($patchable, $this->operationData);
+        $optionResolver = new OptionsResolver();
+        $optionResolver->setRequired(array('op'));
+        $this->handler->configureOptions($optionResolver);
+        $options = new OperationData($optionResolver->resolve($this->operationData));
+        $this->handler->handle($patchable, $options);
     }
 }

@@ -31,11 +31,11 @@ class PatchManagerTest extends PatchManagerTestCase
     }
 
     /**
-     * @expectedException \PatchManager\Exception\MissingKeysRequest
+     * @expectedException \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
      */
     public function test_handle_without_required_keys()
     {
-        $mpo = MatchedPatchOperation::create(new OperationData(array('op' => 'data', 'property' => 'a')), new DataHandler());
+        $mpo = MatchedPatchOperation::create(array('op' => 'data', 'property' => 'a'), new DataHandler());
         $this->operationMatcher->shouldReceive('getMatchedOperations')
             ->andReturn(new Sequence(array($mpo)))->byDefault();
         $this->patchManager->handle(new SubjectA());

@@ -35,17 +35,18 @@ class DataDoctrineHandler extends DataHandler
         if ($this->isEntity($patchable)) {
             // if it's an associated entity I fetch if from the db
             $metadata = $this->entityManagerInterface->getMetadataFactory()->getMetadataFor(get_class($patchable));
-            if (in_array($patchable, $metadata->getAssociationNames())) {
+            if (in_array($property, $metadata->getAssociationNames())) {
                 $targetClass = $metadata->getAssociationTargetClass($property);
                 $value = $this->entityManagerInterface->find($targetClass, $value);
             }
             // if it's a date field I cast the value to date
             $fieldType = $metadata->getTypeOfField($property);
+            var_dump($metadata->getTypeOfField($property));
             if ('date' === $fieldType) {
                 $value = new \DateTime($value);
             }
         }
-        $pa->setValue($subject, $property, $value);
+        $pa->setValue($patchable, $property, $value);
     }
 
     /**

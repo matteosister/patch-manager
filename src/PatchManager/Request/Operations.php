@@ -71,9 +71,6 @@ class Operations
             throw new MissingOperationRequest();
         }
         $operations = new Sequence($this->isAssociative($operations) ? array($operations) : $operations);
-        $operations = $operations->map(function ($operationData) {
-            return new OperationData($operationData);
-        });
         $operationsWithoutOpKey = $operations->filterNot($this->operationWithKey());
         if (! $operationsWithoutOpKey->isEmpty()) {
             /** @var OperationData $operationData */
@@ -89,8 +86,8 @@ class Operations
      */
     private function operationWithKey($key = self::OP_KEY_NAME)
     {
-        return function (OperationData $operationData) use ($key) {
-            return $operationData->containsKey($key);
+        return function ($operationData) use ($key) {
+            return array_key_exists($key, $operationData);
         };
     }
 }

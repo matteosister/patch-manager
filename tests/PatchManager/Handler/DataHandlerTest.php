@@ -24,14 +24,9 @@ class DataHandlerTest extends PatchManagerTestCase
         $this->assertEquals('data', $this->handler->getName());
     }
 
-    public function test_getRequiredKeys()
-    {
-        $this->assertEquals(array('property', 'value'), $this->handler->getRequiredKeys());
-    }
-
     public function test_handle()
     {
-        $subject = new Subject();
+        $subject = new DataSubject();
         $this->assertNull($subject->getA());
         $this->handler->handle($subject, new OperationData(array('op' => 'data', 'property' => 'a', 'value' => 1)));
         $this->assertEquals(1, $subject->getA());
@@ -40,14 +35,14 @@ class DataHandlerTest extends PatchManagerTestCase
     public function test_handle_with_magic_call()
     {
         $this->handler->useMagicCall(true);
-        $subject = new Subject();
+        $subject = new DataSubject();
         $this->assertNull($subject->getB());
         $this->handler->handle($subject, new OperationData(array('op' => 'data', 'property' => 'b', 'value' => 1)));
         $this->assertEquals(1, $subject->getB());
     }
 }
 
-class Subject implements Patchable
+class DataSubject implements Patchable
 {
     private $a;
 
