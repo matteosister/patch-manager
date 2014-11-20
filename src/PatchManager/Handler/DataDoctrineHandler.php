@@ -41,7 +41,6 @@ class DataDoctrineHandler extends DataHandler
             }
             // if it's a date field I cast the value to date
             $fieldType = $metadata->getTypeOfField($property);
-            var_dump($metadata->getTypeOfField($property));
             if ('date' === $fieldType) {
                 $value = new \DateTime($value);
             }
