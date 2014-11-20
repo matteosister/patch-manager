@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class MatchedPatchOperation
 {
     /**
-     * @var OperationData
+     * @var array
      */
     private $operationData;
 
