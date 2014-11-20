@@ -3,6 +3,7 @@
 namespace PatchManager\Handler;
 
 use Finite\Factory\FactoryInterface;
+use Finite\StatefulInterface;
 use PatchManager\OperationData;
 use PatchManager\Patchable;
 use PatchManager\PatchOperationHandler;

@@ -73,7 +73,7 @@ class Operations
         $operations = new Sequence($this->isAssociative($operations) ? array($operations) : $operations);
         $operationsWithoutOpKey = $operations->filterNot($this->operationWithKey());
         if (! $operationsWithoutOpKey->isEmpty()) {
-            /** @var OperationData $operationData */
+            /** @var array $operationData */
             $operationData = $operationsWithoutOpKey->first()->get();
             throw new MissingOperationNameRequest($operationData);
         }
