@@ -3,6 +3,8 @@ dependencies:
     - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
   cache_directories:
     - "~/.composer"
+  override:
+    - composer install --no-progress
 
 machine:
   php:
