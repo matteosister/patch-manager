@@ -48,7 +48,7 @@ class OperationMatcher
             ->foldLeft(
                 new Sequence(),
                 function (Sequence $matchedOperations, array $operationData) use ($handlers) {
-                    $handler = $handlers->find(function(PatchOperationHandler $handler) use ($operationData) {
+                    $handler = $handlers->find(function (PatchOperationHandler $handler) use ($operationData) {
                         return $operationData[Operations::OP_KEY_NAME] === $handler->getName();
                     });
                     if ($handler->isDefined()) {

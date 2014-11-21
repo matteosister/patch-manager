@@ -5,7 +5,6 @@ namespace PatchManager\Request;
 use PatchManager\Exception\InvalidJsonRequestContent;
 use PatchManager\Exception\MissingOperationNameRequest;
 use PatchManager\Exception\MissingOperationRequest;
-use PatchManager\OperationData;
 use PhpCollection\Sequence;
 use Symfony\Component\HttpFoundation\RequestStack;
 

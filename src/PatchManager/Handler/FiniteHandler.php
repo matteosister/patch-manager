@@ -3,7 +3,6 @@
 namespace PatchManager\Handler;
 
 use Finite\Factory\FactoryInterface;
-use Finite\StatefulInterface;
 use PatchManager\OperationData;
 use PatchManager\Patchable;
 use PatchManager\PatchOperationHandler;
@@ -25,12 +24,12 @@ class FiniteHandler implements PatchOperationHandler
     }
 
     /**
-     * @param Patchable $patchable
+     * @param mixed $subject
      * @param OperationData $operationData
      */
-    public function handle(Patchable $patchable, OperationData $operationData)
+    public function handle($subject, OperationData $operationData)
     {
-        $sm = $this->factoryInterface->get($patchable);
+        $sm = $this->factoryInterface->get($subject);
         $transition = $operationData->get('transition')->get();
         if ($operationData->get('check')->get() && ! $sm->can($transition)) {
             return;

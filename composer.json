@@ -1,13 +1,13 @@
 {
-    "name": "cypresslab/patch-manager-bundle",
-    "description": "Symfony2 bundle to handle patch requests",
-    "keywords": ["symfony2", "bundle", "rest", "patch", "api"],
-    "type": "symfony-bundle",
+    "name": "cypresslab/patch-manager",
+    "description": "A library to manage patch requests",
+    "keywords": ["rest", "patch", "api", "symfony2", "bundle"],
     "require": {
         "php": ">=5.3.3",
         "symfony/property-access": "~2.5.6",
         "symfony/http-foundation": "~2.5.6",
         "symfony/options-resolver": "~2.5.6",
+        "symfony/event-dispatcher": "~2.1",
         "phpcollection/phpcollection": "~0.4"
     },
     "require-dev": {

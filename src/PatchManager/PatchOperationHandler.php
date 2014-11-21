@@ -7,10 +7,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 interface PatchOperationHandler
 {
     /**
-     * @param Patchable $patchable
+     * @param mixed $subject
      * @param OperationData $operationData
      */
-    public function handle(Patchable $patchable, OperationData $operationData);
+    public function handle($subject, OperationData $operationData);
 
     /**
      * the operation name

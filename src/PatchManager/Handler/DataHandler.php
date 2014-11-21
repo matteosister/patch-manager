@@ -21,14 +21,14 @@ class DataHandler implements PatchOperationHandler
     }
 
     /**
-     * @param Patchable $patchable
+     * @param mixed $subject
      * @param OperationData $operationData
      */
-    public function handle(Patchable $patchable, OperationData $operationData)
+    public function handle($subject, OperationData $operationData)
     {
         $pa = new PropertyAccessor($this->magicCall);
         $pa->setValue(
-            $patchable,
+            $subject,
             $operationData->get('property')->get(),
             $operationData->get('value')->get()
         );

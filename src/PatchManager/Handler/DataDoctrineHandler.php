@@ -24,17 +24,17 @@ class DataDoctrineHandler extends DataHandler
     }
 
     /**
-     * @param Patchable $patchable
+     * @param mixed $subject
      * @param OperationData $operationData
      */
-    public function handle(Patchable $patchable, OperationData $operationData)
+    public function handle($subject, OperationData $operationData)
     {
         $pa = new PropertyAccessor($this->magicCall);
         $property = $operationData->get('property')->get();
         $value = $operationData->get('value')->get();
-        if ($this->isEntity($patchable)) {
+        if ($this->isEntity($subject)) {
             // if it's an associated entity I fetch if from the db
-            $metadata = $this->entityManagerInterface->getMetadataFactory()->getMetadataFor(get_class($patchable));
+            $metadata = $this->entityManagerInterface->getMetadataFactory()->getMetadataFor(get_class($subject));
             if (in_array($property, $metadata->getAssociationNames())) {
                 $targetClass = $metadata->getAssociationTargetClass($property);
                 $value = $this->entityManagerInterface->find($targetClass, $value);
@@ -45,7 +45,7 @@ class DataDoctrineHandler extends DataHandler
                 $value = new \DateTime($value);
             }
         }
-        $pa->setValue($patchable, $property, $value);
+        $pa->setValue($subject, $property, $value);
     }
 
     /**

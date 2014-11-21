@@ -18,6 +18,11 @@ class PatchManagerTest extends PatchManagerTestCase
     private $operationMatcher;
 
     /**
+     * @var m\MockInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @var PatchManager
      */
     private $patchManager;
@@ -27,7 +32,8 @@ class PatchManagerTest extends PatchManagerTestCase
         $this->operationMatcher = m::mock('PatchManager\OperationMatcher');
         $this->operationMatcher->shouldReceive('getMatchedOperations')
             ->andReturn(new Sequence())->byDefault();
-        $this->patchManager = new PatchManager($this->operationMatcher);
+        $this->eventDispatcher = m::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->patchManager = new PatchManager($this->operationMatcher, $this->eventDispatcher);
     }
 
     /**
@@ -35,6 +41,7 @@ class PatchManagerTest extends PatchManagerTestCase
      */
     public function test_handle_without_required_keys()
     {
+        $this->eventDispatcher->shouldReceive('dispatch')->twice()->andReturn();
         $mpo = MatchedPatchOperation::create(array('op' => 'data', 'property' => 'a'), new DataHandler());
         $this->operationMatcher->shouldReceive('getMatchedOperations')
             ->andReturn(new Sequence(array($mpo)))->byDefault();
