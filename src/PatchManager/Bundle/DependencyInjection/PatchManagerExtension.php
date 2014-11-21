@@ -1,6 +1,6 @@
 <?php
 
-namespace PatchManager\Bundle\PatchManagerBundle\DependencyInjection;
+namespace PatchManager\Bundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
