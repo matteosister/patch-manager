@@ -33,7 +33,8 @@ class PatchManagerTest extends PatchManagerTestCase
         $this->operationMatcher->shouldReceive('getMatchedOperations')
             ->andReturn(new Sequence())->byDefault();
         $this->eventDispatcher = m::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->patchManager = new PatchManager($this->operationMatcher, $this->eventDispatcher);
+        $this->patchManager = new PatchManager($this->operationMatcher);
+        $this->patchManager->setEventDispatcherInterface($this->eventDispatcher);
     }
 
     /**
