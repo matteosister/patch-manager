@@ -24,11 +24,17 @@ class PatchManager
 
     /**
      * @param OperationMatcher $operationMatcher
-     * @param EventDispatcherInterface $eventDispatcherInterface
      */
-    public function __construct(OperationMatcher $operationMatcher, EventDispatcherInterface $eventDispatcherInterface)
+    public function __construct(OperationMatcher $operationMatcher)
     {
         $this->operationMatcher = $operationMatcher;
+    }
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcherInterface
+     */
+    public function setEventDispatcherInterface($eventDispatcherInterface)
+    {
         $this->eventDispatcherInterface = $eventDispatcherInterface;
     }
 
@@ -44,21 +50,29 @@ class PatchManager
         }
     }
 
+    /**
+     * @param MatchedPatchOperation $matchedPatchOperation
+     * @param $subject
+     */
     public function doHandle(MatchedPatchOperation $matchedPatchOperation, $subject)
     {
         $event = new PatchManagerEvent($matchedPatchOperation);
-        $this->eventDispatcherInterface->dispatch(PatchManagerEvents::PATCH_MANAGER_PRE, $event);
-        $this->eventDispatcherInterface->dispatch(
-            sprintf('%s.%s', PatchManagerEvents::PATCH_MANAGER_PRE, $matchedPatchOperation->getOpName()),
-            $event
-        );
+        if ($this->eventDispatcherInterface) {
+            $this->eventDispatcherInterface->dispatch(PatchManagerEvents::PATCH_MANAGER_PRE, $event);
+            $this->eventDispatcherInterface->dispatch(
+                sprintf('%s.%s', PatchManagerEvents::PATCH_MANAGER_PRE, $matchedPatchOperation->getOpName()),
+                $event
+            );
+        }
 
         $matchedPatchOperation->process($subject);
 
-        $this->eventDispatcherInterface->dispatch(PatchManagerEvents::PATCH_MANAGER_POST, $event);
-        $this->eventDispatcherInterface->dispatch(
-            sprintf('%s.%s', PatchManagerEvents::PATCH_MANAGER_POST, $matchedPatchOperation->getOpName()),
-            $event
-        );
+        if ($this->eventDispatcherInterface) {
+            $this->eventDispatcherInterface->dispatch(PatchManagerEvents::PATCH_MANAGER_POST, $event);
+            $this->eventDispatcherInterface->dispatch(
+                sprintf('%s.%s', PatchManagerEvents::PATCH_MANAGER_POST, $matchedPatchOperation->getOpName()),
+                $event
+            );
+        }
     }
 }
