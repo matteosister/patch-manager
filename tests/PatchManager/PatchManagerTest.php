@@ -48,6 +48,28 @@ class PatchManagerTest extends PatchManagerTestCase
             ->andReturn(new Sequence(array($mpo)))->byDefault();
         $this->patchManager->handle(new SubjectA());
     }
+
+    /**
+     * @expectedException \PatchManager\Exception\HandlerNotFoundException
+     * @expectedExceptionMessage 'test'
+     */
+    public function test_strict_mode()
+    {
+        $this->operationMatcher->shouldReceive('getUnmatchedOperations')->andReturn(new Sequence(['test']));
+        $pm = new PatchManager($this->operationMatcher, true);
+        $pm->handle(new SubjectA());
+    }
+
+    /**
+     * @expectedException \PatchManager\Exception\HandlerNotFoundException
+     * @expectedExceptionMessage 'test, test2'
+     */
+    public function test_strict_mode_multiple_ops()
+    {
+        $this->operationMatcher->shouldReceive('getUnmatchedOperations')->andReturn(new Sequence(['test', 'test2']));
+        $pm = new PatchManager($this->operationMatcher, true);
+        $pm->handle(new SubjectA());
+    }
 }
 
 class SubjectA implements IPatchable

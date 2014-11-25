@@ -4,6 +4,7 @@ namespace PatchManager;
 
 use PatchManager\Event\PatchManagerEvent;
 use PatchManager\Event\PatchManagerEvents;
+use PatchManager\Exception\HandlerNotFoundException;
 use PatchManager\Exception\MissingOperationRequest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -23,11 +24,18 @@ class PatchManager
     private $eventDispatcherInterface;
 
     /**
-     * @param OperationMatcher $operationMatcher
+     * @var bool
      */
-    public function __construct(OperationMatcher $operationMatcher)
+    private $strictMode;
+
+    /**
+     * @param OperationMatcher $operationMatcher
+     * @param bool $strictMode if true throws an error if no handler is found
+     */
+    public function __construct(OperationMatcher $operationMatcher, $strictMode = false)
     {
         $this->operationMatcher = $operationMatcher;
+        $this->strictMode = $strictMode;
     }
 
     /**
@@ -40,11 +48,14 @@ class PatchManager
 
     /**
      * @param Patchable $subject
+     * @throws HandlerNotFoundException
      * @return array
-     * @throws MissingOperationRequest
      */
     public function handle(Patchable $subject)
     {
+        if ($this->strictMode && $this->operationMatcher->getMatchedOperations()->isEmpty()) {
+            throw new HandlerNotFoundException($this->operationMatcher->getUnmatchedOperations());
+        }
         foreach ($this->operationMatcher->getMatchedOperations() as $matchedPatchOperation) {
             $this->doHandle($matchedPatchOperation, $subject);
         }

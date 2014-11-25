@@ -76,6 +76,15 @@ class OperationMatcherTest extends PatchManagerTestCase
         );
     }
 
+    public function test_getUnmatchedOperations_with_handler_not_matching()
+    {
+        $this->matcher->addHandler($this->mockHandler('method'));
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
+        $this->assertCount(1, $this->matcher->getUnmatchedOperations());
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getUnmatchedOperations());
+        $this->assertEquals(new Sequence(['data']), $this->matcher->getUnmatchedOperations());
+    }
+
     private function handlerNameMatcher($name)
     {
         return function (MatchedPatchOperation $mpo) use ($name) {

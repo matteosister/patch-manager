@@ -18,6 +18,20 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('patch_manager');
         $rootNode
             ->children()
+                ->arrayNode('handlers')
+                    ->children()
+                        ->arrayNode('data')
+                            ->children()
+                                ->scalarNode('entity_manager')->defaultValue('default')->end()
+                                ->scalarNode('doctrine')->defaultTrue()->end()
+                                ->scalarNode('magic_call')->defaultFalse()->end()
+                            ->end()
+                        ->end()
+                        ->scalarNode('state_machine')->end()
+                    ->end()
+                ->end()
+                ->scalarNode('dispatch_events')->defaultTrue()->end()
+                ->scalarNode('strict_mode')->defaultFalse()->end()
                 ->scalarNode('alias')
                     ->defaultNull()
                     ->validate()
@@ -25,7 +39,6 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('Alias should be a string containing letters and underscore. "%s" given')
                     ->end()
                 ->end()
-                ->scalarNode('dispatch_events')->defaultTrue()->end()
             ->end();
 
         return $treeBuilder;

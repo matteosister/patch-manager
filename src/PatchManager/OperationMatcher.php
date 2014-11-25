@@ -58,4 +58,22 @@ class OperationMatcher
                 }
             );
     }
+
+    /**
+     * @return Sequence
+     * @throws Exception\MissingOperationNameRequest
+     * @throws Exception\MissingOperationRequest
+     */
+    public function getUnmatchedOperations()
+    {
+        $matchedOperations = $this->getMatchedOperations();
+        return $this->operations
+            ->all()
+            ->filter(function (array $operationData) use ($matchedOperations) {
+                return $operationData !== $matchedOperations;
+            })
+            ->map(function (array $operationData) {
+                return $operationData['op'];
+            });
+    }
 }
