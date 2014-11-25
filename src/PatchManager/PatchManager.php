@@ -57,22 +57,27 @@ class PatchManager
     public function doHandle(MatchedPatchOperation $matchedPatchOperation, $subject)
     {
         $event = new PatchManagerEvent($matchedPatchOperation);
-        if ($this->eventDispatcherInterface) {
-            $this->eventDispatcherInterface->dispatch(PatchManagerEvents::PATCH_MANAGER_PRE, $event);
-            $this->eventDispatcherInterface->dispatch(
-                sprintf('%s.%s', PatchManagerEvents::PATCH_MANAGER_PRE, $matchedPatchOperation->getOpName()),
-                $event
-            );
-        }
-
+        $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_PRE);
         $matchedPatchOperation->process($subject);
+        $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_POST);
+    }
 
-        if ($this->eventDispatcherInterface) {
-            $this->eventDispatcherInterface->dispatch(PatchManagerEvents::PATCH_MANAGER_POST, $event);
-            $this->eventDispatcherInterface->dispatch(
-                sprintf('%s.%s', PatchManagerEvents::PATCH_MANAGER_POST, $matchedPatchOperation->getOpName()),
-                $event
-            );
+    /**
+     * dispatch events if the eventDispatcher is present
+     *
+     * @param PatchManagerEvent $event
+     * @param $opName
+     * @param $type
+     */
+    public function dispatchEvents(PatchManagerEvent $event, $opName, $type)
+    {
+        if (! $this->eventDispatcherInterface) {
+            return;
         }
+        $this->eventDispatcherInterface->dispatch(PatchManagerEvents::PATCH_MANAGER_POST, $event);
+        $this->eventDispatcherInterface->dispatch(
+            sprintf('%s.%s', $type, $opName),
+            $event
+        );
     }
 }
