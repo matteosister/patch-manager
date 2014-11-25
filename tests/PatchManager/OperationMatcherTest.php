@@ -82,7 +82,7 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
         $this->assertCount(1, $this->matcher->getUnmatchedOperations());
         $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getUnmatchedOperations());
-        $this->assertEquals(new Sequence(['data']), $this->matcher->getUnmatchedOperations());
+        $this->assertEquals(new Sequence(array('data')), $this->matcher->getUnmatchedOperations());
     }
 
     private function handlerNameMatcher($name)

@@ -55,7 +55,7 @@ class PatchManagerTest extends PatchManagerTestCase
      */
     public function test_strict_mode()
     {
-        $this->operationMatcher->shouldReceive('getUnmatchedOperations')->andReturn(new Sequence(['test']));
+        $this->operationMatcher->shouldReceive('getUnmatchedOperations')->andReturn(new Sequence(array('test')));
         $pm = new PatchManager($this->operationMatcher, true);
         $pm->handle(new SubjectA());
     }
@@ -66,7 +66,7 @@ class PatchManagerTest extends PatchManagerTestCase
      */
     public function test_strict_mode_multiple_ops()
     {
-        $this->operationMatcher->shouldReceive('getUnmatchedOperations')->andReturn(new Sequence(['test', 'test2']));
+        $this->operationMatcher->shouldReceive('getUnmatchedOperations')->andReturn(new Sequence(array('test', 'test2')));
         $pm = new PatchManager($this->operationMatcher, true);
         $pm->handle(new SubjectA());
     }
