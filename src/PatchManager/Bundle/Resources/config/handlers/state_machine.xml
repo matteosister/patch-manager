@@ -5,6 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="patch_manager.handler.data" public="false" class="PatchManager\Handler\FiniteHandler" />
+        <service id="patch_manager.handler.state_machine" public="false" class="PatchManager\Handler\FiniteHandler">
+            <argument type="service" id="finite.factory" />
+        </service>
     </services>
 </container>

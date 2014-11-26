@@ -4,6 +4,7 @@ namespace PatchManager\Bundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class PatchManagerCompilerPass implements CompilerPassInterface
 {
@@ -18,7 +19,19 @@ class PatchManagerCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $services = $container->findTaggedServiceIds(self::PATCH_MANAGER_HANDLER_TAG);
-        var_dump($services);
+        if (!$container->hasDefinition('patch_manager.operation_matcher')) {
+            return;
+        }
+
+        $definition = $container->getDefinition(
+            'patch_manager.operation_matcher'
+        );
+        $taggedServices = $container->findTaggedServiceIds(self::PATCH_MANAGER_HANDLER_TAG);
+        foreach ($taggedServices as $id => $tags) {
+            $definition->addMethodCall(
+                'addHandler',
+                array(new Reference($id))
+            );
+        }
     }
 }
