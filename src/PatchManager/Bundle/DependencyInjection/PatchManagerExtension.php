@@ -73,14 +73,15 @@ class PatchManagerExtension extends Extension
     }
 
     /**
-     * @param $config
      * @param Loader\XmlFileLoader $loaderHandlers
      * @param ContainerBuilder $container
      */
-    private function handleStateMachine($config, Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container)
+    private function handleStateMachine(Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container)
     {
         if (! interface_exists('Finite\Factory\FactoryInterface')) {
-            throw new \RuntimeException('If you want to use the patch manager with "op": "sm" you should install the finite library. See https://github.com/yohang/Finite');
+            $msg = 'If you want to use the patch manager with "op": "sm" you should install ';
+            $msg .= 'the finite library. See https://github.com/yohang/Finite';
+            throw new \RuntimeException($msg);
         }
         $loaderHandlers->load('state_machine.xml');
         $smHandlerDefinition = $container->getDefinition('patch_manager.handler.state_machine');
