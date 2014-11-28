@@ -46,7 +46,7 @@ class PatchManagerExtension extends Extension
             $this->handleData($config, $loaderHandlers, $container);
         }
         if (array_key_exists('state_machine', $config['handlers'])) {
-            $this->handleStateMachine($config, $loaderHandlers, $container);
+            $this->handleStateMachine($loaderHandlers, $container);
         }
         $container->setParameter('patch_manager.strict_mode', $config['strict_mode']);
     }
