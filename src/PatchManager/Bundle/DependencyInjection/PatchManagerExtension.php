@@ -27,7 +27,10 @@ class PatchManagerExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loaderHandlers = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/handlers'));
+        $loaderHandlers = new Loader\XmlFileLoader(
+            $container,
+            new FileLocator(__DIR__.'/../Resources/config/handlers')
+        );
         $loader->load('services.xml');
         if ($config['dispatch_events']) {
             $patchManagerDefinition = $container->getDefinition('patch_manager.patch_manager');

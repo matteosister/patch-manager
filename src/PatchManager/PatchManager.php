@@ -47,17 +47,23 @@ class PatchManager
     }
 
     /**
-     * @param Patchable $subject
+     * @param Patchable|array|\Traversable $subject a Patchable instance or a collection of instances
      * @throws HandlerNotFoundException
      * @return array
      */
-    public function handle(Patchable $subject)
+    public function handle($subject)
     {
         if ($this->strictMode && $this->operationMatcher->getMatchedOperations()->isEmpty()) {
             throw new HandlerNotFoundException($this->operationMatcher->getUnmatchedOperations());
         }
         foreach ($this->operationMatcher->getMatchedOperations() as $matchedPatchOperation) {
-            $this->doHandle($matchedPatchOperation, $subject);
+            if (is_array($subject) || $subject instanceof \Traversable) {
+                foreach ($subject as $s) {
+                    $this->doHandle($matchedPatchOperation, $s);
+                }
+            } else {
+                $this->doHandle($matchedPatchOperation, $subject);
+            }
         }
     }
 
@@ -67,7 +73,7 @@ class PatchManager
      */
     public function doHandle(MatchedPatchOperation $matchedPatchOperation, $subject)
     {
-        $event = new PatchManagerEvent($matchedPatchOperation);
+        $event = new PatchManagerEvent($matchedPatchOperation, $subject);
         $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_PRE);
         $matchedPatchOperation->process($subject);
         $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_POST);
