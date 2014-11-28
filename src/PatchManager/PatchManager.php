@@ -56,12 +56,23 @@ class PatchManager
         if ($this->strictMode && $this->operationMatcher->getMatchedOperations()->isEmpty()) {
             throw new HandlerNotFoundException($this->operationMatcher->getUnmatchedOperations());
         }
+        if (is_array($subject) || $subject instanceof \Traversable) {
+            $this->handleMany($subject);
+        } else {
+            foreach ($this->operationMatcher->getMatchedOperations() as $matchedPatchOperation) {
+                $this->doHandle($matchedPatchOperation, $subject);
+            }
+        }
+
+    }
+
+    /**
+     * @param array|\Traversable $subjects
+     */
+    private function handleMany($subjects)
+    {
         foreach ($this->operationMatcher->getMatchedOperations() as $matchedPatchOperation) {
-            if (is_array($subject) || $subject instanceof \Traversable) {
-                foreach ($subject as $s) {
-                    $this->doHandle($matchedPatchOperation, $s);
-                }
-            } else {
+            foreach ($subjects as $subject) {
                 $this->doHandle($matchedPatchOperation, $subject);
             }
         }
