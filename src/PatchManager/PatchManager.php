@@ -5,7 +5,6 @@ namespace PatchManager;
 use PatchManager\Event\PatchManagerEvent;
 use PatchManager\Event\PatchManagerEvents;
 use PatchManager\Exception\HandlerNotFoundException;
-use PatchManager\Exception\MissingOperationRequest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
