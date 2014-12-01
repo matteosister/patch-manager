@@ -58,7 +58,7 @@ class FiniteHandler implements PatchOperationHandler
     {
         $optionsResolver
             ->setRequired(array('transition'))
-            ->setOptional(array('check'))
+            ->setDefined(array('check'))
             ->setDefaults(array('check' => false));
     }
 }

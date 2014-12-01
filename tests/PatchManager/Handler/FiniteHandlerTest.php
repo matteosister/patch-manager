@@ -10,6 +10,7 @@ use PatchManager\OperationData;
 use PatchManager\Patchable;
 use PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FiniteHandlerTest extends PatchManagerTestCase
 {
@@ -89,6 +90,16 @@ class FiniteHandlerTest extends PatchManagerTestCase
             )
         );
         $this->assertEquals('s1', $patchable->getFiniteState());
+    }
+
+    public function test_configureOptions()
+    {
+        $or = new OptionsResolver();
+        $this->handler->configureOptions($or);
+        $this->assertContains('transition', $or->getDefinedOptions());
+        $this->assertContains('check', $or->getDefinedOptions());
+        $this->assertEquals(array('transition'), $or->getRequiredOptions());
+        $this->assertTrue($or->hasDefault('check'));
     }
 }
 
