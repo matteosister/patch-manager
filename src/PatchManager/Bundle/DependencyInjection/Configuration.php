@@ -19,8 +19,10 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('handlers')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('data')
+                            ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('entity_manager')->defaultValue('default')->end()
                                 ->scalarNode('doctrine')->defaultTrue()->end()

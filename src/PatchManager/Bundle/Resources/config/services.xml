@@ -11,7 +11,7 @@
         <service id="patch_manager.operation_matcher" public="false" class="PatchManager\OperationMatcher">
             <argument type="service" id="patch_manager.operations" />
         </service>
-        <service id="patch_manager.patch_manager" public="true" class="PatchManager\PatchManager">
+        <service id="patch_manager" public="true" class="PatchManager\PatchManager">
             <argument type="service" id="patch_manager.operation_matcher" />
             <argument>%patch_manager.strict_mode%</argument>
         </service>

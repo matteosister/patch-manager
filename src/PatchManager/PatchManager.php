@@ -82,7 +82,7 @@ class PatchManager
      * @param MatchedPatchOperation $matchedPatchOperation
      * @param $subject
      */
-    public function doHandle(MatchedPatchOperation $matchedPatchOperation, $subject)
+    protected function doHandle(MatchedPatchOperation $matchedPatchOperation, $subject)
     {
         $event = new PatchManagerEvent($matchedPatchOperation, $subject);
         $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_PRE);
@@ -97,7 +97,7 @@ class PatchManager
      * @param $opName
      * @param $type
      */
-    public function dispatchEvents(PatchManagerEvent $event, $opName, $type)
+    protected function dispatchEvents(PatchManagerEvent $event, $opName, $type)
     {
         if (! $this->eventDispatcherInterface) {
             return;

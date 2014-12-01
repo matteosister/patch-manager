@@ -33,14 +33,14 @@ class PatchManagerExtension extends Extension
         );
         $loader->load('services.xml');
         if ($config['dispatch_events']) {
-            $patchManagerDefinition = $container->getDefinition('patch_manager.patch_manager');
+            $patchManagerDefinition = $container->getDefinition('patch_manager');
             $patchManagerDefinition->addMethodCall(
                 'setEventDispatcherInterface',
                 array(new Reference('event_dispatcher'))
             );
         }
         if (! is_null($config['alias'])) {
-            $container->setAlias($config['alias'], 'patch_manager.patch_manager');
+            $container->setAlias($config['alias'], 'patch_manager');
         }
         if (array_key_exists('data', $config['handlers'])) {
             $this->handleData($config, $loaderHandlers, $container);
