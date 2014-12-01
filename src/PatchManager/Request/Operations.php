@@ -33,7 +33,7 @@ class Operations
      * @throws InvalidJsonRequestContent
      * @return array
      */
-    protected function parseJson($string)
+    private function parseJson($string)
     {
         $parsedContent = json_decode($string, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
