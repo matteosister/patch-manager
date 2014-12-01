@@ -19,7 +19,7 @@ class Operations
     /**
      * @param string $requestBody
      */
-    public function __construct($requestBody)
+    public function setRequestBody($requestBody)
     {
         $this->requestBody = $requestBody;
     }
