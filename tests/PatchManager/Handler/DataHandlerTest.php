@@ -16,6 +16,7 @@ class DataHandlerTest extends PatchManagerTestCase
 
     public function setUp()
     {
+        parent::setUp();
         $this->handler = new DataHandler();
     }
 

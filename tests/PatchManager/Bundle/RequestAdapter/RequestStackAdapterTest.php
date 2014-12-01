@@ -2,33 +2,26 @@
 
 namespace PatchManager\Bundle\RequestAdapter;
 
+use PatchManager\Request\Operations;
 use PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
 
 class RequestStackAdapterTest extends PatchManagerTestCase
 {
-    /**
-     * @var m\MockInterface
-     */
-    private $currentRequest;
-
-    /**
-     * @var RequestStackAdapter
-     */
-    private $adapter;
-
-    public function setUp()
-    {
-        $requestStack = m::mock('Symfony\Component\HttpFoundation\RequestStack');
-        $this->currentRequest = m::mock('Symfony\Component\HttpFoundation\Request');
-        $this->currentRequest->shouldReceive('isMethod')->with('PATCH')->andReturn(true)->byDefault();
-        $requestStack->shouldReceive('getCurrentRequest')->andReturn($this->currentRequest);
-
-        $this->adapter = new RequestStackAdapter($requestStack);
-    }
-
     public function test_call()
     {
+        $currentRequest = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $currentRequest->getContent()->willReturn('{"op":"data"}');
+        $requestStack = $this->prophesize('Symfony\Component\HttpFoundation\RequestStack');
+        $requestStack->getCurrentRequest()->willReturn($currentRequest->reveal());
+        $adapter = new RequestStackAdapter($requestStack->reveal());
 
+        $operations = new Operations();
+        $adapter->setRequestBody($operations);
+
+        $this->assertCount(1, $operations->all());
+
+        $first = $operations->all()->get(0);
+        $this->assertEquals('data', $first['op']);
     }
 } 

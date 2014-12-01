@@ -26,6 +26,7 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
 
     public function setUp()
     {
+        parent::setUp();
         $this->em = m::mock('Doctrine\ORM\EntityManagerInterface');
         $this->em->shouldReceive('getMetadataFactory->isTransient')->andReturn(false)->byDefault();
         $this->metadata = m::mock('Doctrine\Common\Persistence\Mapping\ClassMetadata');

@@ -30,6 +30,7 @@ class PatchManagerTest extends PatchManagerTestCase
 
     public function setUp()
     {
+        parent::setUp();
         $this->operationMatcher = m::mock('PatchManager\OperationMatcher');
         $this->operationMatcher->shouldReceive('getMatchedOperations')
             ->andReturn(new Sequence())->byDefault();

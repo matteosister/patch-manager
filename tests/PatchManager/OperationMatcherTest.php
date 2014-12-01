@@ -22,6 +22,7 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function setUp()
     {
+        parent::setUp();
         $operations = m::mock('PatchManager\Request\Operations');
         $this->ops = new Sequence();
         $this->ops->add(array('op' => 'data'));

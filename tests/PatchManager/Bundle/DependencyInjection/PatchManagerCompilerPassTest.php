@@ -17,6 +17,7 @@ class PatchManagerCompilerPassTest extends PatchManagerTestCase
 
     public function setUp()
     {
+        parent::setUp();
         $this->cb = m::mock('Symfony\Component\DependencyInjection\ContainerBuilder');
         $this->cb->shouldReceive('hasDefinition')->andReturn(true)->byDefault();
         $this->cb->shouldReceive('findTaggedServiceIds')->andReturn(array())->byDefault();

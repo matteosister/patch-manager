@@ -25,6 +25,7 @@ class FiniteHandlerTest extends PatchManagerTestCase
 
     public function setUp()
     {
+        parent::setUp();
         $this->sm = new StateMachine();
         // Define states
         $this->sm->addState(new State('s1', StateInterface::TYPE_INITIAL));

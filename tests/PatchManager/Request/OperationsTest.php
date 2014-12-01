@@ -13,19 +13,15 @@ class OperationsTest extends PatchManagerTestCase
      */
     public function test_request_with_invalid_json()
     {
-        $operations = new Operations('{"test": error}');
+        $operations = new Operations();
+        $operations->setRequestBody('{"test": error}');
         $operations->all();
     }
 
-    /*public function test_empty_sequence_for_requests_different_from_patch()
-    {
-        $this->currentRequest->shouldReceive('isMethod')->with('PATCH')->andReturn(false);
-        $this->assertEmpty($this->service->all());
-    }*/
-
     public function test_correct_operations_number_with_one_operation()
     {
-        $operations = new Operations('{"op": "data"}');
+        $operations = new Operations();
+        $operations->setRequestBody('{"op": "data"}');
         $this->assertCount(1, $operations->all());
         $op = $operations->all()->get(0);
         $this->assertEquals('data', $op['op']);
@@ -33,7 +29,8 @@ class OperationsTest extends PatchManagerTestCase
 
     public function test_correct_operations_number_with_multiple_operation()
     {
-        $operations = new Operations('[{"op": "data"},{"op": "data2"}]');
+        $operations = new Operations();
+        $operations->setRequestBody('[{"op": "data"},{"op": "data2"}]');
         $this->assertCount(2, $operations->all());
         $op1 = $operations->all()->get(0);
         $this->assertEquals('data', $op1['op']);
@@ -46,7 +43,8 @@ class OperationsTest extends PatchManagerTestCase
      */
     public function test_exeception_with_empty_request()
     {
-        $operations = new Operations('');
+        $operations = new Operations();
+        $operations->setRequestBody('');
         $operations->all();
     }
 
@@ -55,7 +53,8 @@ class OperationsTest extends PatchManagerTestCase
      */
     public function test_exeception_with_operation_without_op()
     {
-        $operations = new Operations('[{"op_wrong": "data"}]');
+        $operations = new Operations();
+        $operations->setRequestBody('[{"op_wrong": "data"}]');
         $operations->all();
     }
 
@@ -64,7 +63,8 @@ class OperationsTest extends PatchManagerTestCase
      */
     public function test_exeception_with_multiple_operation_without_op()
     {
-        $operations = new Operations('[{"op": "data"},{"op_wrong": "data"}]');
+        $operations = new Operations();
+        $operations->setRequestBody('[{"op": "data"},{"op_wrong": "data"}]');
         $operations->all();
     }
 }

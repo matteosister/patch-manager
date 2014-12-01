@@ -4,8 +4,9 @@ namespace PatchManager\Tests;
 
 use PatchManager\MatchedPatchOperation;
 use Mockery as m;
+use Prophecy\PhpUnit\ProphecyTestCase;
 
-abstract class PatchManagerTestCase extends \PHPUnit_Framework_TestCase
+abstract class PatchManagerTestCase extends ProphecyTestCase
 {
     protected function mockHandler($name = null)
     {
@@ -25,6 +26,7 @@ abstract class PatchManagerTestCase extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
+        parent::tearDown();
         m::close();
     }
 }
