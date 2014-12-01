@@ -6,23 +6,22 @@ use PatchManager\Exception\InvalidJsonRequestContent;
 use PatchManager\Exception\MissingOperationNameRequest;
 use PatchManager\Exception\MissingOperationRequest;
 use PhpCollection\Sequence;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class Operations
 {
     const OP_KEY_NAME = 'op';
 
     /**
-     * @var RequestStack
+     * @var string
      */
-    private $requestStack;
+    private $requestBody;
 
     /**
-     * @param RequestStack $requestStack
+     * @param string $requestBody
      */
-    public function __construct(RequestStack $requestStack)
+    public function __construct($requestBody)
     {
-        $this->requestStack = $requestStack;
+        $this->requestBody = $requestBody;
     }
 
     /**
@@ -61,11 +60,7 @@ class Operations
      */
     public function all()
     {
-        $currentRequest = $this->requestStack->getCurrentRequest();
-        if (! $currentRequest->isMethod('PATCH')) {
-            return new Sequence();
-        }
-        $operations =$this->parseJson($currentRequest->getContent());
+        $operations =$this->parseJson($this->requestBody);
         if (! is_array($operations)) {
             throw new MissingOperationRequest();
         }
