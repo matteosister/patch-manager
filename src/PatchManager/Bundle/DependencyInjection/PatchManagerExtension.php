@@ -32,6 +32,19 @@ class PatchManagerExtension extends Extension
             new FileLocator(__DIR__.'/../Resources/config/handlers')
         );
         $loader->load('services.xml');
+        $this->handleGenericConfig($config, $container, $loaderHandlers);
+    }
+
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     * @param Loader\XmlFileLoader $loaderHandlers
+     */
+    private function handleGenericConfig(
+        array $config,
+        ContainerBuilder $container,
+        Loader\XmlFileLoader $loaderHandlers
+    ) {
         if ($config['dispatch_events']) {
             $patchManagerDefinition = $container->getDefinition('patch_manager');
             $patchManagerDefinition->addMethodCall(
