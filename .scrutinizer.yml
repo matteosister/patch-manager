@@ -8,4 +8,4 @@ filter:
     excluded_paths:
         - 'spec/*'
         - 'tests/*'
-        - 'Manager/*'
+        - 'examples/*'
