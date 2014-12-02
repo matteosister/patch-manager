@@ -25,6 +25,7 @@
                 <directory>vendor</directory>
                 <directory>tests</directory>
                 <directory>bin</directory>
+                <directory>examples</directory>
             </exclude>
         </whitelist>
     </filter>
