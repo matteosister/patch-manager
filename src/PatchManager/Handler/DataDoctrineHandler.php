@@ -4,7 +4,6 @@ namespace PatchManager\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PatchManager\OperationData;
-use PatchManager\Patchable;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Doctrine\Common\Persistence\Proxy;
 

@@ -4,7 +4,6 @@ namespace PatchManager\Handler;
 
 use Finite\Factory\FactoryInterface;
 use PatchManager\OperationData;
-use PatchManager\Patchable;
 use PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

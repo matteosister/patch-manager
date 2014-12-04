@@ -3,7 +3,6 @@
 namespace PatchManager\Handler;
 
 use PatchManager\OperationData;
-use PatchManager\Patchable;
 use PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
