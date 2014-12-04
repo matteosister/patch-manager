@@ -101,7 +101,7 @@ class PatchManager
         if (! $this->eventDispatcherInterface) {
             return;
         }
-        $this->eventDispatcherInterface->dispatch(PatchManagerEvents::PATCH_MANAGER_POST, $event);
+        $this->eventDispatcherInterface->dispatch($type, $event);
         $this->eventDispatcherInterface->dispatch(
             sprintf('%s.%s', $type, $opName),
             $event
