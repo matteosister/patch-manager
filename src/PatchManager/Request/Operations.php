@@ -28,7 +28,7 @@ class Operations
      * directly from stack overflow: http://stackoverflow.com/a/6041773
      * check if a string is valid json, and returns the parsed content
      *
-     * @param $string
+     * @param string $string
      *
      * @throws InvalidJsonRequestContent
      * @return array
@@ -76,7 +76,7 @@ class Operations
 
     /**
      * @param string $key
-     * @return callable
+     * @return \Closure
      */
     private function operationWithKey($key = self::OP_KEY_NAME)
     {

@@ -93,7 +93,7 @@ class PatchManager
      * dispatch events if the eventDispatcher is present
      *
      * @param PatchManagerEvent $event
-     * @param $opName
+     * @param string $opName
      * @param $type
      */
     protected function dispatchEvents(PatchManagerEvent $event, $opName, $type)

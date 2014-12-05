@@ -7,8 +7,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 interface PatchOperationHandler
 {
     /**
-     * @param mixed $subject
+     * @param Patchable $subject
      * @param OperationData $operationData
+     * @return void
      */
     public function handle($subject, OperationData $operationData);
 
@@ -25,6 +26,7 @@ interface PatchOperationHandler
      * possible options
      *
      * @param OptionsResolver $optionsResolver
+     * @return void
      */
     public function configureOptions(OptionsResolver $optionsResolver);
 }

@@ -11,6 +11,7 @@ interface Adapter
 {
     /**
      * @param Operations $operations
+     * @return void
      */
     public function setRequestBody(Operations $operations);
 }
