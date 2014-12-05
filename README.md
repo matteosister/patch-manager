@@ -19,7 +19,7 @@ Install with composer
 
 The idea for this library comes from this blog post: [Please. Don't Patch Like An Idiot.](http://williamdurand.fr/2014/02/14/please-do-not-patch-like-an-idiot/) by [William Durand](https://github.com/willdurand)
 
-It lets you patch resources in an **expressive way**
+> It lets you patch resources in an *expressive way*
 
 **PATCH /users/1**
 ``` json
@@ -33,7 +33,7 @@ And let you **patch entire collections** with multiple operations
 [{ "op": "set_as_read" }, { "op": "return_to_library", "address": "221 B Baker St, London, England"}]
 ```
 
-It comes with a **Symfony bundle**
+> it includes also a **Symfony bundle**
 
 Still interested? [Head over to the wiki...](https://github.com/matteosister/patch-manager/wiki) for documentation
 
