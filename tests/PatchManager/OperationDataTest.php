@@ -43,12 +43,6 @@ class OperationDataTest extends PatchManagerTestCase
         $this->assertSame('2', $od->getData()->get('test2')->getOrElse(null));
     }
 
-    public function test_containsKeys()
-    {
-        $od = new OperationData(array('op' => 'data', 'test' => 1, 'test2' => '2'));
-        $this->assertTrue($od->containsKeys(array()));
-    }
-
     /**
      * @param $expected
      * @param $requiredKeys

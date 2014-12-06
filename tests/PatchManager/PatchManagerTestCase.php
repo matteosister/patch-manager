@@ -2,18 +2,20 @@
 
 namespace PatchManager\Tests;
 
-use PatchManager\Handler\PatchOperationHandler;
 use PatchManager\MatchedPatchOperation;
 use Mockery as m;
+use Prophecy\PhpUnit\ProphecyTestCase;
 
-abstract class PatchManagerTestCase extends \PHPUnit_Framework_TestCase
+abstract class PatchManagerTestCase extends ProphecyTestCase
 {
     protected function mockHandler($name = null)
     {
-        $handler = m::mock('PatchManager\Handler\PatchOperationHandler');
+        $handler = m::mock('PatchManager\PatchOperationHandler');
         if (! is_null($name)) {
             $handler->shouldReceive('getName')->andReturn($name)->byDefault();
         }
+        $handler->shouldReceive('getRequiredKeys')->andReturn(array())->byDefault();
+        $handler->shouldReceive('configureOptions')->andReturn(array())->byDefault();
         return $handler;
     }
 
@@ -24,6 +26,7 @@ abstract class PatchManagerTestCase extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
+        parent::tearDown();
         m::close();
     }
 }

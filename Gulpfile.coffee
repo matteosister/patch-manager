@@ -12,5 +12,4 @@ gulp.task 'watch', (event) ->
     watcher = gulp.watch ['**/*.php'], ['phpunit']
     watcher.on 'change', (event) ->
 
-
 gulp.task 'default', ['watch']

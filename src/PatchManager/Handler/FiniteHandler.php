@@ -2,21 +2,24 @@
 
 namespace PatchManager\Handler;
 
+use Finite\Factory\FactoryInterface;
 use PatchManager\OperationData;
 use PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-class DataHandler implements PatchOperationHandler
+class FiniteHandler implements PatchOperationHandler
 {
-    protected $magicCall = false;
+    /**
+     * @var FactoryInterface
+     */
+    private $factoryInterface;
 
     /**
-     * @param mixed $magicCall
+     * @param FactoryInterface $factoryInterface
      */
-    public function useMagicCall($magicCall)
+    public function __construct(FactoryInterface $factoryInterface)
     {
-        $this->magicCall = $magicCall;
+        $this->factoryInterface = $factoryInterface;
     }
 
     /**
@@ -25,12 +28,12 @@ class DataHandler implements PatchOperationHandler
      */
     public function handle($subject, OperationData $operationData)
     {
-        $pa = new PropertyAccessor($this->magicCall);
-        $pa->setValue(
-            $subject,
-            $operationData->get('property')->get(),
-            $operationData->get('value')->get()
-        );
+        $sm = $this->factoryInterface->get($subject);
+        $transition = $operationData->get('transition')->get();
+        if ($operationData->get('check')->get() && ! $sm->can($transition)) {
+            return;
+        }
+        $sm->apply($transition);
     }
 
     /**
@@ -40,7 +43,7 @@ class DataHandler implements PatchOperationHandler
      */
     public function getName()
     {
-        return 'data';
+        return 'sm';
     }
 
     /**
@@ -52,6 +55,9 @@ class DataHandler implements PatchOperationHandler
      */
     public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $optionsResolver->setRequired(array('property', 'value'));
+        $optionsResolver
+            ->setRequired(array('transition'))
+            ->setDefined(array('check'))
+            ->setDefaults(array('check' => false));
     }
 }

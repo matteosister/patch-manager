@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="patch_manager.request_adapter" class="PatchManager\Bundle\RequestAdapter\RequestStackAdapter">
+            <argument type="service" id="request_stack" />
+        </service>
+        <service id="patch_manager.operations" public="false" class="PatchManager\Request\Operations">
+            <configurator service="patch_manager.request_adapter" method="setRequestBody" />
+        </service>
+        <service id="patch_manager.operation_matcher" public="false" class="PatchManager\OperationMatcher">
+            <argument type="service" id="patch_manager.operations" />
+        </service>
+        <service id="patch_manager" public="true" class="PatchManager\PatchManager">
+            <argument type="service" id="patch_manager.operation_matcher" />
+            <argument>%patch_manager.strict_mode%</argument>
+        </service>
+    </services>
+</container>

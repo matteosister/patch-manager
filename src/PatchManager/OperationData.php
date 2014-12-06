@@ -9,6 +9,11 @@ use PhpCollection\Sequence;
 
 class OperationData extends Map
 {
+    public function __construct(array $elements = array())
+    {
+        parent::__construct($elements);
+    }
+
     /**
      * @return \PhpOption\None|\PhpOption\Some
      */
@@ -27,20 +32,6 @@ class OperationData extends Map
             $operationData->remove(Operations::OP_KEY_NAME);
         }
         return $operationData;
-    }
-
-    /**
-     * @param array $keys
-     * @return bool
-     */
-    public function containsKeys(array $keys)
-    {
-        foreach ($keys as $key) {
-            if (! $this->containsKey($key)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace PatchManager;
 
-use PatchManager\Handler\PatchOperationHandler;
 use PatchManager\Request\Operations;
 use PhpCollection\Sequence;
 
@@ -48,9 +47,9 @@ class OperationMatcher
             ->all()
             ->foldLeft(
                 new Sequence(),
-                function (Sequence $matchedOperations, OperationData $operationData) use ($handlers) {
-                    $handler = $handlers->find(function(PatchOperationHandler $handler) use ($operationData) {
-                        return $operationData->get(Operations::OP_KEY_NAME)->getOrElse(null) === $handler->getName();
+                function (Sequence $matchedOperations, array $operationData) use ($handlers) {
+                    $handler = $handlers->find(function (PatchOperationHandler $handler) use ($operationData) {
+                        return $operationData[Operations::OP_KEY_NAME] === $handler->getName();
                     });
                     if ($handler->isDefined()) {
                         $matchedOperations->add(MatchedPatchOperation::create($operationData, $handler->get()));
@@ -58,5 +57,23 @@ class OperationMatcher
                     return $matchedOperations;
                 }
             );
+    }
+
+    /**
+     * @return Sequence
+     * @throws Exception\MissingOperationNameRequest
+     * @throws Exception\MissingOperationRequest
+     */
+    public function getUnmatchedOperations()
+    {
+        $matchedOperations = $this->getMatchedOperations();
+        return $this->operations
+            ->all()
+            ->filter(function (array $operationData) use ($matchedOperations) {
+                return $operationData !== $matchedOperations;
+            })
+            ->map(function (array $operationData) {
+                return $operationData['op'];
+            });
     }
 }

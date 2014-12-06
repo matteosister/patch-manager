@@ -5,7 +5,6 @@ namespace PatchManager\Tests;
 use PatchManager\MatchedPatchOperation;
 use PatchManager\OperationData;
 use PatchManager\OperationMatcher;
-use PatchManager\Request\Operations;
 use Mockery as m;
 use PhpCollection\Sequence;
 
@@ -23,9 +22,10 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function setUp()
     {
+        parent::setUp();
         $operations = m::mock('PatchManager\Request\Operations');
         $this->ops = new Sequence();
-        $this->ops->add(new OperationData(array('op' => 'data')));
+        $this->ops->add(array('op' => 'data'));
         $operations->shouldReceive('all')->andReturn($this->ops)->byDefault();
         $this->matcher = new OperationMatcher($operations);
     }
@@ -56,7 +56,7 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function test_getMatchedOperations_with_multiple_operations_matching()
     {
-        $this->ops->add(new OperationData(array('op' => 'data')));
+        $this->ops->add(array('op' => 'data'));
         $this->matcher->addHandler($this->mockHandler('data'));
         $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
         $mpos = $this->matcher->getMatchedOperations();
@@ -65,7 +65,7 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function test_getMatchedOperations_with_multiple_operations_matching_multiple_handlers()
     {
-        $this->ops->add(new OperationData(array('op' => 'method')));
+        $this->ops->add(array('op' => 'method'));
         $this->matcher->addHandler($this->mockHandler('data'));
         $this->matcher->addHandler($this->mockHandler('method'));
         $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
@@ -75,6 +75,15 @@ class OperationMatcherTest extends PatchManagerTestCase
             'PatchManager\MatchedPatchOperation',
             $mpos->find($this->handlerNameMatcher('data'))->get()
         );
+    }
+
+    public function test_getUnmatchedOperations_with_handler_not_matching()
+    {
+        $this->matcher->addHandler($this->mockHandler('method'));
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
+        $this->assertCount(1, $this->matcher->getUnmatchedOperations());
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getUnmatchedOperations());
+        $this->assertEquals(new Sequence(array('data')), $this->matcher->getUnmatchedOperations());
     }
 
     private function handlerNameMatcher($name)
