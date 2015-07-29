@@ -1,10 +1,10 @@
 <?php
 
-namespace PatchManager\Tests;
+namespace Cypress\PatchManager\Tests;
 
-use PatchManager\MatchedPatchOperation;
-use PatchManager\OperationData;
-use PatchManager\OperationMatcher;
+use Cypress\PatchManager\MatchedPatchOperation;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\OperationMatcher;
 use Mockery as m;
 use PhpCollection\Sequence;
 

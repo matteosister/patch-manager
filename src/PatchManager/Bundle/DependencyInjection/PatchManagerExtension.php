@@ -1,6 +1,6 @@
 <?php
 
-namespace PatchManager\Bundle\DependencyInjection;
+namespace Cypress\PatchManager\Bundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

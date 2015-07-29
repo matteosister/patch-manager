@@ -1,13 +1,14 @@
 <?php
 
-namespace PatchManager\Tests;
+namespace Cypress\PatchManager\Tests;
 
-use PatchManager\Handler\DataHandler;
-use PatchManager\MatchedPatchOperation;
-use PatchManager\OperationData;
-use PatchManager\OperationMatcher;
-use PatchManager\Patchable as IPatchable;
-use PatchManager\PatchManager;
+use Cypress\PatchManager\Exception\HandlerNotFoundException;
+use Cypress\PatchManager\Handler\DataHandler;
+use Cypress\PatchManager\MatchedPatchOperation;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\OperationMatcher;
+use Cypress\PatchManager\Patchable as IPatchable;
+use Cypress\PatchManager\PatchManager;
 use PhpCollection\Sequence;
 use Mockery as m;
 
@@ -54,7 +55,7 @@ class PatchManagerTest extends PatchManagerTestCase
     }
 
     /**
-     * @expectedException \PatchManager\Exception\HandlerNotFoundException
+     * @expectedException HandlerNotFoundException
      * @expectedExceptionMessage 'test'
      */
     public function test_strict_mode()
@@ -65,7 +66,7 @@ class PatchManagerTest extends PatchManagerTestCase
     }
 
     /**
-     * @expectedException \PatchManager\Exception\HandlerNotFoundException
+     * @expectedException HandlerNotFoundException
      * @expectedExceptionMessage 'test, test2'
      */
     public function test_strict_mode_multiple_ops()

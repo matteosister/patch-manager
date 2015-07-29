@@ -1,15 +1,18 @@
 <?php
 
-namespace PatchManager\Tests\Request;
+namespace Cypress\PatchManager\Tests\Request;
 
-use PatchManager\Tests\PatchManagerTestCase;
-use PatchManager\Request\Operations;
+use Cypress\PatchManager\Exception\InvalidJsonRequestContent;
+use Cypress\PatchManager\Exception\MissingOperationNameRequest;
+use Cypress\PatchManager\Exception\MissingOperationRequest;
+use Cypress\PatchManager\Tests\PatchManagerTestCase;
+use Cypress\PatchManager\Request\Operations;
 use Mockery as m;
 
 class OperationsTest extends PatchManagerTestCase
 {
     /**
-     * @expectedException \PatchManager\Exception\InvalidJsonRequestContent
+     * @expectedException InvalidJsonRequestContent
      */
     public function test_request_with_invalid_json()
     {
@@ -39,7 +42,7 @@ class OperationsTest extends PatchManagerTestCase
     }
 
     /**
-     * @expectedException \PatchManager\Exception\MissingOperationRequest
+     * @expectedException MissingOperationRequest
      */
     public function test_exeception_with_empty_request()
     {
@@ -49,7 +52,7 @@ class OperationsTest extends PatchManagerTestCase
     }
 
     /**
-     * @expectedException \PatchManager\Exception\MissingOperationNameRequest
+     * @expectedException MissingOperationNameRequest
      */
     public function test_exeception_with_operation_without_op()
     {
@@ -59,7 +62,7 @@ class OperationsTest extends PatchManagerTestCase
     }
 
     /**
-     * @expectedException \PatchManager\Exception\MissingOperationNameRequest
+     * @expectedException MissingOperationNameRequest
      */
     public function test_exeception_with_multiple_operation_without_op()
     {

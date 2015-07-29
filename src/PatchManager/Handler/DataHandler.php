@@ -1,9 +1,9 @@
 <?php
 
-namespace PatchManager\Handler;
+namespace Cypress\PatchManager\Handler;
 
-use PatchManager\OperationData;
-use PatchManager\PatchOperationHandler;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 

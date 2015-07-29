@@ -1,10 +1,10 @@
 <?php
 
-namespace PatchManager\Handler;
+namespace Cypress\PatchManager\Handler;
 
 use Finite\Factory\FactoryInterface;
-use PatchManager\OperationData;
-use PatchManager\PatchOperationHandler;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FiniteHandler implements PatchOperationHandler

@@ -1,10 +1,10 @@
 <?php
 
-namespace PatchManager\Handler;
+namespace Cypress\PatchManager\Handler;
 
-use PatchManager\OperationData;
-use PatchManager\Patchable;
-use PatchManager\Tests\PatchManagerTestCase;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\Patchable;
+use Cypress\PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
 
 class DataDoctrineHandlerTest extends PatchManagerTestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace PatchManager\Exception;
+namespace Cypress\PatchManager\Exception;
 
 use Exception;
 

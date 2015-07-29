@@ -1,8 +1,8 @@
 <?php
 
-namespace PatchManager\Bundle\DependencyInjection;
+namespace Cypress\PatchManager\Tests\Bundle\DependencyInjection;
 
-use PatchManager\Tests\PatchManagerTestCase;
+use Cypress\PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
 use Symfony\Component\DependencyInjection\Reference;
 

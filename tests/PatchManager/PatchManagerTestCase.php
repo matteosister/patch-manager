@@ -1,8 +1,8 @@
 <?php
 
-namespace PatchManager\Tests;
+namespace Cypress\PatchManager\Tests;
 
-use PatchManager\MatchedPatchOperation;
+use Cypress\PatchManager\MatchedPatchOperation;
 use Mockery as m;
 use Prophecy\PhpUnit\ProphecyTestCase;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace PatchManager;
+namespace Cypress\PatchManager;
 
-use PatchManager\Event\PatchManagerEvent;
-use PatchManager\Event\PatchManagerEvents;
-use PatchManager\Exception\HandlerNotFoundException;
+use Cypress\PatchManager\Event\PatchManagerEvent;
+use Cypress\PatchManager\Event\PatchManagerEvents;
+use Cypress\PatchManager\Exception\HandlerNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
