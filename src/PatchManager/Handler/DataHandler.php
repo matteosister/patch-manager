@@ -54,4 +54,15 @@ class DataHandler implements PatchOperationHandler
     {
         $optionsResolver->setRequired(array('property', 'value'));
     }
+
+    /**
+     * wether the handler is able to handle the given subject
+     *
+     * @param $subject
+     * @return bool
+     */
+    public function canHandle($subject)
+    {
+        return true;
+    }
 }
