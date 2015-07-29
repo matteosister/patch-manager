@@ -32,7 +32,7 @@ class PatchManagerTest extends PatchManagerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->operationMatcher = m::mock('PatchManager\OperationMatcher');
+        $this->operationMatcher = m::mock('Cypress\PatchManager\OperationMatcher');
         $this->operationMatcher->shouldReceive('getMatchedOperations')
             ->andReturn(new Sequence())->byDefault();
         $this->operationMatcher->shouldReceive('getUnmatchedOperations')
@@ -55,7 +55,7 @@ class PatchManagerTest extends PatchManagerTestCase
     }
 
     /**
-     * @expectedException HandlerNotFoundException
+     * @expectedException \Cypress\PatchManager\Exception\HandlerNotFoundException
      * @expectedExceptionMessage 'test'
      */
     public function test_strict_mode()
@@ -66,7 +66,7 @@ class PatchManagerTest extends PatchManagerTestCase
     }
 
     /**
-     * @expectedException HandlerNotFoundException
+     * @expectedException \Cypress\PatchManager\Exception\HandlerNotFoundException
      * @expectedExceptionMessage 'test, test2'
      */
     public function test_strict_mode_multiple_ops()

@@ -2,6 +2,7 @@
 
 namespace Cypress\PatchManager\Tests\Bundle\DependencyInjection;
 
+use Cypress\PatchManager\Bundle\DependencyInjection\PatchManagerCompilerPass;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
 use Symfony\Component\DependencyInjection\Reference;

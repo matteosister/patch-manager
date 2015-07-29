@@ -34,7 +34,7 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
         $this->metadata->shouldReceive('getAssociationTargetClass')->andReturn('TestClass');
         $this->metadata->shouldReceive('getTypeOfField')->andReturnNull()->byDefault();
         $this->em->shouldReceive('getMetadataFactory->getMetadataFor')
-            ->with('PatchManager\Handler\DataDoctrineSubject')
+            ->with('Cypress\PatchManager\Handler\DataDoctrineSubject')
             ->andReturn($this->metadata);
         $this->handler = new DataDoctrineHandler($this->em);
     }

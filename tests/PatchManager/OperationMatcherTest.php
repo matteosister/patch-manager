@@ -23,7 +23,7 @@ class OperationMatcherTest extends PatchManagerTestCase
     public function setUp()
     {
         parent::setUp();
-        $operations = m::mock('PatchManager\Request\Operations');
+        $operations = m::mock('Cypress\PatchManager\Request\Operations');
         $this->ops = new Sequence();
         $this->ops->add(array('op' => 'data'));
         $operations->shouldReceive('all')->andReturn($this->ops)->byDefault();
@@ -49,7 +49,7 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->assertCount(1, $this->matcher->getMatchedOperations());
         $mpos = $this->matcher->getMatchedOperations();
         $this->assertInstanceOf(
-            'PatchManager\MatchedPatchOperation',
+            'Cypress\PatchManager\MatchedPatchOperation',
             $mpos->find($this->handlerNameMatcher('data'))->get()
         );
     }
@@ -72,7 +72,7 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->assertCount(2, $this->matcher->getMatchedOperations());
         $mpos = $this->matcher->getMatchedOperations();
         $this->assertInstanceOf(
-            'PatchManager\MatchedPatchOperation',
+            'Cypress\PatchManager\MatchedPatchOperation',
             $mpos->find($this->handlerNameMatcher('data'))->get()
         );
     }

@@ -10,7 +10,7 @@ abstract class PatchManagerTestCase extends ProphecyTestCase
 {
     protected function mockHandler($name = null)
     {
-        $handler = m::mock('PatchManager\PatchOperationHandler');
+        $handler = m::mock('Cypress\PatchManager\PatchOperationHandler');
         if (! is_null($name)) {
             $handler->shouldReceive('getName')->andReturn($name)->byDefault();
         }
