@@ -33,7 +33,7 @@ interface PatchOperationHandler
     public function configureOptions(OptionsResolver $optionsResolver);
 
     /**
-     * wether the handler is able to handle the given subject
+     * whether the handler is able to handle the given subject
      *
      * @param $subject
      * @return bool
