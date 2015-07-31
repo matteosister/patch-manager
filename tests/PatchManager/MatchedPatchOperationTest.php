@@ -1,9 +1,9 @@
 <?php
 
-namespace PatchManager\Tests;
+namespace Cypress\PatchManager\Tests;
 
-use PatchManager\MatchedPatchOperation;
-use PatchManager\OperationData;
+use Cypress\PatchManager\MatchedPatchOperation;
+use Cypress\PatchManager\OperationData;
 
 class MatchedPatchOperationTest extends PatchManagerTestCase
 {
@@ -23,7 +23,7 @@ class MatchedPatchOperationTest extends PatchManagerTestCase
     }
 }
 
-class Patchable implements \PatchManager\Patchable
+class Patchable implements \Cypress\PatchManager\Patchable
 {
     private $a = 1;
 }

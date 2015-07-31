@@ -1,10 +1,10 @@
 <?php
 
-namespace PatchManager\Handler;
+namespace Cypress\PatchManager\Handler;
 
 use Finite\Factory\FactoryInterface;
-use PatchManager\OperationData;
-use PatchManager\PatchOperationHandler;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FiniteHandler implements PatchOperationHandler
@@ -59,5 +59,16 @@ class FiniteHandler implements PatchOperationHandler
             ->setRequired(array('transition'))
             ->setDefined(array('check'))
             ->setDefaults(array('check' => false));
+    }
+
+    /**
+     * wether the handler is able to handle the given subject
+     *
+     * @param $subject
+     * @return bool
+     */
+    public function canHandle($subject)
+    {
+        return true;
     }
 }

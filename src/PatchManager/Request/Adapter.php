@@ -1,6 +1,6 @@
 <?php
 
-namespace PatchManager\Request;
+namespace Cypress\PatchManager\Request;
 
 /**
  * Interface Adapter

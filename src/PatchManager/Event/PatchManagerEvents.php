@@ -1,6 +1,6 @@
 <?php
 
-namespace PatchManager\Event;
+namespace Cypress\PatchManager\Event;
 
 final class PatchManagerEvents
 {

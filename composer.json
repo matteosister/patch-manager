@@ -22,8 +22,8 @@
     },
     "autoload": {
         "psr-4": {
-            "PatchManager\\": "src/PatchManager/",
-            "PatchManager\\Tests\\": "tests/PatchManager/"
+            "Cypress\\PatchManager\\": "src/PatchManager/",
+            "Cypress\\PatchManager\\Tests\\": "tests/PatchManager/"
         }
     },
     "license": "LGPL-3.0+",

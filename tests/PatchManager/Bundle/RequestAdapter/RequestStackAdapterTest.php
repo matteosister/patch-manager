@@ -1,9 +1,9 @@
 <?php
 
-namespace PatchManager\Bundle\RequestAdapter;
+namespace Cypress\PatchManager\Bundle\RequestAdapter;
 
-use PatchManager\Request\Operations;
-use PatchManager\Tests\PatchManagerTestCase;
+use Cypress\PatchManager\Request\Operations;
+use Cypress\PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
 
 class RequestStackAdapterTest extends PatchManagerTestCase

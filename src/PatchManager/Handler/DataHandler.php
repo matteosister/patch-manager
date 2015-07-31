@@ -1,9 +1,9 @@
 <?php
 
-namespace PatchManager\Handler;
+namespace Cypress\PatchManager\Handler;
 
-use PatchManager\OperationData;
-use PatchManager\PatchOperationHandler;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -53,5 +53,16 @@ class DataHandler implements PatchOperationHandler
     public function configureOptions(OptionsResolver $optionsResolver)
     {
         $optionsResolver->setRequired(array('property', 'value'));
+    }
+
+    /**
+     * wether the handler is able to handle the given subject
+     *
+     * @param $subject
+     * @return bool
+     */
+    public function canHandle($subject)
+    {
+        return true;
     }
 }

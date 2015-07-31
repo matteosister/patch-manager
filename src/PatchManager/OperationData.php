@@ -1,9 +1,9 @@
 <?php
 
 
-namespace PatchManager;
+namespace Cypress\PatchManager;
 
-use PatchManager\Request\Operations;
+use Cypress\PatchManager\Request\Operations;
 use PhpCollection\Map;
 use PhpCollection\Sequence;
 
