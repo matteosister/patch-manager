@@ -1,9 +1,9 @@
 <?php
 
-namespace PatchManager\Bundle\RequestAdapter;
+namespace Cypress\PatchManager\Bundle\RequestAdapter;
 
-use PatchManager\Request\Adapter;
-use PatchManager\Request\Operations;
+use Cypress\PatchManager\Request\Adapter;
+use Cypress\PatchManager\Request\Operations;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackAdapter implements Adapter

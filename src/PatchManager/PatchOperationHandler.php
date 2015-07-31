@@ -1,6 +1,6 @@
 <?php
 
-namespace PatchManager;
+namespace Cypress\PatchManager;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,4 +31,12 @@ interface PatchOperationHandler
      * @return void
      */
     public function configureOptions(OptionsResolver $optionsResolver);
+
+    /**
+     * whether the handler is able to handle the given subject
+     *
+     * @param $subject
+     * @return bool
+     */
+    public function canHandle($subject);
 }

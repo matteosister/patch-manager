@@ -1,14 +1,14 @@
 <?php
 
-namespace PatchManager\Handler;
+namespace Cypress\PatchManager\Handler;
 
 use Finite\State\State;
 use Finite\State\StateInterface;
 use Finite\StatefulInterface;
 use Finite\StateMachine\StateMachine;
-use PatchManager\OperationData;
-use PatchManager\Patchable;
-use PatchManager\Tests\PatchManagerTestCase;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\Patchable;
+use Cypress\PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

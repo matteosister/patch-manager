@@ -1,6 +1,6 @@
 <?php
 
-namespace PatchManager;
+namespace Cypress\PatchManager;
 
 interface Patchable
 {

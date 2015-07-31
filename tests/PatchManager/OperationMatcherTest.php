@@ -1,10 +1,10 @@
 <?php
 
-namespace PatchManager\Tests;
+namespace Cypress\PatchManager\Tests;
 
-use PatchManager\MatchedPatchOperation;
-use PatchManager\OperationData;
-use PatchManager\OperationMatcher;
+use Cypress\PatchManager\MatchedPatchOperation;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\OperationMatcher;
 use Mockery as m;
 use PhpCollection\Sequence;
 
@@ -23,7 +23,7 @@ class OperationMatcherTest extends PatchManagerTestCase
     public function setUp()
     {
         parent::setUp();
-        $operations = m::mock('PatchManager\Request\Operations');
+        $operations = m::mock('Cypress\PatchManager\Request\Operations');
         $this->ops = new Sequence();
         $this->ops->add(array('op' => 'data'));
         $operations->shouldReceive('all')->andReturn($this->ops)->byDefault();
@@ -32,24 +32,24 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function test_getMatchedOperations_without_handlers()
     {
-        $this->assertEquals(new Sequence(), $this->matcher->getMatchedOperations());
+        $this->assertEquals(new Sequence(), $this->matcher->getMatchedOperations('test'));
     }
 
     public function test_getMatchedOperations_with_handler_not_matching()
     {
         $this->matcher->addHandler($this->mockHandler('method'));
-        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
-        $this->assertCount(0, $this->matcher->getMatchedOperations());
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations('test'));
+        $this->assertCount(0, $this->matcher->getMatchedOperations('test'));
     }
 
     public function test_getMatchedOperations_with_matching_handler()
     {
         $this->matcher->addHandler($this->mockHandler('data'));
-        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
-        $this->assertCount(1, $this->matcher->getMatchedOperations());
-        $mpos = $this->matcher->getMatchedOperations();
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations('test'));
+        $this->assertCount(1, $this->matcher->getMatchedOperations('test'));
+        $mpos = $this->matcher->getMatchedOperations('test');
         $this->assertInstanceOf(
-            'PatchManager\MatchedPatchOperation',
+            'Cypress\PatchManager\MatchedPatchOperation',
             $mpos->find($this->handlerNameMatcher('data'))->get()
         );
     }
@@ -58,8 +58,8 @@ class OperationMatcherTest extends PatchManagerTestCase
     {
         $this->ops->add(array('op' => 'data'));
         $this->matcher->addHandler($this->mockHandler('data'));
-        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
-        $mpos = $this->matcher->getMatchedOperations();
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations('test'));
+        $mpos = $this->matcher->getMatchedOperations('test');
         $this->assertCount(2, $mpos->filter($this->handlerNameMatcher('data')));
     }
 
@@ -68,11 +68,11 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->ops->add(array('op' => 'method'));
         $this->matcher->addHandler($this->mockHandler('data'));
         $this->matcher->addHandler($this->mockHandler('method'));
-        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
-        $this->assertCount(2, $this->matcher->getMatchedOperations());
-        $mpos = $this->matcher->getMatchedOperations();
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations('test'));
+        $this->assertCount(2, $this->matcher->getMatchedOperations('test'));
+        $mpos = $this->matcher->getMatchedOperations('test');
         $this->assertInstanceOf(
-            'PatchManager\MatchedPatchOperation',
+            'Cypress\PatchManager\MatchedPatchOperation',
             $mpos->find($this->handlerNameMatcher('data'))->get()
         );
     }
@@ -80,10 +80,21 @@ class OperationMatcherTest extends PatchManagerTestCase
     public function test_getUnmatchedOperations_with_handler_not_matching()
     {
         $this->matcher->addHandler($this->mockHandler('method'));
-        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations());
-        $this->assertCount(1, $this->matcher->getUnmatchedOperations());
-        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getUnmatchedOperations());
-        $this->assertEquals(new Sequence(array('data')), $this->matcher->getUnmatchedOperations());
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations('test'));
+        $this->assertCount(1, $this->matcher->getUnmatchedOperations('test'));
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getUnmatchedOperations('test'));
+        $this->assertEquals(new Sequence(array('data')), $this->matcher->getUnmatchedOperations('test'));
+    }
+
+    public function test_handler_that_responds_false_to_canHandle()
+    {
+        $this->matcher->addHandler($this->mockHandler('data', false));
+        $this->assertCount(0, $this->matcher->getMatchedOperations('test'));
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations('test'));
+        $this->assertEquals(new Sequence(), $this->matcher->getMatchedOperations('test'));
+        $this->assertCount(1, $this->matcher->getUnmatchedOperations('test'));
+        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getUnmatchedOperations('test'));
+        $this->assertEquals(new Sequence(array('data')), $this->matcher->getUnmatchedOperations('test'));
     }
 
     private function handlerNameMatcher($name)

@@ -1,10 +1,10 @@
 <?php
 
-namespace PatchManager;
+namespace Cypress\PatchManager;
 
-use PatchManager\Event\PatchManagerEvent;
-use PatchManager\Event\PatchManagerEvents;
-use PatchManager\Exception\HandlerNotFoundException;
+use Cypress\PatchManager\Event\PatchManagerEvent;
+use Cypress\PatchManager\Event\PatchManagerEvents;
+use Cypress\PatchManager\Exception\HandlerNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -52,13 +52,14 @@ class PatchManager
      */
     public function handle($subject)
     {
-        if ($this->strictMode && $this->operationMatcher->getMatchedOperations()->isEmpty()) {
-            throw new HandlerNotFoundException($this->operationMatcher->getUnmatchedOperations());
+        $matchedOperations = $this->operationMatcher->getMatchedOperations($subject);
+        if ($this->strictMode && $matchedOperations->isEmpty()) {
+            throw new HandlerNotFoundException($this->operationMatcher->getUnmatchedOperations($subject));
         }
         if (is_array($subject) || $subject instanceof \Traversable) {
             $this->handleMany($subject);
         } else {
-            foreach ($this->operationMatcher->getMatchedOperations() as $matchedPatchOperation) {
+            foreach ($matchedOperations as $matchedPatchOperation) {
                 $this->doHandle($matchedPatchOperation, $subject);
             }
         }
@@ -70,8 +71,8 @@ class PatchManager
      */
     private function handleMany($subjects)
     {
-        foreach ($this->operationMatcher->getMatchedOperations() as $matchedPatchOperation) {
-            foreach ($subjects as $subject) {
+        foreach ($subjects as $subject) {
+            foreach ($this->operationMatcher->getMatchedOperations($subject) as $matchedPatchOperation) {
                 $this->doHandle($matchedPatchOperation, $subject);
             }
         }

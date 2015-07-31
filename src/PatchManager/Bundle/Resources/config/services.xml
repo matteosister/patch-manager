@@ -5,16 +5,16 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="patch_manager.request_adapter" class="PatchManager\Bundle\RequestAdapter\RequestStackAdapter">
+        <service id="patch_manager.request_adapter" class="Cypress\PatchManager\Bundle\RequestAdapter\RequestStackAdapter">
             <argument type="service" id="request_stack" />
         </service>
-        <service id="patch_manager.operations" public="false" class="PatchManager\Request\Operations">
+        <service id="patch_manager.operations" public="false" class="Cypress\PatchManager\Request\Operations">
             <configurator service="patch_manager.request_adapter" method="setRequestBody" />
         </service>
-        <service id="patch_manager.operation_matcher" public="false" class="PatchManager\OperationMatcher">
+        <service id="patch_manager.operation_matcher" public="false" class="Cypress\PatchManager\OperationMatcher">
             <argument type="service" id="patch_manager.operations" />
         </service>
-        <service id="patch_manager" public="true" class="PatchManager\PatchManager">
+        <service id="patch_manager" public="true" class="Cypress\PatchManager\PatchManager">
             <argument type="service" id="patch_manager.operation_matcher" />
             <argument>%patch_manager.strict_mode%</argument>
         </service>

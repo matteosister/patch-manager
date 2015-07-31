@@ -1,8 +1,8 @@
 <?php
 
-namespace PatchManager\Bundle;
+namespace Cypress\PatchManager\Bundle;
 
-use PatchManager\Bundle\DependencyInjection\PatchManagerCompilerPass;
+use Cypress\PatchManager\Bundle\DependencyInjection\PatchManagerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
