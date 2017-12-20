@@ -1,10 +1,10 @@
 <?php
 
-namespace PatchManager\Handler;
+namespace Cypress\PatchManager\Handler;
 
-use PatchManager\OperationData;
-use PatchManager\Patchable;
-use PatchManager\Tests\PatchManagerTestCase;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\Patchable;
+use Cypress\PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
 
 class DataDoctrineHandlerTest extends PatchManagerTestCase
@@ -34,7 +34,7 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
         $this->metadata->shouldReceive('getAssociationTargetClass')->andReturn('TestClass');
         $this->metadata->shouldReceive('getTypeOfField')->andReturnNull()->byDefault();
         $this->em->shouldReceive('getMetadataFactory->getMetadataFor')
-            ->with('PatchManager\Handler\DataDoctrineSubject')
+            ->with('Cypress\PatchManager\Handler\DataDoctrineSubject')
             ->andReturn($this->metadata);
         $this->handler = new DataDoctrineHandler($this->em);
     }

@@ -2,12 +2,12 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use PatchManager\Request\Operations;
-use PatchManager\OperationMatcher;
-use PatchManager\Handler\DataHandler;
-use PatchManager\PatchManager;
+use Cypress\PatchManager\Request\Operations;
+use Cypress\PatchManager\OperationMatcher;
+use Cypress\PatchManager\Handler\DataHandler;
+use Cypress\PatchManager\PatchManager;
 
-class Subject implements \PatchManager\Patchable
+class Subject implements \Cypress\PatchManager\Patchable
 {
     private $a = 1;
 

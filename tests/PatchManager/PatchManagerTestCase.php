@@ -1,24 +1,37 @@
 <?php
 
-namespace PatchManager\Tests;
+namespace Cypress\PatchManager\Tests;
 
-use PatchManager\MatchedPatchOperation;
+use Cypress\PatchManager\MatchedPatchOperation;
+use Prophecy\Argument;
 use Mockery as m;
-use Prophecy\PhpUnit\ProphecyTestCase;
+use PHPUnit\Framework\TestCase;
 
-abstract class PatchManagerTestCase extends ProphecyTestCase
+abstract class PatchManagerTestCase extends TestCase
 {
-    protected function mockHandler($name = null)
+    /**
+     * @param null $name
+     * @param bool $canHandle
+     *
+     * @return \Prophecy\Prophecy\ObjectProphecy
+     */
+    protected function mockHandler($name = null, $canHandle = true)
     {
-        $handler = m::mock('PatchManager\PatchOperationHandler');
+        $handler = $this->prophesize('Cypress\PatchManager\PatchOperationHandler');
         if (! is_null($name)) {
-            $handler->shouldReceive('getName')->andReturn($name)->byDefault();
+            $handler->getName()->willReturn($name);
         }
-        $handler->shouldReceive('getRequiredKeys')->andReturn(array())->byDefault();
-        $handler->shouldReceive('configureOptions')->andReturn(array())->byDefault();
+        //$handler->getRequiredKeys()->willReturn(array());
+        $handler->configureOptions(Argument::any())->willReturn(array());
+        $handler->canHandle("test")->willReturn($canHandle);
+        $handler->handle("test", Argument::any())->willReturn();
         return $handler;
     }
 
+    /**
+     * @param null $handlerName
+     * @return MatchedPatchOperation
+     */
     protected function getMatchedPatchOperation($handlerName = null)
     {
         return MatchedPatchOperation::create(array(), $this->mockHandler($handlerName));

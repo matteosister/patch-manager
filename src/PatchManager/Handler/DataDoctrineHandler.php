@@ -1,9 +1,9 @@
 <?php
 
-namespace PatchManager\Handler;
+namespace Cypress\PatchManager\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-use PatchManager\OperationData;
+use Cypress\PatchManager\OperationData;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Doctrine\Common\Persistence\Proxy;
 

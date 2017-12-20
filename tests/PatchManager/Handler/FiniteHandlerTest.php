@@ -1,14 +1,14 @@
 <?php
 
-namespace PatchManager\Handler;
+namespace Cypress\PatchManager\Handler;
 
 use Finite\State\State;
 use Finite\State\StateInterface;
 use Finite\StatefulInterface;
 use Finite\StateMachine\StateMachine;
-use PatchManager\OperationData;
-use PatchManager\Patchable;
-use PatchManager\Tests\PatchManagerTestCase;
+use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\Patchable;
+use Cypress\PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,14 +28,11 @@ class FiniteHandlerTest extends PatchManagerTestCase
     {
         parent::setUp();
         $this->sm = new StateMachine();
+
         // Define states
         $this->sm->addState(new State('s1', StateInterface::TYPE_INITIAL));
         $this->sm->addState('s2');
         $this->sm->addState(new State('s3', StateInterface::TYPE_FINAL));
-
-        // Define transitions
-        $this->sm->addTransition('t12', 's1', 's2');
-        $this->sm->addTransition('t23', 's2', 's3');
 
         $finiteFactory = m::mock('Finite\Factory\FactoryInterface');
         $finiteFactory->shouldReceive('get')->andReturn($this->sm);
@@ -53,6 +50,11 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $patchable = new FiniteSubject();
         $this->sm->setObject($patchable);
         $this->sm->initialize();
+
+        // Define transitions
+        $this->sm->addTransition('t12', 's1', 's2');
+        $this->sm->addTransition('t23', 's2', 's3');
+
         $this->handler->handle(
             $patchable,
             new OperationData(
@@ -70,6 +72,11 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $patchable = new FiniteSubject();
         $this->sm->setObject($patchable);
         $this->sm->initialize();
+
+        // Define transitions
+        $this->sm->addTransition('t12', 's1', 's2');
+        $this->sm->addTransition('t23', 's2', 's3');
+
         $this->handler->handle(
             $patchable,
             new OperationData(
@@ -83,6 +90,11 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $patchable = new FiniteSubject();
         $this->sm->setObject($patchable);
         $this->sm->initialize();
+
+        // Define transitions
+        $this->sm->addTransition('t12', 's1', 's2');
+        $this->sm->addTransition('t23', 's2', 's3');
+
         $this->handler->handle(
             $patchable,
             new OperationData(

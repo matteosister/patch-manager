@@ -1,13 +1,16 @@
 <?php
 
-namespace PatchManager\Bundle\DependencyInjection;
+namespace Cypress\PatchManager\Tests\Bundle\DependencyInjection;
 
-use PatchManager\Tests\PatchManagerTestCase;
+use Cypress\PatchManager\Bundle\DependencyInjection\PatchManagerCompilerPass;
+use Cypress\PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\DependencyInjection\Reference;
 
 class PatchManagerCompilerPassTest extends PatchManagerTestCase
 {
+    /** @var ObjectProphecy */
     private $cb;
 
     /**
@@ -18,35 +21,36 @@ class PatchManagerCompilerPassTest extends PatchManagerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->cb = m::mock('Symfony\Component\DependencyInjection\ContainerBuilder');
-        $this->cb->shouldReceive('hasDefinition')->andReturn(true)->byDefault();
-        $this->cb->shouldReceive('findTaggedServiceIds')->andReturn(array())->byDefault();
-        $this->definition = m::mock('Symfony\Component\DependencyInjection\Definition');
-        $this->cb->shouldReceive('getDefinition')->andReturn(null)->byDefault();
+        $this->cb = $this->prophesize('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $this->cb->hasDefinition()->willReturn(true);
+        $this->cb->findTaggedServiceIds()->willReturn(array());
+        $this->cb->getDefinition()->willReturn(null);
         $this->compilerPass = new PatchManagerCompilerPass($this->cb);
     }
 
     public function test_process_without_definition()
     {
-        $this->cb->shouldReceive('hasDefinition')->andReturn(false)->byDefault();
-        $this->assertNull($this->compilerPass->process($this->cb));
+        $this->cb->hasDefinition("patch_manager.operation_matcher")->willReturn(false);
+        $this->assertNull($this->compilerPass->process($this->cb->reveal()));
     }
 
     public function test_process_without_tagged_services()
     {
-        $this->assertNull($this->compilerPass->process($this->cb));
+        $this->cb->hasDefinition("patch_manager.operation_matcher")->willReturn(false);
+        $this->assertNull($this->compilerPass->process($this->cb->reveal()));
     }
 
     public function test_process()
     {
-        $this->cb->shouldReceive('findTaggedServiceIds')
-            ->andReturn(array('test.service' => 'test', 'test.service2' => 'test2'))->byDefault();
-        $definition = m::mock('Symfony\Component\DependencyInjection\Definition');
-        $definition->shouldReceive('addMethodCall')
-            ->with('addHandler', array(new Reference('test.service')))->once()->andReturn();
-        $definition->shouldReceive('addMethodCall')
-            ->with('addHandler', array(new Reference('test.service2')))->once()->andReturn();
-        $this->cb->shouldReceive('getDefinition')->andReturn($definition)->byDefault();
-        $this->compilerPass->process($this->cb);
+        $this->cb->findTaggedServiceIds()->willReturn(array('test.service' => 'test', 'test.service2' => 'test2'));
+        $definition = $this->prophesize('Symfony\Component\DependencyInjection\Definition');
+        //$definition->addMethodCall()->with('addHandler', array(new Reference('test.service')))->once()->andReturn();
+        //$definition->addMethodCall('addHandler', array(new Reference('test.service')))->shouldBeCalled();
+        //$definition->shouldReceive('addMethodCall')->with('addHandler', array(new Reference('test.service2')))->once()->andReturn();
+        //$definition->addMethodCall('addHandler', array(new Reference('test.service2')))->shouldBeCalled();
+        $this->cb->getDefinition()->willReturn($definition);
+        $this->cb->hasDefinition("patch_manager.operation_matcher")->shouldBeCalled();
+
+        $this->compilerPass->process($this->cb->reveal());
     }
 } 

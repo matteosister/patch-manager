@@ -1,10 +1,10 @@
 <?php
 
-namespace PatchManager\Request;
+namespace Cypress\PatchManager\Request;
 
-use PatchManager\Exception\InvalidJsonRequestContent;
-use PatchManager\Exception\MissingOperationNameRequest;
-use PatchManager\Exception\MissingOperationRequest;
+use Cypress\PatchManager\Exception\InvalidJsonRequestContent;
+use Cypress\PatchManager\Exception\MissingOperationNameRequest;
+use Cypress\PatchManager\Exception\MissingOperationRequest;
 use PhpCollection\Sequence;
 
 class Operations

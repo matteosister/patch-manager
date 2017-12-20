@@ -1,9 +1,9 @@
 <?php
 
-namespace PatchManager\Event;
+namespace Cypress\PatchManager\Event;
 
-use PatchManager\MatchedPatchOperation;
-use PatchManager\Patchable;
+use Cypress\PatchManager\MatchedPatchOperation;
+use Cypress\PatchManager\Patchable;
 use Symfony\Component\EventDispatcher\Event;
 
 class PatchManagerEvent extends Event

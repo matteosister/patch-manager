@@ -7,6 +7,12 @@ Patch Manager
 
 A php library to manage PATCH requests in a standardized (and elegant) way
 
+### Be careful!!!
+
+*From version 0.3 namespace will change from PatchManager\\... to Cypress\\PatchManager\\...*
+
+## Install
+
 Install with composer
 
 ``` json

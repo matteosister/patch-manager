@@ -1,9 +1,9 @@
 <?php
 
-namespace PatchManager\Bundle;
+namespace Cypress\PatchManager\Bundle;
 
-use PatchManager\Bundle\DependencyInjection\PatchManagerCompilerPass;
-use PatchManager\Tests\PatchManagerTestCase;
+use Cypress\PatchManager\Bundle\DependencyInjection\PatchManagerCompilerPass;
+use Cypress\PatchManager\Tests\PatchManagerTestCase;
 
 class PatchManagerBundleTest extends PatchManagerTestCase
 {

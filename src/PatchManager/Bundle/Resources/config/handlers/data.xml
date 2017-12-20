@@ -5,6 +5,6 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="patch_manager.handler.data" public="false" class="PatchManager\Handler\DataHandler" />
+        <service id="patch_manager.handler.data" public="false" class="Cypress\PatchManager\Handler\DataHandler" />
     </services>
 </container>
