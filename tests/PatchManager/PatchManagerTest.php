@@ -11,16 +11,17 @@ use Cypress\PatchManager\Patchable as IPatchable;
 use Cypress\PatchManager\PatchManager;
 use PhpCollection\Sequence;
 use Mockery as m;
+use Prophecy\Argument;
 
 class PatchManagerTest extends PatchManagerTestCase
 {
     /**
-     * @var m\MockInterface
+     * @var \Prophecy\Prophecy\ObjectProphecy
      */
     private $operationMatcher;
 
     /**
-     * @var m\MockInterface
+     * @var \Prophecy\Prophecy\ObjectProphecy
      */
     private $eventDispatcher;
 
@@ -32,14 +33,14 @@ class PatchManagerTest extends PatchManagerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->operationMatcher = m::mock('Cypress\PatchManager\OperationMatcher');
-        $this->operationMatcher->shouldReceive('getMatchedOperations')
-            ->andReturn(new Sequence())->byDefault();
-        $this->operationMatcher->shouldReceive('getUnmatchedOperations')
-            ->andReturn(new Sequence())->byDefault();
-        $this->eventDispatcher = m::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->patchManager = new PatchManager($this->operationMatcher);
-        $this->patchManager->setEventDispatcherInterface($this->eventDispatcher);
+        $this->operationMatcher = $this->prophesize('Cypress\PatchManager\OperationMatcher');
+        $this->operationMatcher->getMatchedOperations(Argument::any())
+            ->willReturn(new Sequence());
+        $this->operationMatcher->getUnmatchedOperations(Argument::any())
+            ->willReturn(new Sequence());
+        $this->eventDispatcher = $this->prophesize('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->patchManager = new PatchManager($this->operationMatcher->reveal());
+        $this->patchManager->setEventDispatcherInterface($this->eventDispatcher->reveal());
     }
 
     /**
@@ -47,10 +48,10 @@ class PatchManagerTest extends PatchManagerTestCase
      */
     public function test_handle_without_required_keys()
     {
-        $this->eventDispatcher->shouldReceive('dispatch')->twice()->andReturn();
+        $this->eventDispatcher->dispatch(Argument::containingString("patch_manager."), Argument::any())->shouldBeCalled();
         $mpo = MatchedPatchOperation::create(array('op' => 'data', 'property' => 'a'), new DataHandler());
-        $this->operationMatcher->shouldReceive('getMatchedOperations')
-            ->andReturn(new Sequence(array($mpo)))->byDefault();
+        $this->operationMatcher->getMatchedOperations(Argument::any())
+            ->willReturn(new Sequence(array($mpo)));
         $this->patchManager->handle(new SubjectA());
     }
 
@@ -60,8 +61,8 @@ class PatchManagerTest extends PatchManagerTestCase
      */
     public function test_strict_mode()
     {
-        $this->operationMatcher->shouldReceive('getUnmatchedOperations')->andReturn(new Sequence(array('test')));
-        $pm = new PatchManager($this->operationMatcher, true);
+        $this->operationMatcher->getUnmatchedOperations(Argument::any())->willReturn(new Sequence(array('test')));
+        $pm = new PatchManager($this->operationMatcher->reveal(), true);
         $pm->handle(new SubjectA());
     }
 
@@ -71,21 +72,21 @@ class PatchManagerTest extends PatchManagerTestCase
      */
     public function test_strict_mode_multiple_ops()
     {
-        $this->operationMatcher->shouldReceive('getUnmatchedOperations')->andReturn(new Sequence(array('test', 'test2')));
-        $pm = new PatchManager($this->operationMatcher, true);
+        $this->operationMatcher->getUnmatchedOperations(Argument::any())->willReturn(new Sequence(array('test', 'test2')));
+        $pm = new PatchManager($this->operationMatcher->reveal(), true);
         $pm->handle(new SubjectA());
     }
 
     public function test_array_subject()
     {
         $handler = $this->mockHandler('data');
-        $handler->shouldReceive('handle')->twice()->andReturn();
-        $operation = MatchedPatchOperation::create(array('op' => 'data'), $handler);
-        $this->operationMatcher->shouldReceive('getMatchedOperations')
-            ->andReturn(new Sequence(array($operation)));
-        $pm = new PatchManager($this->operationMatcher, true);
-        $mockEventDispatcher = m::mock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $mockEventDispatcher->shouldReceive('dispatch')->times(8)->andReturn();
+        $handler->handle(Argument::any(), Argument::any())->shouldBeCalled()->willReturn();
+        $operation = MatchedPatchOperation::create(array('op' => 'data'), $handler->reveal());
+        $this->operationMatcher->getMatchedOperations(Argument::any())
+            ->willReturn(new Sequence(array($operation)));
+        $pm = new PatchManager($this->operationMatcher->reveal(), true);
+        $mockEventDispatcher = $this->prophesize('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $mockEventDispatcher->dispatch()->willReturn();
         $pm->setEventDispatcherInterface($mockEventDispatcher);
         $pm->handle(array(new SubjectA(), new SubjectB()));
     }
@@ -93,13 +94,13 @@ class PatchManagerTest extends PatchManagerTestCase
     public function test_sequence_subject()
     {
         $handler = $this->mockHandler('data');
-        $handler->shouldReceive('handle')->twice()->andReturn();
-        $operation = MatchedPatchOperation::create(array('op' => 'data'), $handler);
-        $this->operationMatcher->shouldReceive('getMatchedOperations')
-            ->andReturn(new Sequence(array($operation)));
-        $pm = new PatchManager($this->operationMatcher, true);
-        $mockEventDispatcher = m::mock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $mockEventDispatcher->shouldReceive('dispatch')->times(8)->andReturn();
+        $handler->handle(Argument::any(), Argument::any())->shouldBeCalled()->willReturn();
+        $operation = MatchedPatchOperation::create(array('op' => 'data'), $handler->reveal());
+        $this->operationMatcher->getMatchedOperations(Argument::any())
+            ->willReturn(new Sequence(array($operation)));
+        $pm = new PatchManager($this->operationMatcher->reveal(), true);
+        $mockEventDispatcher = $this->prophesize('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $mockEventDispatcher->dispatch()->willReturn();
         $pm->setEventDispatcherInterface($mockEventDispatcher);
         $pm->handle(new Sequence(array(new SubjectA(), new SubjectB())));
     }

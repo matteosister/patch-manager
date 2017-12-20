@@ -45,7 +45,7 @@ class OperationsTest extends PatchManagerTestCase
     public function test_exeception_with_empty_request()
     {
         $operations = new Operations();
-        $operations->setRequestBody('');
+        $operations->setRequestBody('""');
         $operations->all();
     }
 
