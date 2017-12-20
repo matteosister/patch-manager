@@ -3,14 +3,14 @@
     "description": "A library to manage patch requests",
     "keywords": ["rest", "patch", "api", "symfony2", "bundle"],
     "require": {
-        "php": ">=5.3.3",
-        "symfony/property-access": "^3.0|^4.0",
-        "symfony/http-foundation": "^3.0|^4.0",
-        "symfony/options-resolver": "^3.0|^4.0",
-        "symfony/dependency-injection": "^3.0|^4.0",
-        "symfony/http-kernel": "^3.0|^4.0",
-        "symfony/config": "^3.0|^4.0",
-        "symfony/event-dispatcher": "^3.0|^4.0",
+        "php": ">=5.4",
+        "symfony/property-access": "^3.0||^4.0",
+        "symfony/http-foundation": "^3.0||^4.0",
+        "symfony/options-resolver": "^3.0||^4.0",
+        "symfony/dependency-injection": "^3.0||^4.0",
+        "symfony/http-kernel": "^3.0||^4.0",
+        "symfony/config": "^3.0||^4.0",
+        "symfony/event-dispatcher": "^3.0||^4.0",
         "phpcollection/phpcollection": "~0.4"
     },
     "require-dev": {
