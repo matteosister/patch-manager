@@ -22,10 +22,15 @@ class RequestStackAdapter implements Adapter
     }
 
     /**
-     * @param Operations $operations
+     * @return null|string
      */
-    public function setRequestBody(Operations $operations)
+    public function getRequestBody(): ?string
     {
-        $operations->setRequestBody($this->requestStack->getCurrentRequest()->getContent());
+        $request = $this->requestStack->getCurrentRequest();
+        if (is_null($request)) {
+            return null;
+        }
+
+        return $request->getContent();
     }
 }

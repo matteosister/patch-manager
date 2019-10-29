@@ -10,8 +10,7 @@ namespace Cypress\PatchManager\Request;
 interface Adapter
 {
     /**
-     * @param Operations $operations
-     * @return void
+     * @return null|string
      */
-    public function setRequestBody(Operations $operations);
+    public function getRequestBody(): ?string;
 }

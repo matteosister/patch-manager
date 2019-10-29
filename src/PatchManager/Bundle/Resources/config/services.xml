@@ -9,7 +9,7 @@
             <argument type="service" id="request_stack" />
         </service>
         <service id="patch_manager.operations" public="false" class="Cypress\PatchManager\Request\Operations">
-            <configurator service="patch_manager.request_adapter" method="setRequestBody" />
+            <argument type="service" id="patch_manager.request_adapter" />
         </service>
         <service id="patch_manager.operation_matcher" public="false" class="Cypress\PatchManager\OperationMatcher">
             <argument type="service" id="patch_manager.operations" />

@@ -5,6 +5,7 @@ namespace Cypress\PatchManager\Request;
 use Cypress\PatchManager\Exception\InvalidJsonRequestContent;
 use Cypress\PatchManager\Exception\MissingOperationNameRequest;
 use Cypress\PatchManager\Exception\MissingOperationRequest;
+use Cypress\PatchManager\Request\Adapter;
 use PhpCollection\Sequence;
 
 class Operations
@@ -12,16 +13,16 @@ class Operations
     const OP_KEY_NAME = 'op';
 
     /**
-     * @var string
+     * @var Adapter
      */
-    private $requestBody;
+    private $adapter;
 
     /**
-     * @param string $requestBody
+     * @param Adapter $adapter
      */
-    public function setRequestBody($requestBody)
+    public function __construct(Adapter $adapter)
     {
-        $this->requestBody = $requestBody;
+        $this->adapter = $adapter;
     }
 
     /**
@@ -36,7 +37,7 @@ class Operations
     private function parseJson($string)
     {
         $parsedContent = json_decode($string, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (JSON_ERROR_NONE !== json_last_error()) {
             throw new InvalidJsonRequestContent;
         }
         return $parsedContent;
@@ -60,13 +61,13 @@ class Operations
      */
     public function all()
     {
-        $operations =$this->parseJson($this->requestBody);
-        if (! is_array($operations)) {
+        $operations = $this->parseJson($this->adapter->getRequestBody());
+        if (!is_array($operations)) {
             throw new MissingOperationRequest();
         }
         $operations = new Sequence($this->isAssociative($operations) ? array($operations) : $operations);
         $operationsWithoutOpKey = $operations->filterNot($this->operationWithKey());
-        if (! $operationsWithoutOpKey->isEmpty()) {
+        if (!$operationsWithoutOpKey->isEmpty()) {
             /** @var array $operationData */
             $operationData = $operationsWithoutOpKey->first()->get();
             throw new MissingOperationNameRequest($operationData);
