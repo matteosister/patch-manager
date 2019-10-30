@@ -16,12 +16,11 @@ class RequestStackAdapterTest extends PatchManagerTestCase
         $requestStack->getCurrentRequest()->willReturn($currentRequest->reveal());
         $adapter = new RequestStackAdapter($requestStack->reveal());
 
-        $operations = new Operations();
-        $adapter->setRequestBody($operations);
+        $operations = new Operations($adapter);
 
         $this->assertCount(1, $operations->all());
 
         $first = $operations->all()->get(0);
         $this->assertEquals('data', $first['op']);
     }
-} 
+}
