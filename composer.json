@@ -1,23 +1,24 @@
 {
     "name": "cypresslab/patch-manager",
     "description": "A library to manage patch requests",
-    "keywords": ["rest", "patch", "api", "symfony2", "bundle"],
+    "keywords": ["rest", "patch", "api", "symfony", "bundle"],
     "require": {
-        "php": ">=5.4",
-        "symfony/property-access": ">=3.0-stable",
-        "symfony/http-foundation": ">=3.0-stable",
-        "symfony/options-resolver": ">=3.0-stable",
-        "symfony/dependency-injection": ">=3.0-stable",
-        "symfony/http-kernel": ">=3.0-stable",
-        "symfony/config": ">=3.0-stable",
-        "symfony/event-dispatcher": ">=3.0-stable",
-        "phpcollection/phpcollection": "~0.4"
+        "php": ">=7.4",
+        "symfony/property-access": "^5.0",
+        "symfony/http-foundation": "^5.0",
+        "symfony/options-resolver": "^5.0",
+        "symfony/dependency-injection": "^5.0",
+        "symfony/http-kernel": "^5.0",
+        "symfony/config": "^5.0",
+        "symfony/event-dispatcher": "^5.0",
+        "phpcollection/phpcollection": "^0.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.5",
-        "mockery/mockery": "~1.0",
-        "yohang/finite": "~1.1.0",
-        "doctrine/orm": "~2.4.6"
+        "phpunit/phpunit": "^9.5",
+        "mockery/mockery": "^1.4",
+        "yohang/finite": "^1.2",
+        "doctrine/orm": "^2.9",
+        "phpspec/prophecy-phpunit": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -38,7 +39,7 @@
     "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     },
     "suggest": {

@@ -14,12 +14,12 @@ class OperationMatcher
     /**
      * @var Sequence
      */
-    private $handlers;
+    private Sequence $handlers;
 
     /**
      * @var Operations
      */
-    private $operations;
+    private Operations $operations;
 
     /**
      * @param Operations $operations
@@ -45,6 +45,7 @@ class OperationMatcher
      *
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
+     * @throws Exception\InvalidJsonRequestContent
      */
     public function getMatchedOperations($subject)
     {
@@ -77,6 +78,7 @@ class OperationMatcher
      *
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
+     * @throws Exception\InvalidJsonRequestContent
      */
     public function getUnmatchedOperations($subject)
     {

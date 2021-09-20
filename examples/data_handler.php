@@ -4,7 +4,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use Cypress\PatchManager\Request\Operations;
 use Cypress\PatchManager\OperationMatcher;
-use Cypress\PatchManager\Handler\DataHandler;
+use Cypress\PatchManager\Tests\Handler\DataHandler;
 use Cypress\PatchManager\PatchManager;
 
 class Subject implements \Cypress\PatchManager\Patchable

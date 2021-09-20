@@ -15,23 +15,23 @@ class PatchManager
     /**
      * @var OperationMatcher
      */
-    private $operationMatcher;
+    private OperationMatcher $operationMatcher;
 
     /**
      * @var EventDispatcherInterface
      */
-    private $eventDispatcherInterface;
+    private EventDispatcherInterface $eventDispatcherInterface;
 
     /**
      * @var bool
      */
-    private $strictMode;
+    private bool $strictMode;
 
     /**
      * @param OperationMatcher $operationMatcher
      * @param bool $strictMode if true throws an error if no handler is found
      */
-    public function __construct(OperationMatcher $operationMatcher, $strictMode = false)
+    public function __construct(OperationMatcher $operationMatcher, bool $strictMode = false)
     {
         $this->operationMatcher = $operationMatcher;
         $this->strictMode = $strictMode;
@@ -68,6 +68,8 @@ class PatchManager
 
     /**
      * @param array|\Traversable $subjects
+     * @throws Exception\MissingOperationNameRequest
+     * @throws Exception\MissingOperationRequest
      */
     private function handleMany($subjects)
     {
@@ -97,15 +99,15 @@ class PatchManager
      * @param string $opName
      * @param $type
      */
-    protected function dispatchEvents(PatchManagerEvent $event, $opName, $type)
+    protected function dispatchEvents(PatchManagerEvent $event, string $opName, string $type): void
     {
-        if (! $this->eventDispatcherInterface) {
+        if (!$this->eventDispatcherInterface) {
             return;
         }
-        $this->eventDispatcherInterface->dispatch($type, $event);
+        $this->eventDispatcherInterface->dispatch($event, $type);
         $this->eventDispatcherInterface->dispatch(
-            sprintf('%s.%s', $type, $opName),
-            $event
+            $event,
+            sprintf('%s.%s', $type, $opName)
         );
     }
 }

@@ -20,7 +20,7 @@ class OperationMatcherTest extends PatchManagerTestCase
      */
     private $ops;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $operations = m::mock('Cypress\PatchManager\Request\Operations');

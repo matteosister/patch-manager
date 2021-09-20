@@ -55,12 +55,12 @@ class OperationDataTest extends PatchManagerTestCase
         $this->assertEquals($expected, $od->diffKeys($requiredKeys));
     }
 
-    public function diffKeysProvider()
+    public function diffKeysProvider(): array
     {
-        return array(
-            array(new Sequence(), array('test', 'test2')),
-            array(new Sequence(array('test')), array('test2')),
-            array(new Sequence(array('test')), array('test2')),
-        );
+        return [
+            [new Sequence(), ['test', 'test2']],
+            [new Sequence(['test']), ['test2']],
+            [new Sequence(['test']), ['test2']],
+        ];
     }
 }

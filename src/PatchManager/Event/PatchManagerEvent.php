@@ -4,7 +4,7 @@ namespace Cypress\PatchManager\Event;
 
 use Cypress\PatchManager\MatchedPatchOperation;
 use Cypress\PatchManager\Patchable;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class PatchManagerEvent extends Event
 {

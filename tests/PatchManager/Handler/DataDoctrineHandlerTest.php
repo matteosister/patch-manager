@@ -1,10 +1,14 @@
 <?php
 
-namespace Cypress\PatchManager\Handler;
+namespace Cypress\PatchManager\Tests\Handler;
 
+use Cypress\PatchManager\Handler\DataDoctrineHandler;
+use Cypress\PatchManager\Handler\DataHandler;
 use Cypress\PatchManager\OperationData;
-use Cypress\PatchManager\Patchable;
+use Cypress\PatchManager\Tests\Handler\FakeObjects\DataDoctrineSubject;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Mockery as m;
 
 class DataDoctrineHandlerTest extends PatchManagerTestCase
@@ -24,17 +28,17 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
      */
     private $handler;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-        $this->em = m::mock('Doctrine\ORM\EntityManagerInterface');
+        $this->em = m::mock(EntityManagerInterface::class);
         $this->em->shouldReceive('getMetadataFactory->isTransient')->andReturn(false)->byDefault();
-        $this->metadata = m::mock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
+        $this->metadata = m::mock(ClassMetadata::class);
         $this->metadata->shouldReceive('getAssociationNames')->andReturn(array('a'));
         $this->metadata->shouldReceive('getAssociationTargetClass')->andReturn('TestClass');
         $this->metadata->shouldReceive('getTypeOfField')->andReturnNull()->byDefault();
         $this->em->shouldReceive('getMetadataFactory->getMetadataFor')
-            ->with('Cypress\PatchManager\Handler\DataDoctrineSubject')
+            ->with(DataDoctrineSubject::class)
             ->andReturn($this->metadata);
         $this->handler = new DataDoctrineHandler($this->em);
     }
@@ -92,31 +96,3 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
     }
 }
 
-class DataDoctrineSubject implements Patchable
-{
-    private $a;
-
-    private $b;
-
-    public function setA($v)
-    {
-        $this->a = $v;
-    }
-
-    public function getA()
-    {
-        return $this->a;
-    }
-
-    public function getB()
-    {
-        return $this->b;
-    }
-
-    public function __call($method, $args)
-    {
-        if ('setB' === $method) {
-            $this->b = $args[0];
-        }
-    }
-}

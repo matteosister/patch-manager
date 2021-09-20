@@ -1,13 +1,14 @@
 <?php
 
-namespace Cypress\PatchManager\Handler;
+namespace Cypress\PatchManager\Tests\Handler;
 
+use Cypress\PatchManager\Handler\FiniteHandler;
+use Cypress\PatchManager\Tests\Handler\FakeObjects\FiniteSubject;
+use Finite\Exception\StateException;
 use Finite\State\State;
 use Finite\State\StateInterface;
-use Finite\StatefulInterface;
 use Finite\StateMachine\StateMachine;
 use Cypress\PatchManager\OperationData;
-use Cypress\PatchManager\Patchable;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
 use Mockery as m;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,7 +25,7 @@ class FiniteHandlerTest extends PatchManagerTestCase
      */
     private $sm;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->sm = new StateMachine();
@@ -58,17 +59,15 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $this->handler->handle(
             $patchable,
             new OperationData(
-                array('op' => 'finite', 'transition' => 't12', 'check' => false)
+                ['op' => 'finite', 'transition' => 't12', 'check' => false]
             )
         );
         $this->assertEquals('s2', $patchable->getFiniteState());
     }
 
-    /**
-     * @expectedException \Finite\Exception\StateException
-     */
     public function test_handle_with_exception()
     {
+        $this->expectException(StateException::class);
         $patchable = new FiniteSubject();
         $this->sm->setObject($patchable);
         $this->sm->initialize();
@@ -98,7 +97,7 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $this->handler->handle(
             $patchable,
             new OperationData(
-                array('op' => 'finite', 'transition' => 't23', 'check' => true)
+                ['op' => 'finite', 'transition' => 't23', 'check' => true]
             )
         );
         $this->assertEquals('s1', $patchable->getFiniteState());
@@ -112,35 +111,5 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $this->assertContains('check', $or->getDefinedOptions());
         $this->assertEquals(array('transition'), $or->getRequiredOptions());
         $this->assertTrue($or->hasDefault('check'));
-    }
-}
-
-class FiniteSubject implements StatefulInterface, Patchable
-{
-    private $state;
-
-    public function __construct()
-    {
-        $this->state = 's1';
-    }
-
-    /**
-     * Sets the object state
-     *
-     * @return string
-     */
-    public function getFiniteState()
-    {
-        return $this->state;
-    }
-
-    /**
-     * Sets the object state
-     *
-     * @param string $state
-     */
-    public function setFiniteState($state)
-    {
-        $this->state = $state;
     }
 }

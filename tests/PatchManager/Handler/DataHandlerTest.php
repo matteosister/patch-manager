@@ -1,10 +1,10 @@
 <?php
 
+namespace Cypress\PatchManager\Tests\Handler;
 
-namespace Cypress\PatchManager\Handler;
-
+use Cypress\PatchManager\Handler\DataHandler;
 use Cypress\PatchManager\OperationData;
-use Cypress\PatchManager\Patchable;
+use Cypress\PatchManager\Tests\Handler\FakeObjects\DataSubject;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
 
 class DataHandlerTest extends PatchManagerTestCase
@@ -14,7 +14,7 @@ class DataHandlerTest extends PatchManagerTestCase
      */
     private $handler;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->handler = new DataHandler();
@@ -40,34 +40,5 @@ class DataHandlerTest extends PatchManagerTestCase
         $this->assertNull($subject->getB());
         $this->handler->handle($subject, new OperationData(array('op' => 'data', 'property' => 'b', 'value' => 1)));
         $this->assertEquals(1, $subject->getB());
-    }
-}
-
-class DataSubject implements Patchable
-{
-    private $a;
-
-    private $b;
-
-    public function setA($v)
-    {
-        $this->a = $v;
-    }
-
-    public function getA()
-    {
-        return $this->a;
-    }
-
-    public function getB()
-    {
-        return $this->b;
-    }
-
-    public function __call($method, $args)
-    {
-        if ('setB' === $method) {
-            $this->b = $args[0];
-        }
     }
 }

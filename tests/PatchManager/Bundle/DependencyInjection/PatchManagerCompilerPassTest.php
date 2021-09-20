@@ -18,7 +18,7 @@ class PatchManagerCompilerPassTest extends PatchManagerTestCase
      */
     private $compilerPass;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->cb = $this->prophesize('Symfony\Component\DependencyInjection\ContainerBuilder');

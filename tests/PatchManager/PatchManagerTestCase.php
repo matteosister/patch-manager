@@ -6,9 +6,18 @@ use Cypress\PatchManager\MatchedPatchOperation;
 use Prophecy\Argument;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 abstract class PatchManagerTestCase extends TestCase
 {
+    use ProphecyTrait;
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        m::close();
+    }
+
     /**
      * @param null $name
      * @param bool $canHandle
@@ -35,11 +44,5 @@ abstract class PatchManagerTestCase extends TestCase
     protected function getMatchedPatchOperation($handlerName = null)
     {
         return MatchedPatchOperation::create(array(), $this->mockHandler($handlerName));
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-        m::close();
     }
 }
