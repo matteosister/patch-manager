@@ -4,11 +4,10 @@ namespace Cypress\PatchManager\Bundle\RequestAdapter;
 
 use Cypress\PatchManager\Request\Operations;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
-use Mockery as m;
 
 class RequestStackAdapterTest extends PatchManagerTestCase
 {
-    public function test_call()
+    public function testCall()
     {
         $currentRequest = $this->prophesize('Symfony\Component\HttpFoundation\Request');
         $currentRequest->getContent()->willReturn('{"op":"data"}');

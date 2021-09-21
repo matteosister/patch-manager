@@ -41,24 +41,22 @@ class OperationMatcher
     /**
      * @param $subject
      *
-     * @return Sequence
-     *
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      * @throws Exception\InvalidJsonRequestContent
+     * @return Sequence
      */
     public function getMatchedOperations($subject)
     {
         $handlers = $this->handlers;
+
         return $this->operations
             ->all()
             ->foldLeft(
                 new Sequence(),
                 function (Sequence $matchedOperations, array $operationData) use ($handlers, $subject) {
                     /** @var Option $handler */
-                    $handler = $handlers->find(function (PatchOperationHandler $handler) use ($operationData) {
-                        return $operationData[Operations::OP_KEY_NAME] === $handler->getName();
-                    });
+                    $handler = $handlers->find(fn (PatchOperationHandler $patchHandler) => $operationData[Operations::OP_KEY_NAME] === $patchHandler->getName());
                     if ($handler->isDefined()) {
                         /** @var PatchOperationHandler $patchOperationHandler */
                         $patchOperationHandler = $handler->get();
@@ -66,6 +64,7 @@ class OperationMatcher
                             $matchedOperations->add(MatchedPatchOperation::create($operationData, $handler->get()));
                         }
                     }
+
                     return $matchedOperations;
                 }
             );
@@ -74,22 +73,18 @@ class OperationMatcher
     /**
      * @param $subject
      *
-     * @return Sequence
-     *
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      * @throws Exception\InvalidJsonRequestContent
+     * @return Sequence
      */
     public function getUnmatchedOperations($subject)
     {
         $matchedOperations = $this->getMatchedOperations($subject);
+
         return $this->operations
             ->all()
-            ->filter(function (array $operationData) use ($matchedOperations) {
-                return $operationData !== $matchedOperations;
-            })
-            ->map(function (array $operationData) {
-                return $operationData['op'];
-            });
+            ->filter(fn (array $operationData) => $operationData !== $matchedOperations)
+            ->map(fn (array $operationData) => $operationData['op']);
     }
 }

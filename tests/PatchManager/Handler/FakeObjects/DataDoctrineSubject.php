@@ -10,6 +10,13 @@ class DataDoctrineSubject implements Patchable
 
     private $b;
 
+    public function __call($method, $args)
+    {
+        if ('setB' === $method) {
+            $this->b = $args[0];
+        }
+    }
+
     public function setA($v)
     {
         $this->a = $v;
@@ -23,12 +30,5 @@ class DataDoctrineSubject implements Patchable
     public function getB()
     {
         return $this->b;
-    }
-
-    public function __call($method, $args)
-    {
-        if ('setB' === $method) {
-            $this->b = $args[0];
-        }
     }
 }

@@ -2,17 +2,17 @@
 
 namespace Cypress\PatchManager\Handler;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Cypress\PatchManager\OperationData;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Proxy;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Doctrine\Common\Persistence\Proxy;
 
 class DataDoctrineHandler extends DataHandler
 {
     /**
      * @var EntityManagerInterface
      */
-    private $entityManagerInterface;
+    private EntityManagerInterface $entityManagerInterface;
 
     /**
      * @param EntityManagerInterface $entityManagerInterface
@@ -48,9 +48,9 @@ class DataDoctrineHandler extends DataHandler
     }
 
     /**
-     * @param string|object $class
+     * @param object|string $class
      *
-     * @return boolean
+     * @return bool
      */
     private function isEntity($class)
     {
@@ -58,8 +58,10 @@ class DataDoctrineHandler extends DataHandler
             $class = ($class instanceof Proxy)
                 ? get_parent_class($class)
                 : get_class($class);
-            return ! $this->entityManagerInterface->getMetadataFactory()->isTransient($class);
+
+            return !$this->entityManagerInterface->getMetadataFactory()->isTransient($class);
         }
+
         return false;
     }
 }

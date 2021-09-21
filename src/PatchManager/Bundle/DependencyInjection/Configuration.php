@@ -36,11 +36,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('alias')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(
-                            function ($value) {
-                                return preg_match('#^[a-zA-Z0-9_]+$#', $value) === 0;
-                            }
-                        )
+                        ->ifTrue(fn ($value) => 0 === preg_match('#^[a-zA-Z0-9_]+$#', $value))
                         ->thenInvalid('Alias should be a string containing letters and underscore. "%s" given')
                     ->end()
                 ->end()

@@ -14,6 +14,7 @@
         "phpcollection/phpcollection": "^0.5"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.1",
         "phpunit/phpunit": "^9.5",
         "mockery/mockery": "^1.4",
         "yohang/finite": "^1.2",
@@ -26,7 +27,7 @@
             "Cypress\\PatchManager\\Tests\\": "tests/PatchManager/"
         }
     },
-    "license": "LGPL-3.0+",
+    "license": "LGPL-3.0-or-later",
     "authors": [
         {
             "name": "Matteo Giachino",
@@ -45,5 +46,8 @@
     "suggest": {
         "yohang/finite": "PatchManager with op 'state_machine'",
         "doctrine/orm": "PatchManager with op 'data' and doctrine integration"
+    },
+    "scripts": {
+        "format": "bin/php-cs-fixer fix --show-progress=dots --verbose --diff"
     }
 }

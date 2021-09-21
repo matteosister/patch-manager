@@ -11,7 +11,6 @@ use Cypress\PatchManager\Patchable as IPatchable;
 use Cypress\PatchManager\PatchManager;
 use PhpCollection\Sequence;
 use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
@@ -45,7 +44,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $this->patchManager->setEventDispatcherInterface($this->eventDispatcher->reveal());
     }
 
-    public function test_handle_without_required_keys()
+    public function testHandleWithoutRequiredKeys()
     {
         $this->expectException(MissingOptionsException::class);
         $this->eventDispatcher->dispatch(
@@ -58,7 +57,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $this->patchManager->handle(new SubjectA());
     }
 
-    public function test_strict_mode()
+    public function testStrictMode()
     {
         $this->expectException(HandlerNotFoundException::class);
         $this->expectExceptionMessage("test");
@@ -67,7 +66,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle(new SubjectA());
     }
 
-    public function test_strict_mode_multiple_ops()
+    public function testStrictModeMultipleOps()
     {
         $this->expectException(HandlerNotFoundException::class);
         $this->expectExceptionMessage("test, test2");
@@ -76,7 +75,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle(new SubjectA());
     }
 
-    public function test_array_subject()
+    public function testArraySubject()
     {
         $handler = $this->mockHandler('data');
         $handler->handle(Argument::any(), Argument::any())->shouldBeCalled()->willReturn();
@@ -97,7 +96,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle([new SubjectA(), new SubjectB()]);
     }
 
-    public function test_sequence_subject()
+    public function testSequenceSubject()
     {
         $handler = $this->mockHandler('data');
         $handler->handle(Argument::any(), Argument::any())->shouldBeCalled()->willReturn();

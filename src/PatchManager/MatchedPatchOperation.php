@@ -53,7 +53,7 @@ class MatchedPatchOperation
     public function process(Patchable $patchable)
     {
         $optionResolver = new OptionsResolver();
-        $optionResolver->setRequired(array('op'));
+        $optionResolver->setRequired(['op']);
         $this->handler->configureOptions($optionResolver);
         $options = new OperationData($optionResolver->resolve($this->operationData));
         $this->handler->handle($patchable, $options);

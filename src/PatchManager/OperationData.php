@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Cypress\PatchManager;
 
 use Cypress\PatchManager\Request\Operations;
@@ -9,7 +8,7 @@ use PhpCollection\Sequence;
 
 class OperationData extends Map
 {
-    public function __construct(array $elements = array())
+    public function __construct(array $elements = [])
     {
         parent::__construct($elements);
     }
@@ -31,6 +30,7 @@ class OperationData extends Map
         if ($operationData->containsKey(Operations::OP_KEY_NAME)) {
             $operationData->remove(Operations::OP_KEY_NAME);
         }
+
         return $operationData;
     }
 
@@ -43,9 +43,7 @@ class OperationData extends Map
         return new Sequence(
             array_filter(
                 $this->getData()->keys(),
-                function ($key) use ($keys) {
-                    return ! in_array($key, $keys);
-                }
+                fn ($key) => !in_array($key, $keys)
             )
         );
     }

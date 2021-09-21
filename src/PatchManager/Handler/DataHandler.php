@@ -52,7 +52,7 @@ class DataHandler implements PatchOperationHandler
      */
     public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $optionsResolver->setRequired(array('property', 'value'));
+        $optionsResolver->setRequired(['property', 'value']);
     }
 
     /**

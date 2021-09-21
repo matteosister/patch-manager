@@ -2,9 +2,9 @@
 
 namespace Cypress\PatchManager\Handler;
 
-use Finite\Factory\FactoryInterface;
 use Cypress\PatchManager\OperationData;
 use Cypress\PatchManager\PatchOperationHandler;
+use Finite\Factory\FactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FiniteHandler implements PatchOperationHandler
@@ -30,7 +30,7 @@ class FiniteHandler implements PatchOperationHandler
     {
         $sm = $this->factoryInterface->get($subject);
         $transition = $operationData->get('transition')->get();
-        if ($operationData->get('check')->get() && ! $sm->can($transition)) {
+        if ($operationData->get('check')->get() && !$sm->can($transition)) {
             return;
         }
         $sm->apply($transition);
@@ -56,9 +56,9 @@ class FiniteHandler implements PatchOperationHandler
     public function configureOptions(OptionsResolver $optionsResolver)
     {
         $optionsResolver
-            ->setRequired(array('transition'))
-            ->setDefined(array('check'))
-            ->setDefaults(array('check' => false));
+            ->setRequired(['transition'])
+            ->setDefined(['check'])
+            ->setDefaults(['check' => false]);
     }
 
     /**

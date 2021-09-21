@@ -7,33 +7,33 @@ use PhpCollection\Sequence;
 
 class OperationDataTest extends PatchManagerTestCase
 {
-    public function test_getOp_with_empty_data()
+    public function testGetOpWithEmptyData()
     {
         $od = new OperationData();
         $this->assertNull($od->getOp()->getOrElse(null));
     }
 
-    public function test_getOp_with_data()
+    public function testGetOpWithData()
     {
-        $od = new OperationData(array('op' => 'data'));
+        $od = new OperationData(['op' => 'data']);
         $this->assertEquals('data', $od->getOp()->getOrElse(null));
     }
 
-    public function test_getData_with_empty_data()
+    public function testGetDataWithEmptyData()
     {
         $od = new OperationData();
         $this->assertTrue($od->getData()->isEmpty());
     }
 
-    public function test_getData_with_op_only()
+    public function testGetDataWithOpOnly()
     {
-        $od = new OperationData(array('op' => 'data'));
+        $od = new OperationData(['op' => 'data']);
         $this->assertTrue($od->getData()->isEmpty());
     }
 
-    public function test_getData_with_data()
+    public function testGetDataWithData()
     {
-        $od = new OperationData(array('op' => 'data', 'test' => 1, 'test2' => '2'));
+        $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertFalse($od->getData()->isEmpty());
         $this->assertInstanceOf('PhpCollection\Map', $od->getData());
         $this->assertCount(2, $od->getData());
@@ -49,9 +49,9 @@ class OperationDataTest extends PatchManagerTestCase
      *
      * @dataProvider diffKeysProvider
      */
-    public function test_diffKeys($expected, $requiredKeys)
+    public function testDiffKeys($expected, $requiredKeys)
     {
-        $od = new OperationData(array('op' => 'data', 'test' => 1, 'test2' => '2'));
+        $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertEquals($expected, $od->diffKeys($requiredKeys));
     }
 

@@ -20,25 +20,25 @@ class DataHandlerTest extends PatchManagerTestCase
         $this->handler = new DataHandler();
     }
 
-    public function test_getName()
+    public function testGetName()
     {
         $this->assertEquals('data', $this->handler->getName());
     }
 
-    public function test_handle()
+    public function testHandle()
     {
         $subject = new DataSubject();
         $this->assertNull($subject->getA());
-        $this->handler->handle($subject, new OperationData(array('op' => 'data', 'property' => 'a', 'value' => 1)));
+        $this->handler->handle($subject, new OperationData(['op' => 'data', 'property' => 'a', 'value' => 1]));
         $this->assertEquals(1, $subject->getA());
     }
 
-    public function test_handle_with_magic_call()
+    public function testHandleWithMagicCall()
     {
         $this->handler->useMagicCall(true);
         $subject = new DataSubject();
         $this->assertNull($subject->getB());
-        $this->handler->handle($subject, new OperationData(array('op' => 'data', 'property' => 'b', 'value' => 1)));
+        $this->handler->handle($subject, new OperationData(['op' => 'data', 'property' => 'b', 'value' => 1]));
         $this->assertEquals(1, $subject->getB());
     }
 }

@@ -3,9 +3,9 @@
 namespace Cypress\PatchManager\Tests;
 
 use Cypress\PatchManager\MatchedPatchOperation;
-use Prophecy\Argument;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 abstract class PatchManagerTestCase extends TestCase
@@ -27,13 +27,14 @@ abstract class PatchManagerTestCase extends TestCase
     protected function mockHandler($name = null, $canHandle = true)
     {
         $handler = $this->prophesize('Cypress\PatchManager\PatchOperationHandler');
-        if (! is_null($name)) {
+        if (!is_null($name)) {
             $handler->getName()->willReturn($name);
         }
         //$handler->getRequiredKeys()->willReturn(array());
-        $handler->configureOptions(Argument::any())->willReturn(array());
+        $handler->configureOptions(Argument::any())->willReturn([]);
         $handler->canHandle("test")->willReturn($canHandle);
         $handler->handle("test", Argument::any())->willReturn();
+
         return $handler;
     }
 
@@ -43,6 +44,6 @@ abstract class PatchManagerTestCase extends TestCase
      */
     protected function getMatchedPatchOperation($handlerName = null)
     {
-        return MatchedPatchOperation::create(array(), $this->mockHandler($handlerName));
+        return MatchedPatchOperation::create([], $this->mockHandler($handlerName));
     }
 }

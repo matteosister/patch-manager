@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class PatchManagerCompilerPass implements CompilerPassInterface
 {
-    const PATCH_MANAGER_HANDLER_TAG = 'patch_manager.handler';
+    public const PATCH_MANAGER_HANDLER_TAG = 'patch_manager.handler';
 
     /**
      * You can modify the container here before it is dumped to PHP code.
@@ -30,7 +30,7 @@ class PatchManagerCompilerPass implements CompilerPassInterface
         foreach ($taggedServices as $id => $tags) {
             $definition->addMethodCall(
                 'addHandler',
-                array(new Reference($id))
+                [new Reference($id)]
             );
         }
     }

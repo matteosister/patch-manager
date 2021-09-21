@@ -4,9 +4,9 @@ namespace Cypress\PatchManager\Bundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
 
 class PatchManagerExtension extends Extension
 {
@@ -48,10 +48,10 @@ class PatchManagerExtension extends Extension
             $patchManagerDefinition = $container->getDefinition('patch_manager');
             $patchManagerDefinition->addMethodCall(
                 'setEventDispatcherInterface',
-                array(new Reference('event_dispatcher'))
+                [new Reference('event_dispatcher')]
             );
         }
-        if (! is_null($config['alias'])) {
+        if (!is_null($config['alias'])) {
             $container->setAlias($config['alias'], 'patch_manager');
         }
         if (array_key_exists('data', $config['handlers'])) {
@@ -90,9 +90,10 @@ class PatchManagerExtension extends Extension
      */
     private function handleStateMachine(Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container)
     {
-        if (! interface_exists('Finite\Factory\FactoryInterface')) {
+        if (!interface_exists('Finite\Factory\FactoryInterface')) {
             $msg = 'If you want to use the patch manager with "op": "sm" you should install ';
             $msg .= 'the finite library. See https://github.com/yohang/Finite';
+
             throw new \RuntimeException($msg);
         }
         $loaderHandlers->load('state_machine.xml');

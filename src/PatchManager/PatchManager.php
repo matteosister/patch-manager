@@ -46,7 +46,7 @@ class PatchManager
     }
 
     /**
-     * @param Patchable|array|\Traversable $subject a Patchable instance or a collection of instances
+     * @param array|Patchable|\Traversable $subject a Patchable instance or a collection of instances
      * @throws HandlerNotFoundException
      * @return array
      */
@@ -60,21 +60,6 @@ class PatchManager
             $this->handleMany($subject);
         } else {
             foreach ($matchedOperations as $matchedPatchOperation) {
-                $this->doHandle($matchedPatchOperation, $subject);
-            }
-        }
-
-    }
-
-    /**
-     * @param array|\Traversable $subjects
-     * @throws Exception\MissingOperationNameRequest
-     * @throws Exception\MissingOperationRequest
-     */
-    private function handleMany($subjects)
-    {
-        foreach ($subjects as $subject) {
-            foreach ($this->operationMatcher->getMatchedOperations($subject) as $matchedPatchOperation) {
                 $this->doHandle($matchedPatchOperation, $subject);
             }
         }
@@ -109,5 +94,19 @@ class PatchManager
             $event,
             sprintf('%s.%s', $type, $opName)
         );
+    }
+
+    /**
+     * @param array|\Traversable $subjects
+     * @throws Exception\MissingOperationNameRequest
+     * @throws Exception\MissingOperationRequest
+     */
+    private function handleMany($subjects)
+    {
+        foreach ($subjects as $subject) {
+            foreach ($this->operationMatcher->getMatchedOperations($subject) as $matchedPatchOperation) {
+                $this->doHandle($matchedPatchOperation, $subject);
+            }
+        }
     }
 }

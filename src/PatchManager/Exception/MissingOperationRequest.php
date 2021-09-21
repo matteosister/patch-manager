@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Cypress\PatchManager\Exception;
-
 
 class MissingOperationRequest extends PatchManagerException
 {

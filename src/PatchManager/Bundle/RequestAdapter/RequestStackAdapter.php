@@ -3,7 +3,6 @@
 namespace Cypress\PatchManager\Bundle\RequestAdapter;
 
 use Cypress\PatchManager\Request\Adapter;
-use Cypress\PatchManager\Request\Operations;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackAdapter implements Adapter

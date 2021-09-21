@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 
 class PatchManagerBundleTest extends PatchManagerTestCase
 {
-    public function test_build()
+    public function testBuild()
     {
         $cb = $this->prophesize('Symfony\Component\DependencyInjection\ContainerBuilder');
         $cb->addCompilerPass(new PatchManagerCompilerPass())->shouldBeCalled();
