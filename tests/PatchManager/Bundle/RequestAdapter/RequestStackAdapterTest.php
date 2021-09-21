@@ -19,6 +19,7 @@ class RequestStackAdapterTest extends PatchManagerTestCase
 
         $this->assertCount(1, $operations->all());
 
+        /** @var array $first */
         $first = $operations->all()->get(0);
         $this->assertEquals('data', $first['op']);
     }

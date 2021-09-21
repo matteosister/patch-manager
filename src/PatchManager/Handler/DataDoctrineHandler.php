@@ -55,7 +55,7 @@ class DataDoctrineHandler extends DataHandler
     private function isEntity($class): bool
     {
         if (is_object($class)) {
-            $class = $class instanceof Proxy? get_parent_class($class) : get_class($class);
+            $class = $class instanceof Proxy ? get_parent_class($class) : get_class($class);
 
             return !$this->entityManagerInterface->getMetadataFactory()->isTransient($class);
         }

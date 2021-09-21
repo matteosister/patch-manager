@@ -33,13 +33,13 @@ class OperationMatcher
     /**
      * @param PatchOperationHandler $handler
      */
-    public function addHandler(PatchOperationHandler $handler) :void
+    public function addHandler(PatchOperationHandler $handler): void
     {
         $this->handlers->add($handler);
     }
 
     /**
-     * @param $subject
+     * @param array|Patchable|\Traversable $subject a Patchable instance or a collection of instances
      *
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
@@ -72,11 +72,11 @@ class OperationMatcher
     }
 
     /**
-     * @param $subject
-     * @return Sequence
+     * @param array|Patchable|\Traversable $subject a Patchable instance or a collection of instances
      * @throws Exception\InvalidJsonRequestContent
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
+     * @return Sequence
      */
     public function getUnmatchedOperations($subject): Sequence
     {

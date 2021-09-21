@@ -27,6 +27,6 @@ class RequestStackAdapter implements Adapter
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        return is_null($request)? null : $request->getContent();
+        return is_null($request) ? null : $request->getContent();
     }
 }

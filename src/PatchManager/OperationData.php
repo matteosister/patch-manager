@@ -42,6 +42,7 @@ class OperationData extends Map
     public function diffKeys(array $keys): Sequence
     {
         $filtered = array_filter($this->getData()->keys(), fn ($key) => !in_array($key, $keys));
+
         return new Sequence($filtered);
     }
 }

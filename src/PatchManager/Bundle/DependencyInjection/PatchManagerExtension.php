@@ -20,7 +20,7 @@ class PatchManagerExtension extends Extension
      *
      * @api
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -43,7 +43,7 @@ class PatchManagerExtension extends Extension
         array $config,
         ContainerBuilder $container,
         Loader\XmlFileLoader $loaderHandlers
-    ) {
+    ): void {
         if ($config['dispatch_events']) {
             $patchManagerDefinition = $container->getDefinition('patch_manager');
             $patchManagerDefinition->addMethodCall(
@@ -64,11 +64,11 @@ class PatchManagerExtension extends Extension
     }
 
     /**
-     * @param $config
+     * @param array $config
      * @param Loader\XmlFileLoader $loaderHandlers
      * @param ContainerBuilder $container
      */
-    private function handleData($config, Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container)
+    private function handleData(array $config, Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container): void
     {
         if ($config['handlers']['data']['doctrine']) {
             $loaderHandlers->load('data_doctrine.xml');
@@ -88,7 +88,7 @@ class PatchManagerExtension extends Extension
      * @param Loader\XmlFileLoader $loaderHandlers
      * @param ContainerBuilder $container
      */
-    private function handleStateMachine(Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container)
+    private function handleStateMachine(Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container): void
     {
         if (!interface_exists('Finite\Factory\FactoryInterface')) {
             $msg = 'If you want to use the patch manager with "op": "sm" you should install ';

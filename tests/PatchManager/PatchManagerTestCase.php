@@ -30,10 +30,9 @@ abstract class PatchManagerTestCase extends TestCase
         if (!is_null($name)) {
             $handler->getName()->willReturn($name);
         }
-        //$handler->getRequiredKeys()->willReturn(array());
-        $handler->configureOptions(Argument::any())->willReturn([]);
+        $handler->configureOptions(Argument::any());
         $handler->canHandle("test")->willReturn($canHandle);
-        $handler->handle("test", Argument::any())->willReturn();
+        $handler->handle("test", Argument::any());
 
         return $handler;
     }

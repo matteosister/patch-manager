@@ -60,14 +60,47 @@ class PatchManager
     }
 
     /**
+     * @param MatchedPatchOperation $matchedPatchOperation
+     * @param Patchable $subject
+     */
+    protected function doHandle(MatchedPatchOperation $matchedPatchOperation, Patchable $subject): void
+    {
+        $event = new PatchManagerEvent($matchedPatchOperation, $subject);
+        $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_PRE);
+
+        $matchedPatchOperation->process($subject);
+        $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_POST);
+    }
+
+    /**
+     * dispatch events if the eventDispatcher is present
+     *
+     * @param PatchManagerEvent $event
+     * @param string $opName
+     * @param string $type
+     */
+    protected function dispatchEvents(PatchManagerEvent $event, string $opName, string $type): void
+    {
+        if (!$this->eventDispatcherInterface) {
+            return;
+        }
+        $this->eventDispatcherInterface->dispatch($event, $type);
+        $this->eventDispatcherInterface->dispatch(
+            $event,
+            sprintf('%s.%s', $type, $opName)
+        );
+    }
+
+    /**
      * @param array|Patchable|\Traversable $subject a Patchable instance or a collection of instances
-     * @return Sequence
      * @throws Exception\InvalidJsonRequestContent
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      * @throws HandlerNotFoundException
+     * @return Sequence
      */
-    private function getMatchedOperations($subject): Sequence{
+    private function getMatchedOperations($subject): Sequence
+    {
         $matchedOperations = $this->operationMatcher->getMatchedOperations($subject);
         if ($this->strictMode && $matchedOperations->isEmpty()) {
             throw new HandlerNotFoundException($this->operationMatcher->getUnmatchedOperations($subject));
@@ -82,47 +115,17 @@ class PatchManager
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      */
-    private function handleSubject($subject, Sequence $matchedOperations): void {
+    private function handleSubject($subject, Sequence $matchedOperations): void
+    {
         if (is_array($subject) || $subject instanceof \Traversable) {
             $this->handleMany($subject);
+
             return;
         }
 
         foreach ($matchedOperations as $matchedPatchOperation) {
             $this->doHandle($matchedPatchOperation, $subject);
         }
-    }
-
-    /**
-     * @param MatchedPatchOperation $matchedPatchOperation
-     * @param $subject
-     */
-    protected function doHandle(MatchedPatchOperation $matchedPatchOperation, $subject): void
-    {
-        $event = new PatchManagerEvent($matchedPatchOperation, $subject);
-        $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_PRE);
-
-        $matchedPatchOperation->process($subject);
-        $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_POST);
-    }
-
-    /**
-     * dispatch events if the eventDispatcher is present
-     *
-     * @param PatchManagerEvent $event
-     * @param string $opName
-     * @param $type
-     */
-    protected function dispatchEvents(PatchManagerEvent $event, string $opName, string $type): void
-    {
-        if (!$this->eventDispatcherInterface) {
-            return;
-        }
-        $this->eventDispatcherInterface->dispatch($event, $type);
-        $this->eventDispatcherInterface->dispatch(
-            $event,
-            sprintf('%s.%s', $type, $opName)
-        );
     }
 
     /**

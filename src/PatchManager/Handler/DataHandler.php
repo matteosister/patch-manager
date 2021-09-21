@@ -3,8 +3,8 @@
 namespace Cypress\PatchManager\Handler;
 
 use Cypress\PatchManager\OperationData;
-use Cypress\PatchManager\PatchOperationHandler;
 use Cypress\PatchManager\Patchable;
+use Cypress\PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -27,7 +27,7 @@ class DataHandler implements PatchOperationHandler
     public function handle(Patchable $subject, OperationData $operationData): void
     {
         $propertyAccessorBuilder = PropertyAccess::createPropertyAccessorBuilder();
-        $propertyAccessorBuilder = $this->magicCall? $propertyAccessorBuilder->enableMagicCall() : $propertyAccessorBuilder;
+        $propertyAccessorBuilder = $this->magicCall ? $propertyAccessorBuilder->enableMagicCall() : $propertyAccessorBuilder;
 
         $propertyAccessor = $propertyAccessorBuilder->getPropertyAccessor();
         $propertyAccessor->setValue(
@@ -62,10 +62,10 @@ class DataHandler implements PatchOperationHandler
     /**
      * whether the handler is able to handle the given subject
      *
-     * @param $subject
+     * @param Patchable $subject
      * @return bool
      */
-    public function canHandle($subject): bool
+    public function canHandle(Patchable $subject): bool
     {
         return true;
     }

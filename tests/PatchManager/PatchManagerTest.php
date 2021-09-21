@@ -78,7 +78,7 @@ class PatchManagerTest extends PatchManagerTestCase
     public function testArraySubject()
     {
         $handler = $this->mockHandler('data');
-        $handler->handle(Argument::any(), Argument::any())->shouldBeCalled()->willReturn();
+        $handler->handle(Argument::any(), Argument::any())->shouldBeCalled();
         $operation = MatchedPatchOperation::create(['op' => 'data'], $handler->reveal());
         $this->operationMatcher->getMatchedOperations(Argument::any())
             ->willReturn(new Sequence([$operation]));
@@ -99,7 +99,7 @@ class PatchManagerTest extends PatchManagerTestCase
     public function testSequenceSubject()
     {
         $handler = $this->mockHandler('data');
-        $handler->handle(Argument::any(), Argument::any())->shouldBeCalled()->willReturn();
+        $handler->handle(Argument::any(), Argument::any())->shouldBeCalled();
         $operation = MatchedPatchOperation::create(['op' => 'data'], $handler->reveal());
         $this->operationMatcher->getMatchedOperations(Argument::any())
             ->willReturn(new Sequence([$operation]));

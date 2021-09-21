@@ -31,7 +31,7 @@ class MatchedPatchOperation
      * @param PatchOperationHandler $handler
      * @return MatchedPatchOperation
      */
-    public static function create(array $operationData, PatchOperationHandler $handler)
+    public static function create(array $operationData, PatchOperationHandler $handler): MatchedPatchOperation
     {
         return new self($operationData, $handler);
     }

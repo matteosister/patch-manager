@@ -44,10 +44,9 @@ class OperationDataTest extends PatchManagerTestCase
     }
 
     /**
-     * @param $expected
-     * @param $requiredKeys
-     *
      * @dataProvider diffKeysProvider
+     * @param mixed $expected
+     * @param mixed $requiredKeys
      */
     public function testDiffKeys($expected, $requiredKeys)
     {

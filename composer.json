@@ -20,7 +20,10 @@
         "mockery/mockery": "^1.4",
         "yohang/finite": "^1.2",
         "doctrine/orm": "^2.9",
-        "phpspec/prophecy-phpunit": "^2.0"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpstan/phpstan": "^0.12.99",
+        "phpstan/phpstan-doctrine": "^0.12.44",
+        "phpstan/phpstan-mockery": "^0.12.14"
     },
     "autoload": {
         "psr-4": {
@@ -49,6 +52,7 @@
         "doctrine/orm": "PatchManager with op 'data' and doctrine integration"
     },
     "scripts": {
+        "analyse": "bin/phpstan analyse -c phpstan.neon -vvv --ansi",
         "format": "bin/php-cs-fixer fix --show-progress=dots --verbose --diff"
     }
 }

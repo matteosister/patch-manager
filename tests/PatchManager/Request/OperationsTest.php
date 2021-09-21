@@ -35,6 +35,7 @@ class OperationsTest extends PatchManagerTestCase
         $adapter->getRequestBody()->willReturn('{"op": "data"}');
         $operations = new Operations($adapter->reveal());
         $this->assertCount(1, $operations->all());
+        /** @var array $op */
         $op = $operations->all()->get(0);
         $this->assertEquals('data', $op['op']);
     }
@@ -45,8 +46,12 @@ class OperationsTest extends PatchManagerTestCase
         $adapter->getRequestBody()->willReturn('[{"op": "data"},{"op": "data2"}]');
         $operations = new Operations($adapter->reveal());
         $this->assertCount(2, $operations->all());
+
+        /** @var array $op1 */
         $op1 = $operations->all()->get(0);
         $this->assertEquals('data', $op1['op']);
+
+        /** @var array $op2 */
         $op2 = $operations->all()->get(1);
         $this->assertEquals('data2', $op2['op']);
     }

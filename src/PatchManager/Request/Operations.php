@@ -25,10 +25,10 @@ class Operations
     }
 
     /**
-     * @return Sequence
      * @throws InvalidJsonRequestContent
      * @throws MissingOperationNameRequest
      * @throws MissingOperationRequest
+     * @return Sequence
      */
     public function all(): Sequence
     {
@@ -48,11 +48,11 @@ class Operations
 
     /**
      * @param string $string
-     * @return array
      * @throws InvalidJsonRequestContent
      * @throws MissingOperationRequest
+     * @return array
      */
-    private function parseJson(string $string): array
+    private function parseJson(?string $string): array
     {
         try {
             $json = json_decode($string, true, 512, JSON_THROW_ON_ERROR);
@@ -63,7 +63,7 @@ class Operations
             }
 
             return $json;
-        } catch (\JsonException $e){
+        } catch (\JsonException $e) {
             throw new InvalidJsonRequestContent();
         }
     }
@@ -72,7 +72,8 @@ class Operations
      * @param array $operations
      * @return Sequence
      */
-    private function toSequence(array $operations): Sequence {
+    private function toSequence(array $operations): Sequence
+    {
         $operations = $this->isAssociative($operations) ? [$operations] : $operations;
 
         return new Sequence($operations);

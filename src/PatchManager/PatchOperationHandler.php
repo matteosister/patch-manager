@@ -35,8 +35,8 @@ interface PatchOperationHandler
     /**
      * whether the handler is able to handle the given subject
      *
-     * @param $subject
+     * @param Patchable $subject
      * @return bool
      */
-    public function canHandle($subject): bool;
+    public function canHandle(Patchable $subject): bool;
 }

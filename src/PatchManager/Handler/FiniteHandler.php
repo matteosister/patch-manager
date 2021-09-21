@@ -3,8 +3,8 @@
 namespace Cypress\PatchManager\Handler;
 
 use Cypress\PatchManager\OperationData;
-use Cypress\PatchManager\PatchOperationHandler;
 use Cypress\PatchManager\Patchable;
+use Cypress\PatchManager\PatchOperationHandler;
 use Finite\Factory\FactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -65,10 +65,10 @@ class FiniteHandler implements PatchOperationHandler
     /**
      * whether the handler is able to handle the given subject
      *
-     * @param $subject
+     * @param Patchable $subject
      * @return bool
      */
-    public function canHandle($subject): bool
+    public function canHandle(Patchable $subject): bool
     {
         return true;
     }
