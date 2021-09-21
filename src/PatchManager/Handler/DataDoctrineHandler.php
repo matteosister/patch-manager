@@ -26,7 +26,7 @@ class DataDoctrineHandler extends DataHandler
      * @param mixed $subject
      * @param OperationData $operationData
      */
-    public function handle($subject, OperationData $operationData)
+    public function handle($subject, OperationData $operationData): void
     {
         $pa = new PropertyAccessor($this->magicCall);
         $property = $operationData->get('property')->get();
@@ -52,12 +52,10 @@ class DataDoctrineHandler extends DataHandler
      *
      * @return bool
      */
-    private function isEntity($class)
+    private function isEntity($class): bool
     {
         if (is_object($class)) {
-            $class = ($class instanceof Proxy)
-                ? get_parent_class($class)
-                : get_class($class);
+            $class = $class instanceof Proxy? get_parent_class($class) : get_class($class);
 
             return !$this->entityManagerInterface->getMetadataFactory()->isTransient($class);
         }

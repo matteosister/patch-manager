@@ -4,6 +4,7 @@
     "keywords": ["rest", "patch", "api", "symfony", "bundle"],
     "require": {
         "php": "^7.4 || ^8.0",
+        "ext-json": "*",
         "symfony/property-access": "^4.0 || ^5.0",
         "symfony/http-foundation": "^4.0 || ^5.0",
         "symfony/options-resolver": "^4.0 || ^5.0",

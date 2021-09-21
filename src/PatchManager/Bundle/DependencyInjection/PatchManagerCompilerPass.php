@@ -17,21 +17,16 @@ class PatchManagerCompilerPass implements CompilerPassInterface
      *
      * @api
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('patch_manager.operation_matcher')) {
             return;
         }
 
-        $definition = $container->getDefinition(
-            'patch_manager.operation_matcher'
-        );
+        $definition = $container->getDefinition('patch_manager.operation_matcher');
         $taggedServices = $container->findTaggedServiceIds(self::PATCH_MANAGER_HANDLER_TAG);
         foreach ($taggedServices as $id => $tags) {
-            $definition->addMethodCall(
-                'addHandler',
-                [new Reference($id)]
-            );
+            $definition->addMethodCall('addHandler', [new Reference($id)]);
         }
     }
 }

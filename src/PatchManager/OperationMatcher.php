@@ -33,7 +33,7 @@ class OperationMatcher
     /**
      * @param PatchOperationHandler $handler
      */
-    public function addHandler(PatchOperationHandler $handler)
+    public function addHandler(PatchOperationHandler $handler) :void
     {
         $this->handlers->add($handler);
     }
@@ -46,7 +46,7 @@ class OperationMatcher
      * @throws Exception\InvalidJsonRequestContent
      * @return Sequence
      */
-    public function getMatchedOperations($subject)
+    public function getMatchedOperations($subject): Sequence
     {
         $handlers = $this->handlers;
 
@@ -57,6 +57,7 @@ class OperationMatcher
                 function (Sequence $matchedOperations, array $operationData) use ($handlers, $subject) {
                     /** @var Option $handler */
                     $handler = $handlers->find(fn (PatchOperationHandler $patchHandler) => $operationData[Operations::OP_KEY_NAME] === $patchHandler->getName());
+
                     if ($handler->isDefined()) {
                         /** @var PatchOperationHandler $patchOperationHandler */
                         $patchOperationHandler = $handler->get();
@@ -72,19 +73,16 @@ class OperationMatcher
 
     /**
      * @param $subject
-     *
+     * @return Sequence
+     * @throws Exception\InvalidJsonRequestContent
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
-     * @throws Exception\InvalidJsonRequestContent
-     * @return Sequence
      */
-    public function getUnmatchedOperations($subject)
+    public function getUnmatchedOperations($subject): Sequence
     {
-        $matchedOperations = $this->getMatchedOperations($subject);
-
         return $this->operations
             ->all()
-            ->filter(fn (array $operationData) => $operationData !== $matchedOperations)
+            ->filter(fn (array $operationData) => $operationData !== $this->getMatchedOperations($subject))
             ->map(fn (array $operationData) => $operationData['op']);
     }
 }

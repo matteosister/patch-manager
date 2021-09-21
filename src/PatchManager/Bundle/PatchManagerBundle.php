@@ -14,9 +14,10 @@ class PatchManagerBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->registerForAutoconfiguration(PatchOperationHandler::class)
-            ->addTag('patch_manager.handler')
-        ;
+        $container
+            ->registerForAutoconfiguration(PatchOperationHandler::class)
+            ->addTag('patch_manager.handler');
+
         $container->addCompilerPass(new PatchManagerCompilerPass());
     }
 }

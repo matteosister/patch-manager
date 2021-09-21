@@ -4,6 +4,7 @@ namespace Cypress\PatchManager\Handler;
 
 use Cypress\PatchManager\OperationData;
 use Cypress\PatchManager\PatchOperationHandler;
+use Cypress\PatchManager\Patchable;
 use Finite\Factory\FactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,7 +13,7 @@ class FiniteHandler implements PatchOperationHandler
     /**
      * @var FactoryInterface
      */
-    private $factoryInterface;
+    private FactoryInterface $factoryInterface;
 
     /**
      * @param FactoryInterface $factoryInterface
@@ -23,10 +24,10 @@ class FiniteHandler implements PatchOperationHandler
     }
 
     /**
-     * @param mixed $subject
+     * @param Patchable $subject
      * @param OperationData $operationData
      */
-    public function handle($subject, OperationData $operationData)
+    public function handle(Patchable $subject, OperationData $operationData): void
     {
         $sm = $this->factoryInterface->get($subject);
         $transition = $operationData->get('transition')->get();
@@ -41,7 +42,7 @@ class FiniteHandler implements PatchOperationHandler
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'sm';
     }
@@ -53,7 +54,7 @@ class FiniteHandler implements PatchOperationHandler
      *
      * @param OptionsResolver $optionsResolver
      */
-    public function configureOptions(OptionsResolver $optionsResolver)
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver
             ->setRequired(['transition'])
@@ -62,12 +63,12 @@ class FiniteHandler implements PatchOperationHandler
     }
 
     /**
-     * wether the handler is able to handle the given subject
+     * whether the handler is able to handle the given subject
      *
      * @param $subject
      * @return bool
      */
-    public function canHandle($subject)
+    public function canHandle($subject): bool
     {
         return true;
     }
