@@ -34,6 +34,9 @@ jobs:
         run: (test -d vendor && echo vendor directory exists) || composer install --prefer-dist --no-progress --no-suggest
       - name: Run PHPUnit
         run: ./bin/phpunit --coverage-text --coverage-clover clover.xml
+      - name: "[Scrutinizer] Upload coverage"
+        if: matrix.php-versions == '8.0'
+        run: ./bin/ocular code-coverage:upload --format=php-clover clover.xml
 #      - name: "[Coveralls] Extract branch name"
 #        if: matrix.php-versions == '8.0'
 #        shell: bash
