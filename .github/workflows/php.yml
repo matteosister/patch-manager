@@ -34,18 +34,18 @@ jobs:
         run: (test -d vendor && echo vendor directory exists) || composer install --prefer-dist --no-progress --no-suggest
       - name: Run PHPUnit
         run: ./bin/phpunit --coverage-text --coverage-clover clover.xml
-      - name: "[Scrutinizer] Upload coverage"
+      - name: "[Code Coverage Report] Extract branch name"
+        if: matrix.php-versions == '8.0'
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: "[Code Coverage Report] Checkout branch"
+        if: matrix.php-versions == '8.0'
+        shell: bash
+        run: git fetch && git checkout ${{ steps.extract_branch.outputs.branch }}
+      - name: "[Code Coverage Report] Upload coverage"
         if: matrix.php-versions == '8.0'
         run: ./bin/ocular code-coverage:upload --format=php-clover clover.xml
-#      - name: "[Coveralls] Extract branch name"
-#        if: matrix.php-versions == '8.0'
-#        shell: bash
-#        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-#        id: extract_branch
-#      - name: "[Coveralls] Checkout branch"
-#        if: matrix.php-versions == '8.0'
-#        shell: bash
-#        run: git fetch && git checkout ${{ steps.extract_branch.outputs.branch }}
 #      - name: "[Coveralls] Send report"
 #        if: matrix.php-versions == '8.0'
 #        run: ./bin/php-coveralls -v -x clover.xml -o coveralls-upload.json
