@@ -16,17 +16,17 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
     /**
      * @var m\MockInterface
      */
-    private $em;
+    private m\MockInterface $em;
 
     /**
      * @var m\MockInterface
      */
-    private $metadata;
+    private m\MockInterface $metadata;
 
     /**
      * @var DataHandler
      */
-    private $handler;
+    private DataHandler $handler;
 
     public function setUp(): void
     {
@@ -43,12 +43,12 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
         $this->handler = new DataDoctrineHandler($this->em);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertEquals('data', $this->handler->getName());
     }
 
-    public function testHandle()
+    public function testHandle(): void
     {
         $value = new \stdClass();
         $value->test = "test";
@@ -59,17 +59,17 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
         $this->assertSame($value, $subject->getA());
     }
 
-    public function testHandleWithDate()
+    public function testHandleWithDate(): void
     {
         $this->metadata->shouldReceive('getTypeOfField')->andReturn('date');
         $this->em->shouldReceive('find')->with('TestClass', 1)->once()->andReturn();
         $subject = new DataDoctrineSubject();
         $this->assertNull($subject->getA());
         $this->handler->handle($subject, new OperationData(['op' => 'data', 'property' => 'a', 'value' => 1]));
-        $this->assertInstanceOf('\DateTime', $subject->getA());
+        $this->assertInstanceOf(\DateTime::class, $subject->getA());
     }
 
-    public function testHandleWithoutForeignKey()
+    public function testHandleWithoutForeignKey(): void
     {
         $this->em->shouldReceive('getMetadataFactory->isTransient')->andReturn(true);
         $subject = new DataDoctrineSubject();
@@ -78,7 +78,7 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
         $this->assertSame('test_data', $subject->getA());
     }
 
-    public function testHandleWithMagicCall()
+    public function testHandleWithMagicCall(): void
     {
         $this->handler->useMagicCall(true);
         $subject = new DataDoctrineSubject();
@@ -87,7 +87,7 @@ class DataDoctrineHandlerTest extends PatchManagerTestCase
         $this->assertSame(1, $subject->getB());
     }
 
-    public function testIsEntityWithNonObject()
+    public function testIsEntityWithNonObject(): void
     {
         $refl = new \ReflectionClass($this->handler);
         $method = $refl->getMethod('isEntity');

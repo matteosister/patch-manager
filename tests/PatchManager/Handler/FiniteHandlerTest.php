@@ -18,43 +18,43 @@ class FiniteHandlerTest extends PatchManagerTestCase
     /**
      * @var FiniteHandler
      */
-    private $handler;
+    private FiniteHandler $handler;
 
     /**
      * @var StateMachine
      */
-    private $sm;
+    private StateMachine $stateMachine;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->sm = new StateMachine();
+        $this->stateMachine = new StateMachine();
 
         // Define states
-        $this->sm->addState(new State('s1', StateInterface::TYPE_INITIAL));
-        $this->sm->addState('s2');
-        $this->sm->addState(new State('s3', StateInterface::TYPE_FINAL));
+        $this->stateMachine->addState(new State('s1', StateInterface::TYPE_INITIAL));
+        $this->stateMachine->addState('s2');
+        $this->stateMachine->addState(new State('s3', StateInterface::TYPE_FINAL));
 
         $finiteFactory = m::mock('Finite\Factory\FactoryInterface');
-        $finiteFactory->shouldReceive('get')->andReturn($this->sm);
+        $finiteFactory->shouldReceive('get')->andReturn($this->stateMachine);
 
         $this->handler = new FiniteHandler($finiteFactory);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertEquals('sm', $this->handler->getName());
     }
 
-    public function testHandleOk()
+    public function testHandleOk(): void
     {
         $patchable = new FiniteSubject();
-        $this->sm->setObject($patchable);
-        $this->sm->initialize();
+        $this->stateMachine->setObject($patchable);
+        $this->stateMachine->initialize();
 
         // Define transitions
-        $this->sm->addTransition('t12', 's1', 's2');
-        $this->sm->addTransition('t23', 's2', 's3');
+        $this->stateMachine->addTransition('t12', 's1', 's2');
+        $this->stateMachine->addTransition('t23', 's2', 's3');
 
         $this->handler->handle(
             $patchable,
@@ -65,16 +65,16 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $this->assertEquals('s2', $patchable->getFiniteState());
     }
 
-    public function testHandleWithException()
+    public function testHandleWithException(): void
     {
         $this->expectException(StateException::class);
         $patchable = new FiniteSubject();
-        $this->sm->setObject($patchable);
-        $this->sm->initialize();
+        $this->stateMachine->setObject($patchable);
+        $this->stateMachine->initialize();
 
         // Define transitions
-        $this->sm->addTransition('t12', 's1', 's2');
-        $this->sm->addTransition('t23', 's2', 's3');
+        $this->stateMachine->addTransition('t12', 's1', 's2');
+        $this->stateMachine->addTransition('t23', 's2', 's3');
 
         $this->handler->handle(
             $patchable,
@@ -84,15 +84,15 @@ class FiniteHandlerTest extends PatchManagerTestCase
         );
     }
 
-    public function testHandleWrongWithCheck()
+    public function testHandleWrongWithCheck(): void
     {
         $patchable = new FiniteSubject();
-        $this->sm->setObject($patchable);
-        $this->sm->initialize();
+        $this->stateMachine->setObject($patchable);
+        $this->stateMachine->initialize();
 
         // Define transitions
-        $this->sm->addTransition('t12', 's1', 's2');
-        $this->sm->addTransition('t23', 's2', 's3');
+        $this->stateMachine->addTransition('t12', 's1', 's2');
+        $this->stateMachine->addTransition('t23', 's2', 's3');
 
         $this->handler->handle(
             $patchable,
@@ -103,7 +103,7 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $this->assertEquals('s1', $patchable->getFiniteState());
     }
 
-    public function testConfigureOptions()
+    public function testConfigureOptions(): void
     {
         $or = new OptionsResolver();
         $this->handler->configureOptions($or);

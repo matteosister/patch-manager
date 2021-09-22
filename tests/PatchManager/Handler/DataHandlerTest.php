@@ -12,7 +12,7 @@ class DataHandlerTest extends PatchManagerTestCase
     /**
      * @var DataHandler
      */
-    private $handler;
+    private DataHandler $handler;
 
     public function setUp(): void
     {
@@ -20,12 +20,12 @@ class DataHandlerTest extends PatchManagerTestCase
         $this->handler = new DataHandler();
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertEquals('data', $this->handler->getName());
     }
 
-    public function testHandle()
+    public function testHandle(): void
     {
         $subject = new DataSubject();
         $this->assertNull($subject->getA());
@@ -33,7 +33,7 @@ class DataHandlerTest extends PatchManagerTestCase
         $this->assertEquals(1, $subject->getA());
     }
 
-    public function testHandleWithMagicCall()
+    public function testHandleWithMagicCall(): void
     {
         $this->handler->useMagicCall(true);
         $subject = new DataSubject();

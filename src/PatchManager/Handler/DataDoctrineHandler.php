@@ -3,9 +3,10 @@
 namespace Cypress\PatchManager\Handler;
 
 use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\Patchable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Proxy;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class DataDoctrineHandler extends DataHandler
 {
@@ -23,12 +24,17 @@ class DataDoctrineHandler extends DataHandler
     }
 
     /**
-     * @param mixed $subject
+     * @param Patchable $subject
      * @param OperationData $operationData
+     * @throws \Doctrine\Persistence\Mapping\MappingException
+     * @throws \ReflectionException
      */
-    public function handle($subject, OperationData $operationData): void
+    public function handle(Patchable $subject, OperationData $operationData): void
     {
-        $pa = new PropertyAccessor($this->magicCall);
+        $propertyAccessorBuilder = PropertyAccess::createPropertyAccessorBuilder();
+        $propertyAccessorBuilder = $this->magicCall ? $propertyAccessorBuilder->enableMagicCall() : $propertyAccessorBuilder;
+
+        $propertyAccessor = $propertyAccessorBuilder->getPropertyAccessor();
         $property = $operationData->get('property')->get();
         $value = $operationData->get('value')->get();
         if ($this->isEntity($subject)) {
@@ -44,7 +50,7 @@ class DataDoctrineHandler extends DataHandler
                 $value = new \DateTime($value);
             }
         }
-        $pa->setValue($subject, $property, $value);
+        $propertyAccessor->setValue($subject, $property, $value);
     }
 
     /**

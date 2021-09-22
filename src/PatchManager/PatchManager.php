@@ -47,7 +47,7 @@ class PatchManager
     }
 
     /**
-     * @param array|Patchable|\Traversable $subject a Patchable instance or a collection of instances
+     * @param array<Patchable>|Patchable|\Traversable $subject a Patchable instance or a collection of instances
      * @throws Exception\InvalidJsonRequestContent
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
@@ -81,7 +81,7 @@ class PatchManager
      */
     protected function dispatchEvents(PatchManagerEvent $event, string $opName, string $type): void
     {
-        if (!$this->eventDispatcherInterface) {
+        if (!isset($this->eventDispatcherInterface)) {
             return;
         }
         $this->eventDispatcherInterface->dispatch($event, $type);
@@ -134,7 +134,7 @@ class PatchManager
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      */
-    private function handleMany($subjects)
+    private function handleMany($subjects): void
     {
         foreach ($subjects as $subject) {
             foreach ($this->operationMatcher->getMatchedOperations($subject) as $matchedPatchOperation) {

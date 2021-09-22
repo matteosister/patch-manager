@@ -21,12 +21,12 @@ abstract class PatchManagerTestCase extends TestCase
     }
 
     /**
-     * @param null $name
+     * @param null|string $name
      * @param bool $canHandle
      *
      * @return \Prophecy\Prophecy\ObjectProphecy
      */
-    protected function mockHandler($name = null, bool $canHandle = true)
+    protected function mockHandler(?string $name, bool $canHandle = true)
     {
         $handler = $this->prophesize(PatchOperationHandler::class);
         if (!is_null($name)) {
@@ -43,8 +43,8 @@ abstract class PatchManagerTestCase extends TestCase
      * @param null $handlerName
      * @return MatchedPatchOperation
      */
-    protected function getMatchedPatchOperation($handlerName = null)
+    protected function getMatchedPatchOperation($handlerName = null): MatchedPatchOperation
     {
-        return MatchedPatchOperation::create([], $this->mockHandler($handlerName));
+        return MatchedPatchOperation::create([], $this->mockHandler($handlerName)->reveal());
     }
 }

@@ -55,7 +55,6 @@ class OperationMatcher
                 new Sequence(),
                 function (Sequence $matchedOperations, array $operationData) use ($handlers, $subject) {
                     $handler = $handlers->find(fn (PatchOperationHandler $patchHandler) => $operationData[Operations::OP_KEY_NAME] === $patchHandler->getName());
-
                     if ($handler->isDefined()) {
                         /** @var PatchOperationHandler $patchOperationHandler */
                         $patchOperationHandler = $handler->get();

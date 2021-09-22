@@ -33,17 +33,17 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     public function testGetMatchedOperationsWithoutHandlers(): void
     {
-        $this->assertEquals(new Sequence(), $this->matcher->getMatchedOperations('test'));
+        $this->assertEquals(new Sequence(), $this->matcher->getMatchedOperations(new SubjectA()));
     }
 
     public function testGetMatchedOperationsWithHandlerNotMatching(): void
     {
         $this->matcher->addHandler($this->mockHandler('method')->reveal());
-        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations('test'));
-        $this->assertCount(0, $this->matcher->getMatchedOperations('test'));
+        $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
+        $this->assertCount(0, $this->matcher->getMatchedOperations(new SubjectA()));
     }
 
-    public function testGetMatchedOperationsWithMatchingHandler()
+    public function testGetMatchedOperationsWithMatchingHandler(): void
     {
         $this->matcher->addHandler($this->mockHandler('data')->reveal());
         $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
@@ -81,10 +81,10 @@ class OperationMatcherTest extends PatchManagerTestCase
     public function testGetUnmatchedOperationsWithHandlerNotMatching(): void
     {
         $this->matcher->addHandler($this->mockHandler('method')->reveal());
-        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getMatchedOperations('test'));
-        $this->assertCount(1, $this->matcher->getUnmatchedOperations('test'));
-        $this->assertInstanceOf('PhpCollection\Sequence', $this->matcher->getUnmatchedOperations('test'));
-        $this->assertEquals(new Sequence(['data']), $this->matcher->getUnmatchedOperations('test'));
+        $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
+        $this->assertCount(1, $this->matcher->getUnmatchedOperations(new SubjectA()));
+        $this->assertInstanceOf(Sequence::class, $this->matcher->getUnmatchedOperations(new SubjectA()));
+        $this->assertEquals(new Sequence(['data']), $this->matcher->getUnmatchedOperations(new SubjectA()));
     }
 
     public function testHandlerThatRespondsFalseToCanHandle(): void
@@ -99,7 +99,7 @@ class OperationMatcherTest extends PatchManagerTestCase
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return \Closure
      */
     private function handlerNameMatcher($name): \Closure

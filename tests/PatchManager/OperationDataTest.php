@@ -7,31 +7,31 @@ use PhpCollection\Sequence;
 
 class OperationDataTest extends PatchManagerTestCase
 {
-    public function testGetOpWithEmptyData()
+    public function testGetOpWithEmptyData(): void
     {
         $od = new OperationData();
         $this->assertNull($od->getOp()->getOrElse(null));
     }
 
-    public function testGetOpWithData()
+    public function testGetOpWithData(): void
     {
         $od = new OperationData(['op' => 'data']);
         $this->assertEquals('data', $od->getOp()->getOrElse(null));
     }
 
-    public function testGetDataWithEmptyData()
+    public function testGetDataWithEmptyData(): void
     {
         $od = new OperationData();
         $this->assertTrue($od->getData()->isEmpty());
     }
 
-    public function testGetDataWithOpOnly()
+    public function testGetDataWithOpOnly(): void
     {
         $od = new OperationData(['op' => 'data']);
         $this->assertTrue($od->getData()->isEmpty());
     }
 
-    public function testGetDataWithData()
+    public function testGetDataWithData(): void
     {
         $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertFalse($od->getData()->isEmpty());
@@ -48,7 +48,7 @@ class OperationDataTest extends PatchManagerTestCase
      * @param mixed $expected
      * @param mixed $requiredKeys
      */
-    public function testDiffKeys($expected, $requiredKeys)
+    public function testDiffKeys($expected, $requiredKeys): void
     {
         $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertEquals($expected, $od->diffKeys($requiredKeys));

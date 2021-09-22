@@ -7,7 +7,10 @@ use Finite\StatefulInterface;
 
 class FiniteSubject implements StatefulInterface, Patchable
 {
-    private $state;
+    /**
+     * @var string
+     */
+    private string $state;
 
     public function __construct()
     {
@@ -19,7 +22,7 @@ class FiniteSubject implements StatefulInterface, Patchable
      *
      * @return string
      */
-    public function getFiniteState()
+    public function getFiniteState(): string
     {
         return $this->state;
     }
@@ -29,7 +32,7 @@ class FiniteSubject implements StatefulInterface, Patchable
      *
      * @param string $state
      */
-    public function setFiniteState($state)
+    public function setFiniteState($state): void
     {
         $this->state = $state;
     }

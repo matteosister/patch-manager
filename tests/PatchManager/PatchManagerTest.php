@@ -44,7 +44,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $this->patchManager->setEventDispatcherInterface($this->eventDispatcher->reveal());
     }
 
-    public function testHandleWithoutRequiredKeys()
+    public function testHandleWithoutRequiredKeys(): void
     {
         $this->expectException(MissingOptionsException::class);
         $this->eventDispatcher->dispatch(
@@ -57,7 +57,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $this->patchManager->handle(new SubjectA());
     }
 
-    public function testStrictMode()
+    public function testStrictMode(): void
     {
         $this->expectException(HandlerNotFoundException::class);
         $this->expectExceptionMessage("test");
@@ -66,7 +66,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle(new SubjectA());
     }
 
-    public function testStrictModeMultipleOps()
+    public function testStrictModeMultipleOps(): void
     {
         $this->expectException(HandlerNotFoundException::class);
         $this->expectExceptionMessage("test, test2");
@@ -75,7 +75,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle(new SubjectA());
     }
 
-    public function testArraySubject()
+    public function testArraySubject(): void
     {
         $handler = $this->mockHandler('data');
         $handler->handle(Argument::any(), Argument::any())->shouldBeCalled();
@@ -96,7 +96,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle([new SubjectA(), new FakeObjects\SubjectB()]);
     }
 
-    public function testSequenceSubject()
+    public function testSequenceSubject(): void
     {
         $handler = $this->mockHandler('data');
         $handler->handle(Argument::any(), Argument::any())->shouldBeCalled();

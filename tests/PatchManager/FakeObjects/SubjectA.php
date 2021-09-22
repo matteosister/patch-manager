@@ -6,5 +6,5 @@ use Cypress\PatchManager\Patchable as IPatchable;
 
 class SubjectA implements IPatchable
 {
-    private $a = 1;
+    private int $a = 1;
 }
