@@ -7,8 +7,8 @@ use Cypress\PatchManager\Exception\HandlerNotFoundException;
 use Cypress\PatchManager\Handler\DataHandler;
 use Cypress\PatchManager\MatchedPatchOperation;
 use Cypress\PatchManager\OperationMatcher;
-use Cypress\PatchManager\Patchable as IPatchable;
 use Cypress\PatchManager\PatchManager;
+use Cypress\PatchManager\Tests\FakeObjects\SubjectA;
 use PhpCollection\Sequence;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -93,7 +93,7 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm = new PatchManager($this->operationMatcher->reveal(), true);
         $pm->setEventDispatcherInterface($mockEventDispatcher->reveal());
 
-        $pm->handle([new SubjectA(), new SubjectB()]);
+        $pm->handle([new SubjectA(), new FakeObjects\SubjectB()]);
     }
 
     public function testSequenceSubject()
@@ -121,16 +121,6 @@ class PatchManagerTest extends PatchManagerTestCase
             $mockEventDispatcher->reveal()
         );
 
-        $pm->handle(new Sequence([new SubjectA(), new SubjectB()]));
+        $pm->handle(new Sequence([new SubjectA(), new FakeObjects\SubjectB()]));
     }
-}
-
-class SubjectA implements IPatchable
-{
-    private $a = 1;
-}
-
-class SubjectB implements IPatchable
-{
-    private $a = 1;
 }

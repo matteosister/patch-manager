@@ -4,7 +4,6 @@ namespace Cypress\PatchManager;
 
 use Cypress\PatchManager\Request\Operations;
 use PhpCollection\Sequence;
-use PhpOption\Option;
 
 /**
  * Match the correct handlers based on actual operations
@@ -55,7 +54,6 @@ class OperationMatcher
             ->foldLeft(
                 new Sequence(),
                 function (Sequence $matchedOperations, array $operationData) use ($handlers, $subject) {
-                    /** @var Option $handler */
                     $handler = $handlers->find(fn (PatchOperationHandler $patchHandler) => $operationData[Operations::OP_KEY_NAME] === $patchHandler->getName());
 
                     if ($handler->isDefined()) {

@@ -3,6 +3,8 @@
 namespace Cypress\PatchManager\Tests;
 
 use Cypress\PatchManager\MatchedPatchOperation;
+use Cypress\PatchManager\Patchable as PatchableInterface;
+use Cypress\PatchManager\PatchOperationHandler;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -24,15 +26,15 @@ abstract class PatchManagerTestCase extends TestCase
      *
      * @return \Prophecy\Prophecy\ObjectProphecy
      */
-    protected function mockHandler($name = null, $canHandle = true)
+    protected function mockHandler($name = null, bool $canHandle = true)
     {
-        $handler = $this->prophesize('Cypress\PatchManager\PatchOperationHandler');
+        $handler = $this->prophesize(PatchOperationHandler::class);
         if (!is_null($name)) {
             $handler->getName()->willReturn($name);
         }
         $handler->configureOptions(Argument::any());
-        $handler->canHandle("test")->willReturn($canHandle);
-        $handler->handle("test", Argument::any());
+        $handler->canHandle(Argument::type(PatchableInterface::class))->willReturn($canHandle);
+        $handler->handle(Argument::type(PatchableInterface::class), Argument::any());
 
         return $handler;
     }

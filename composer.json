@@ -54,6 +54,7 @@
     },
     "scripts": {
         "analyse": "bin/phpstan analyse -c phpstan.neon -vvv --ansi",
-        "format": "bin/php-cs-fixer fix --show-progress=dots --verbose --diff"
+        "format": "bin/php-cs-fixer fix --show-progress=dots --verbose --diff",
+        "test": "@php bin/phpunit"
     }
 }
