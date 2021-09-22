@@ -42,7 +42,7 @@ jobs:
       - name: "[Code Coverage Report] Checkout branch"
         if: matrix.php-versions == '8.0'
         shell: bash
-        run: git fetch && git checkout ${{ steps.extract_branch.outputs.branch }}
+        run: git fetch --depth 1 && git checkout ${{ steps.extract_branch.outputs.branch }}
       - name: "[Code Coverage Report] Upload coverage"
         if: matrix.php-versions == '8.0'
         run: ./bin/ocular code-coverage:upload --format=php-clover clover.xml
