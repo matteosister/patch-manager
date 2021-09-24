@@ -23,9 +23,7 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^0.12.99",
         "phpstan/phpstan-doctrine": "^0.12.44",
-        "phpstan/phpstan-mockery": "^0.12.14",
-        "php-coveralls/php-coveralls": "^2.4",
-        "scrutinizer/ocular": "^1.8"
+        "phpstan/phpstan-mockery": "^0.12.14"
     },
     "autoload": {
         "psr-4": {
