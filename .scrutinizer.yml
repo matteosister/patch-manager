@@ -1,19 +1,29 @@
+build:
+    nodes:
+        analysis:
+            project_setup:
+                override:
+                    - 'true'
+            tests:
+                override:
+                    - php-scrutinizer-run
+                    -
+                        command: phpcs-run
+                        use_website_config: true
+        tests: true
+
+checks:
+    php: true
+coding_style:
+    php: {  }
+
 tools:
-    php_sim: true
-    php_pdepend: true
     php_analyzer: true
-    php_code_sniffer:
-        config:
-            standard: PSR2
     php_changetracking: true
-    php_cs_fixer:
-        config: { level: psr2 }
-    php_mess_detector: true
-    sensiolabs_security_checker: true
     external_code_coverage:
         timeout: 600
+
 filter:
     excluded_paths:
-        - 'spec/*'
         - 'tests/*'
-        - 'examples/*'
+        - 'vendor/*'
