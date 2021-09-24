@@ -1,6 +1,6 @@
 name: Test
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   test:
@@ -43,9 +43,13 @@ jobs:
         if: matrix.php-versions == '8.0'
         shell: bash
         run: git fetch --depth 1 && git checkout ${{ steps.extract_branch.outputs.branch }}
-      - name: "[Code Coverage Report] Upload coverage"
-        if: matrix.php-versions == '8.0'
-        run: git fetch --depth 1 && git checkout ${{ steps.extract_branch.outputs.branch }} && ./bin/ocular code-coverage:upload --format=php-clover clover.xml
+      - name: "Upload Scrutinizer coverage"
+        uses: sudo-bot/action-scrutinizer@latest
+        with:
+          cli-args: "--format=php-clover clover.xml"
+#      - name: "[Code Coverage Report] Upload coverage"
+#        if: matrix.php-versions == '8.0'
+#        run: git fetch --depth 1 && git checkout ${{ steps.extract_branch.outputs.branch }} && ./bin/ocular code-coverage:upload --format=php-clover clover.xml
 #      - name: "[Coveralls] Send report"
 #        if: matrix.php-versions == '8.0'
 #        run: ./bin/php-coveralls -v -x clover.xml -o coveralls-upload.json
