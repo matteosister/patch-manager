@@ -2,9 +2,10 @@
 
 namespace Cypress\PatchManager\Handler;
 
-use Finite\Factory\FactoryInterface;
 use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\Patchable;
 use Cypress\PatchManager\PatchOperationHandler;
+use Finite\Factory\FactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FiniteHandler implements PatchOperationHandler
@@ -12,7 +13,7 @@ class FiniteHandler implements PatchOperationHandler
     /**
      * @var FactoryInterface
      */
-    private $factoryInterface;
+    private FactoryInterface $factoryInterface;
 
     /**
      * @param FactoryInterface $factoryInterface
@@ -23,14 +24,14 @@ class FiniteHandler implements PatchOperationHandler
     }
 
     /**
-     * @param mixed $subject
+     * @param Patchable $subject
      * @param OperationData $operationData
      */
-    public function handle($subject, OperationData $operationData)
+    public function handle(Patchable $subject, OperationData $operationData): void
     {
         $sm = $this->factoryInterface->get($subject);
         $transition = $operationData->get('transition')->get();
-        if ($operationData->get('check')->get() && ! $sm->can($transition)) {
+        if ($operationData->get('check')->get() && !$sm->can($transition)) {
             return;
         }
         $sm->apply($transition);
@@ -41,7 +42,7 @@ class FiniteHandler implements PatchOperationHandler
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'sm';
     }
@@ -53,21 +54,21 @@ class FiniteHandler implements PatchOperationHandler
      *
      * @param OptionsResolver $optionsResolver
      */
-    public function configureOptions(OptionsResolver $optionsResolver)
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver
-            ->setRequired(array('transition'))
-            ->setDefined(array('check'))
-            ->setDefaults(array('check' => false));
+            ->setRequired(['transition'])
+            ->setDefined(['check'])
+            ->setDefaults(['check' => false]);
     }
 
     /**
-     * wether the handler is able to handle the given subject
+     * whether the handler is able to handle the given subject
      *
-     * @param $subject
+     * @param Patchable $subject
      * @return bool
      */
-    public function canHandle($subject)
+    public function canHandle(Patchable $subject): bool
     {
         return true;
     }

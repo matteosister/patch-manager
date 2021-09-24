@@ -18,7 +18,7 @@ Install with composer
 ``` json
 {
     "require": {
-        "cypresslab/patch-manager": "1.0.*@dev"
+        "cypresslab/patch-manager": "^2.0"
     }
 }
 ```
@@ -43,3 +43,8 @@ And let you **patch entire collections** with multiple operations
 
 Still interested? [Head over to the wiki...](https://github.com/matteosister/patch-manager/wiki) for documentation
 
+## Useful commands for development
+
+- `composer format`: runs php-cs-fixer
+- `composer analyse`: runs phpstan for static analysis
+- `composer test`: runs phpunit

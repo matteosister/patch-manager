@@ -13,14 +13,14 @@ interface PatchOperationHandler
      * @param OperationData $operationData
      * @return void
      */
-    public function handle($subject, OperationData $operationData);
+    public function handle(Patchable $subject, OperationData $operationData): void;
 
     /**
      * the operation name
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * use the OptionResolver instance to configure the required and optional fields that needs to be passed
@@ -30,13 +30,13 @@ interface PatchOperationHandler
      * @param OptionsResolver $optionsResolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $optionsResolver);
+    public function configureOptions(OptionsResolver $optionsResolver): void;
 
     /**
      * whether the handler is able to handle the given subject
      *
-     * @param $subject
+     * @param Patchable $subject
      * @return bool
      */
-    public function canHandle($subject);
+    public function canHandle(Patchable $subject): bool;
 }

@@ -1,0 +1,15 @@
+includes:
+        - vendor/phpstan/phpstan-doctrine/extension.neon
+        - vendor/phpstan/phpstan-mockery/extension.neon
+
+parameters:
+    level: 6 #https://phpstan.org/user-guide/rule-levels
+    paths:
+        - src
+        - tests
+    checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        - '#no value type specified in iterable type#'
+        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)#'
+        - '#Call to an undefined method Prophecy\\Prophecy#'
+        - '#Method Cypress\\PatchManager\\OperationMatcher::getUnmatchedOperations\(\) should return PhpCollection\\Sequence but returns PhpCollection\\CollectionInterface#'

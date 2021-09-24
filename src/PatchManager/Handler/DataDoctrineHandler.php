@@ -2,17 +2,18 @@
 
 namespace Cypress\PatchManager\Handler;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Cypress\PatchManager\OperationData;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Doctrine\Common\Persistence\Proxy;
+use Cypress\PatchManager\Patchable;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Proxy;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class DataDoctrineHandler extends DataHandler
 {
     /**
      * @var EntityManagerInterface
      */
-    private $entityManagerInterface;
+    private EntityManagerInterface $entityManagerInterface;
 
     /**
      * @param EntityManagerInterface $entityManagerInterface
@@ -23,12 +24,17 @@ class DataDoctrineHandler extends DataHandler
     }
 
     /**
-     * @param mixed $subject
+     * @param Patchable $subject
      * @param OperationData $operationData
+     * @throws \Doctrine\Persistence\Mapping\MappingException
+     * @throws \ReflectionException
      */
-    public function handle($subject, OperationData $operationData)
+    public function handle(Patchable $subject, OperationData $operationData): void
     {
-        $pa = new PropertyAccessor($this->magicCall);
+        $propertyAccessorBuilder = PropertyAccess::createPropertyAccessorBuilder();
+        $propertyAccessorBuilder = $this->magicCall ? $propertyAccessorBuilder->enableMagicCall() : $propertyAccessorBuilder;
+
+        $propertyAccessor = $propertyAccessorBuilder->getPropertyAccessor();
         $property = $operationData->get('property')->get();
         $value = $operationData->get('value')->get();
         if ($this->isEntity($subject)) {
@@ -44,22 +50,22 @@ class DataDoctrineHandler extends DataHandler
                 $value = new \DateTime($value);
             }
         }
-        $pa->setValue($subject, $property, $value);
+        $propertyAccessor->setValue($subject, $property, $value);
     }
 
     /**
-     * @param string|object $class
+     * @param object|string $class
      *
-     * @return boolean
+     * @return bool
      */
-    private function isEntity($class)
+    private function isEntity($class): bool
     {
         if (is_object($class)) {
-            $class = ($class instanceof Proxy)
-                ? get_parent_class($class)
-                : get_class($class);
-            return ! $this->entityManagerInterface->getMetadataFactory()->isTransient($class);
+            $class = $class instanceof Proxy ? get_parent_class($class) : get_class($class);
+
+            return !$this->entityManagerInterface->getMetadataFactory()->isTransient($class);
         }
+
         return false;
     }
 }

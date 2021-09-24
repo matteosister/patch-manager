@@ -12,11 +12,12 @@ class PatchManagerBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
-        $container->registerForAutoconfiguration(PatchOperationHandler::class)
-            ->addTag('patch_manager.handler')
-        ;
+        $container
+            ->registerForAutoconfiguration(PatchOperationHandler::class)
+            ->addTag('patch_manager.handler');
+
         $container->addCompilerPass(new PatchManagerCompilerPass());
     }
 }

@@ -7,33 +7,33 @@ use PhpCollection\Sequence;
 
 class OperationDataTest extends PatchManagerTestCase
 {
-    public function test_getOp_with_empty_data()
+    public function testGetOpWithEmptyData(): void
     {
         $od = new OperationData();
         $this->assertNull($od->getOp()->getOrElse(null));
     }
 
-    public function test_getOp_with_data()
+    public function testGetOpWithData(): void
     {
-        $od = new OperationData(array('op' => 'data'));
+        $od = new OperationData(['op' => 'data']);
         $this->assertEquals('data', $od->getOp()->getOrElse(null));
     }
 
-    public function test_getData_with_empty_data()
+    public function testGetDataWithEmptyData(): void
     {
         $od = new OperationData();
         $this->assertTrue($od->getData()->isEmpty());
     }
 
-    public function test_getData_with_op_only()
+    public function testGetDataWithOpOnly(): void
     {
-        $od = new OperationData(array('op' => 'data'));
+        $od = new OperationData(['op' => 'data']);
         $this->assertTrue($od->getData()->isEmpty());
     }
 
-    public function test_getData_with_data()
+    public function testGetDataWithData(): void
     {
-        $od = new OperationData(array('op' => 'data', 'test' => 1, 'test2' => '2'));
+        $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertFalse($od->getData()->isEmpty());
         $this->assertInstanceOf('PhpCollection\Map', $od->getData());
         $this->assertCount(2, $od->getData());
@@ -44,23 +44,22 @@ class OperationDataTest extends PatchManagerTestCase
     }
 
     /**
-     * @param $expected
-     * @param $requiredKeys
-     *
      * @dataProvider diffKeysProvider
+     * @param mixed $expected
+     * @param mixed $requiredKeys
      */
-    public function test_diffKeys($expected, $requiredKeys)
+    public function testDiffKeys($expected, $requiredKeys): void
     {
-        $od = new OperationData(array('op' => 'data', 'test' => 1, 'test2' => '2'));
+        $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertEquals($expected, $od->diffKeys($requiredKeys));
     }
 
-    public function diffKeysProvider()
+    public function diffKeysProvider(): array
     {
-        return array(
-            array(new Sequence(), array('test', 'test2')),
-            array(new Sequence(array('test')), array('test2')),
-            array(new Sequence(array('test')), array('test2')),
-        );
+        return [
+            [new Sequence(), ['test', 'test2']],
+            [new Sequence(['test']), ['test2']],
+            [new Sequence(['test']), ['test2']],
+        ];
     }
 }

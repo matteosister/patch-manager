@@ -4,7 +4,6 @@ namespace Cypress\PatchManager;
 
 use Cypress\PatchManager\Request\Operations;
 use PhpCollection\Sequence;
-use PhpOption\Option;
 
 /**
  * Match the correct handlers based on actual operations
@@ -14,12 +13,12 @@ class OperationMatcher
     /**
      * @var Sequence
      */
-    private $handlers;
+    private Sequence $handlers;
 
     /**
      * @var Operations
      */
-    private $operations;
+    private Operations $operations;
 
     /**
      * @param Operations $operations
@@ -33,31 +32,29 @@ class OperationMatcher
     /**
      * @param PatchOperationHandler $handler
      */
-    public function addHandler(PatchOperationHandler $handler)
+    public function addHandler(PatchOperationHandler $handler): void
     {
         $this->handlers->add($handler);
     }
 
     /**
-     * @param $subject
-     *
-     * @return Sequence
+     * @param array|Patchable|\Traversable $subject a Patchable instance or a collection of instances
      *
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
+     * @throws Exception\InvalidJsonRequestContent
+     * @return Sequence
      */
-    public function getMatchedOperations($subject)
+    public function getMatchedOperations($subject): Sequence
     {
         $handlers = $this->handlers;
+
         return $this->operations
             ->all()
             ->foldLeft(
                 new Sequence(),
                 function (Sequence $matchedOperations, array $operationData) use ($handlers, $subject) {
-                    /** @var Option $handler */
-                    $handler = $handlers->find(function (PatchOperationHandler $handler) use ($operationData) {
-                        return $operationData[Operations::OP_KEY_NAME] === $handler->getName();
-                    });
+                    $handler = $handlers->find(fn (PatchOperationHandler $patchHandler) => $operationData[Operations::OP_KEY_NAME] === $patchHandler->getName());
                     if ($handler->isDefined()) {
                         /** @var PatchOperationHandler $patchOperationHandler */
                         $patchOperationHandler = $handler->get();
@@ -65,29 +62,24 @@ class OperationMatcher
                             $matchedOperations->add(MatchedPatchOperation::create($operationData, $handler->get()));
                         }
                     }
+
                     return $matchedOperations;
                 }
             );
     }
 
     /**
-     * @param $subject
-     *
-     * @return Sequence
-     *
+     * @param array|Patchable|\Traversable $subject a Patchable instance or a collection of instances
+     * @throws Exception\InvalidJsonRequestContent
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
+     * @return Sequence
      */
-    public function getUnmatchedOperations($subject)
+    public function getUnmatchedOperations($subject): Sequence
     {
-        $matchedOperations = $this->getMatchedOperations($subject);
         return $this->operations
             ->all()
-            ->filter(function (array $operationData) use ($matchedOperations) {
-                return $operationData !== $matchedOperations;
-            })
-            ->map(function (array $operationData) {
-                return $operationData['op'];
-            });
+            ->filter(fn (array $operationData) => $operationData !== $this->getMatchedOperations($subject))
+            ->map(fn (array $operationData) => $operationData['op']);
     }
 }

@@ -9,12 +9,12 @@ class MatchedPatchOperation
     /**
      * @var array
      */
-    private $operationData;
+    private array $operationData;
 
     /**
      * @var PatchOperationHandler
      */
-    private $handler;
+    private PatchOperationHandler $handler;
 
     /**
      * @param array $operationData
@@ -31,7 +31,7 @@ class MatchedPatchOperation
      * @param PatchOperationHandler $handler
      * @return MatchedPatchOperation
      */
-    public static function create(array $operationData, PatchOperationHandler $handler)
+    public static function create(array $operationData, PatchOperationHandler $handler): MatchedPatchOperation
     {
         return new self($operationData, $handler);
     }
@@ -40,7 +40,7 @@ class MatchedPatchOperation
      * @param string $operationName
      * @return bool
      */
-    public function matchFor($operationName)
+    public function matchFor(string $operationName): bool
     {
         return $operationName === $this->handler->getName();
     }
@@ -50,10 +50,10 @@ class MatchedPatchOperation
      *
      * @param Patchable $patchable
      */
-    public function process(Patchable $patchable)
+    public function process(Patchable $patchable): void
     {
         $optionResolver = new OptionsResolver();
-        $optionResolver->setRequired(array('op'));
+        $optionResolver->setRequired(['op']);
         $this->handler->configureOptions($optionResolver);
         $options = new OperationData($optionResolver->resolve($this->operationData));
         $this->handler->handle($patchable, $options);

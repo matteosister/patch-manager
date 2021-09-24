@@ -1,23 +1,23 @@
 <?php
 
-
 namespace Cypress\PatchManager;
 
 use Cypress\PatchManager\Request\Operations;
 use PhpCollection\Map;
 use PhpCollection\Sequence;
+use PhpOption\Option;
 
 class OperationData extends Map
 {
-    public function __construct(array $elements = array())
+    public function __construct(array $elements = [])
     {
         parent::__construct($elements);
     }
 
     /**
-     * @return \PhpOption\None|\PhpOption\Some
+     * @return Option
      */
-    public function getOp()
+    public function getOp(): Option
     {
         return $this->get(Operations::OP_KEY_NAME);
     }
@@ -25,12 +25,13 @@ class OperationData extends Map
     /**
      * @return Map
      */
-    public function getData()
+    public function getData(): Map
     {
         $operationData = new Map($this->elements);
         if ($operationData->containsKey(Operations::OP_KEY_NAME)) {
             $operationData->remove(Operations::OP_KEY_NAME);
         }
+
         return $operationData;
     }
 
@@ -38,15 +39,10 @@ class OperationData extends Map
      * @param array $keys
      * @return Sequence
      */
-    public function diffKeys(array $keys)
+    public function diffKeys(array $keys): Sequence
     {
-        return new Sequence(
-            array_filter(
-                $this->getData()->keys(),
-                function ($key) use ($keys) {
-                    return ! in_array($key, $keys);
-                }
-            )
-        );
+        $filtered = array_filter($this->getData()->keys(), fn ($key) => !in_array($key, $keys));
+
+        return new Sequence($filtered);
     }
 }

@@ -4,19 +4,19 @@ namespace Cypress\PatchManager\Event;
 
 use Cypress\PatchManager\MatchedPatchOperation;
 use Cypress\PatchManager\Patchable;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class PatchManagerEvent extends Event
 {
     /**
      * @var MatchedPatchOperation
      */
-    private $matchedPatchOperation;
+    private MatchedPatchOperation $matchedPatchOperation;
 
     /**
      * @var Patchable
      */
-    private $subject;
+    private Patchable $subject;
 
     /**
      * @param MatchedPatchOperation $matchedPatchOperation
@@ -31,7 +31,7 @@ class PatchManagerEvent extends Event
     /**
      * @return MatchedPatchOperation
      */
-    public function getMatchedPatchOperation()
+    public function getMatchedPatchOperation(): MatchedPatchOperation
     {
         return $this->matchedPatchOperation;
     }
@@ -39,7 +39,7 @@ class PatchManagerEvent extends Event
     /**
      * @return Patchable
      */
-    public function getSubject()
+    public function getSubject(): Patchable
     {
         return $this->subject;
     }

@@ -1,18 +1,20 @@
 <?php
 
-namespace Cypress\PatchManager\Bundle\RequestAdapter;
+namespace Cypress\PatchManager\Tests\Bundle\RequestAdapter;
 
+use Cypress\PatchManager\Bundle\RequestAdapter\RequestStackAdapter;
 use Cypress\PatchManager\Request\Operations;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
-use Mockery as m;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackAdapterTest extends PatchManagerTestCase
 {
-    public function test_call()
+    public function testCall(): void
     {
-        $currentRequest = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $currentRequest = $this->prophesize(Request::class);
         $currentRequest->getContent()->willReturn('{"op":"data"}');
-        $requestStack = $this->prophesize('Symfony\Component\HttpFoundation\RequestStack');
+        $requestStack = $this->prophesize(RequestStack::class);
         $requestStack->getCurrentRequest()->willReturn($currentRequest->reveal());
         $adapter = new RequestStackAdapter($requestStack->reveal());
 
@@ -20,6 +22,7 @@ class RequestStackAdapterTest extends PatchManagerTestCase
 
         $this->assertCount(1, $operations->all());
 
+        /** @var array $first */
         $first = $operations->all()->get(0);
         $this->assertEquals('data', $first['op']);
     }

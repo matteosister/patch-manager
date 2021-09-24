@@ -3,30 +3,34 @@
 namespace Cypress\PatchManager\Handler;
 
 use Cypress\PatchManager\OperationData;
+use Cypress\PatchManager\Patchable;
 use Cypress\PatchManager\PatchOperationHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class DataHandler implements PatchOperationHandler
 {
-    protected $magicCall = false;
+    protected bool $magicCall = false;
 
     /**
-     * @param mixed $magicCall
+     * @param bool $magicCall
      */
-    public function useMagicCall($magicCall)
+    public function useMagicCall(bool $magicCall): void
     {
         $this->magicCall = $magicCall;
     }
 
     /**
-     * @param mixed $subject
+     * @param Patchable $subject
      * @param OperationData $operationData
      */
-    public function handle($subject, OperationData $operationData)
+    public function handle(Patchable $subject, OperationData $operationData): void
     {
-        $pa = new PropertyAccessor($this->magicCall);
-        $pa->setValue(
+        $propertyAccessorBuilder = PropertyAccess::createPropertyAccessorBuilder();
+        $propertyAccessorBuilder = $this->magicCall ? $propertyAccessorBuilder->enableMagicCall() : $propertyAccessorBuilder;
+
+        $propertyAccessor = $propertyAccessorBuilder->getPropertyAccessor();
+        $propertyAccessor->setValue(
             $subject,
             $operationData->get('property')->get(),
             $operationData->get('value')->get()
@@ -38,7 +42,7 @@ class DataHandler implements PatchOperationHandler
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'data';
     }
@@ -50,18 +54,18 @@ class DataHandler implements PatchOperationHandler
      *
      * @param OptionsResolver $optionsResolver
      */
-    public function configureOptions(OptionsResolver $optionsResolver)
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $optionsResolver->setRequired(array('property', 'value'));
+        $optionsResolver->setRequired(['property', 'value']);
     }
 
     /**
-     * wether the handler is able to handle the given subject
+     * whether the handler is able to handle the given subject
      *
-     * @param $subject
+     * @param Patchable $subject
      * @return bool
      */
-    public function canHandle($subject)
+    public function canHandle(Patchable $subject): bool
     {
         return true;
     }

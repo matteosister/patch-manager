@@ -3,7 +3,6 @@
 namespace Cypress\PatchManager\Bundle\RequestAdapter;
 
 use Cypress\PatchManager\Request\Adapter;
-use Cypress\PatchManager\Request\Operations;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackAdapter implements Adapter
@@ -11,7 +10,7 @@ class RequestStackAdapter implements Adapter
     /**
      * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * @param RequestStack $requestStack
@@ -27,10 +26,7 @@ class RequestStackAdapter implements Adapter
     public function getRequestBody(): ?string
     {
         $request = $this->requestStack->getCurrentRequest();
-        if (is_null($request)) {
-            return null;
-        }
 
-        return $request->getContent();
+        return is_null($request) ? null : $request->getContent();
     }
 }

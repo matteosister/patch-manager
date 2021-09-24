@@ -3,28 +3,39 @@
 namespace Cypress\PatchManager\Tests;
 
 use Cypress\PatchManager\MatchedPatchOperation;
-use Prophecy\Argument;
+use Cypress\PatchManager\Patchable as PatchableInterface;
+use Cypress\PatchManager\PatchOperationHandler;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 abstract class PatchManagerTestCase extends TestCase
 {
+    use ProphecyTrait;
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        m::close();
+    }
+
     /**
-     * @param null $name
+     * @param null|string $name
      * @param bool $canHandle
      *
      * @return \Prophecy\Prophecy\ObjectProphecy
      */
-    protected function mockHandler($name = null, $canHandle = true)
+    protected function mockHandler(?string $name, bool $canHandle = true)
     {
-        $handler = $this->prophesize('Cypress\PatchManager\PatchOperationHandler');
-        if (! is_null($name)) {
+        $handler = $this->prophesize(PatchOperationHandler::class);
+        if (!is_null($name)) {
             $handler->getName()->willReturn($name);
         }
-        //$handler->getRequiredKeys()->willReturn(array());
-        $handler->configureOptions(Argument::any())->willReturn(array());
-        $handler->canHandle("test")->willReturn($canHandle);
-        $handler->handle("test", Argument::any())->willReturn();
+        $handler->configureOptions(Argument::any());
+        $handler->canHandle(Argument::type(PatchableInterface::class))->willReturn($canHandle);
+        $handler->handle(Argument::type(PatchableInterface::class), Argument::any());
+
         return $handler;
     }
 
@@ -32,14 +43,8 @@ abstract class PatchManagerTestCase extends TestCase
      * @param null $handlerName
      * @return MatchedPatchOperation
      */
-    protected function getMatchedPatchOperation($handlerName = null)
+    protected function getMatchedPatchOperation($handlerName = null): MatchedPatchOperation
     {
-        return MatchedPatchOperation::create(array(), $this->mockHandler($handlerName));
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-        m::close();
+        return MatchedPatchOperation::create([], $this->mockHandler($handlerName)->reveal());
     }
 }
