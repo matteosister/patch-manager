@@ -34,12 +34,7 @@ jobs:
         run: (test -d vendor && echo vendor directory exists) || composer install --prefer-dist --no-progress --no-suggest
       - name: Run PHPUnit
         run: ./bin/phpunit --coverage-text --coverage-clover clover.xml
-      - name: "[Code Coverage Report] Extract branch name"
-        if: matrix.php-versions == '8.0'
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-      - name: "Upload Scrutinizer coverage"
+      - name: Upload Scrutinizer coverage
         if: matrix.php-versions == '8.0'
         uses: sudo-bot/action-scrutinizer@latest
         with:
