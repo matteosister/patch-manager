@@ -44,19 +44,6 @@ class PatchManagerTest extends PatchManagerTestCase
         $this->patchManager->setEventDispatcherInterface($this->eventDispatcher->reveal());
     }
 
-    public function testHandleWithoutRequiredKeys(): void
-    {
-        $this->expectException(MissingOptionsException::class);
-        $this->eventDispatcher->dispatch(
-            Argument::type(PatchManagerEvent::class),
-            Argument::containingString("patch_manager.")
-        )->shouldBeCalled();
-        $mpo = MatchedPatchOperation::create(['op' => 'data', 'property' => 'a'], new DataHandler());
-        $this->operationMatcher->getMatchedOperations(Argument::any())
-            ->willReturn(new Sequence([$mpo]));
-        $this->patchManager->handle(new SubjectA());
-    }
-
     public function testStrictMode(): void
     {
         $this->expectException(HandlerNotFoundException::class);
