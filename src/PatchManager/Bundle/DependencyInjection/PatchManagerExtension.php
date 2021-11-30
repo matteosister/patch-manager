@@ -54,34 +54,10 @@ class PatchManagerExtension extends Extension
         if (!is_null($config['alias'])) {
             $container->setAlias($config['alias'], 'patch_manager');
         }
-        if (array_key_exists('data', $config['handlers'])) {
-            $this->handleData($config, $loaderHandlers, $container);
-        }
         if (array_key_exists('state_machine', $config['handlers'])) {
             $this->handleStateMachine($loaderHandlers, $container);
         }
         $container->setParameter('patch_manager.strict_mode', $config['strict_mode']);
-    }
-
-    /**
-     * @param array $config
-     * @param Loader\XmlFileLoader $loaderHandlers
-     * @param ContainerBuilder $container
-     */
-    private function handleData(array $config, Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container): void
-    {
-        if ($config['handlers']['data']['doctrine']) {
-            $loaderHandlers->load('data_doctrine.xml');
-            $doctrineEMName = sprintf('doctrine.orm.%s_entity_manager', $config['handlers']['data']['entity_manager']);
-            $dataDoctrineDefinition = $container->getDefinition('patch_manager.handler.data');
-            $dataDoctrineDefinition->addArgument(
-                new Reference($doctrineEMName)
-            );
-        } else {
-            $loaderHandlers->load('data.xml');
-        }
-        $dataHandlerDefinition = $container->getDefinition('patch_manager.handler.data');
-        $dataHandlerDefinition->addTag('patch_manager.handler');
     }
 
     /**
