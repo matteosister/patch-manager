@@ -12,4 +12,5 @@ parameters:
         - '#no value type specified in iterable type#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)#'
         - '#Call to an undefined method Prophecy\\Prophecy#'
-        - '#Method Cypress\\PatchManager\\OperationMatcher::getUnmatchedOperations\(\) should return PhpCollection\\Sequence but returns PhpCollection\\CollectionInterface#'
+        - '#Method Cypress\\PatchManager\\OperationMatcher::getUnmatchedOperations\(\) should return PhpCollection\\Sequence but returns PhpCollection\\AbstractSequence#'
+        - '#Property Cypress\\PatchManager\\Tests\\FakeObjects\\Subject(A|B)::\$a is never read, only written#'

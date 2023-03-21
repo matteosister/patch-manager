@@ -14,7 +14,7 @@ class PatchManagerBundleTest extends PatchManagerTestCase
     public function testBuild(): void
     {
         $cb = $this->prophesize(ContainerBuilder::class);
-        $cb->addCompilerPass(new PatchManagerCompilerPass())->shouldBeCalled();
+        $cb->addCompilerPass(new PatchManagerCompilerPass())->shouldBeCalled()->willReturn($cb->reveal());
         $cb->registerForAutoconfiguration(PatchOperationHandler::class)->shouldBeCalled()->willReturn(new ChildDefinition(''));
         $bundle = new PatchManagerBundle();
         $bundle->build($cb->reveal());
