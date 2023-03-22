@@ -3,7 +3,7 @@ Patch Manager
 [![PHP Version](https://img.shields.io/packagist/php-v/cypresslab/patch-manager/dev-master)](https://packagist.org/packages/cypresslab/patch-manager)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/matteosister/patch-manager/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/matteosister/patch-manager/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/matteosister/patch-manager/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/matteosister/patch-manager/?branch=master)
-[![Build Status](https://img.shields.io/github/workflow/status/matteosister/patch-manager/Test)](https://github.com/matteosister/patch-manager/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/matteosister/patch-manager/php.yml?branch=master](https://github.com/matteosister/patch-manager/actions)
 [![Packagist Version](https://img.shields.io/packagist/v/cypresslab/patch-manager)](https://packagist.org/packages/cypresslab/patch-manager)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/cypresslab/patch-manager)](https://packagist.org/packages/cypresslab/patch-manager)
 
@@ -17,12 +17,8 @@ A php library to manage PATCH requests in a standardized (and elegant) way
 
 Install with composer
 
-``` json
-{
-    "require": {
-        "cypresslab/patch-manager": "^2.0"
-    }
-}
+```shell
+composer require cypresslab/patch-manager
 ```
 
 The idea for this library comes from this blog post: [Please. Don't Patch Like An Idiot.](http://williamdurand.fr/2014/02/14/please-do-not-patch-like-an-idiot/) by [William Durand](https://github.com/willdurand)
