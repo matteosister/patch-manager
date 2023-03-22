@@ -17,12 +17,8 @@ A php library to manage PATCH requests in a standardized (and elegant) way
 
 Install with composer
 
-``` json
-{
-    "require": {
-        "cypresslab/patch-manager": "^2.0"
-    }
-}
+```shell
+composer require cypresslab/patch-manager
 ```
 
 The idea for this library comes from this blog post: [Please. Don't Patch Like An Idiot.](http://williamdurand.fr/2014/02/14/please-do-not-patch-like-an-idiot/) by [William Durand](https://github.com/willdurand)
