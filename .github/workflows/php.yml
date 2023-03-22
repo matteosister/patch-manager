@@ -17,32 +17,38 @@ jobs:
         php-versions: ['8.0', '8.1', '8.2']
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           # Fetch 10 commits or Scrutinizer will throw ("Failed to retrieve commit parents.
           # If you use a shallow git checkout, please checkout at least a depth of one."),
           # see: RepositoryIntrospector at scrutinizer-ci/ocular GitHub repository
           fetch-depth: 10
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: curl, mbstring, intl, libxml, simplexml
           coverage: xdebug
+
       - name: Get composer cache directory
         id: composer-cache-dir
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
       - name: Cache Composer packages
         id: composer-cache-restore
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache-dir.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
+
       - name: Install dependencies
         run: (test -d vendor && echo vendor directory exists) || composer install --prefer-dist --no-progress --no-suggest
+
       - name: Run PHPUnit
         run: ./bin/phpunit --coverage-text --coverage-clover clover.xml
+
       - name: Upload Scrutinizer coverage
         if: matrix.php-versions == '8.0'
         uses: sudo-bot/action-scrutinizer@latest
