@@ -48,6 +48,10 @@ class Operations
      */
     private function parseJson(?string $string): array
     {
+        if (is_null($string)) {
+            throw new InvalidJsonRequestContent();
+        }
+
         try {
             $json = json_decode($string, associative: true, flags: JSON_THROW_ON_ERROR);
 
