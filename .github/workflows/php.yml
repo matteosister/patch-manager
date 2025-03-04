@@ -69,4 +69,4 @@ jobs:
         if: matrix.php.version == '8.1' && matrix.php.composer_flags == '--prefer-stable'
         uses: sudo-bot/action-scrutinizer@latest
         with:
-          cli-args: "--format=php-clover clover.xml"
+          cli-args: "--format=php-clover clover.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"
