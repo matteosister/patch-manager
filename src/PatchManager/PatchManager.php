@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager;
 
 use Cypress\PatchManager\Event\PatchManagerEvent;
@@ -13,19 +15,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class PatchManager
 {
-    /**
-     * @var OperationMatcher
-     */
     private OperationMatcher $operationMatcher;
 
-    /**
-     * @var EventDispatcherInterface
-     */
     private EventDispatcherInterface $eventDispatcherInterface;
 
-    /**
-     * @var bool
-     */
     private bool $strictMode;
 
     /**
@@ -38,9 +31,6 @@ class PatchManager
         $this->strictMode = $strictMode;
     }
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcherInterface
-     */
     public function setEventDispatcherInterface(EventDispatcherInterface $eventDispatcherInterface): void
     {
         $this->eventDispatcherInterface = $eventDispatcherInterface;
@@ -59,10 +49,6 @@ class PatchManager
         $this->handleSubject($subject, $matchedOperations);
     }
 
-    /**
-     * @param MatchedPatchOperation $matchedPatchOperation
-     * @param Patchable $subject
-     */
     protected function doHandle(MatchedPatchOperation $matchedPatchOperation, Patchable $subject): void
     {
         $event = new PatchManagerEvent($matchedPatchOperation, $subject);
@@ -74,10 +60,6 @@ class PatchManager
 
     /**
      * dispatch events if the eventDispatcher is present
-     *
-     * @param PatchManagerEvent $event
-     * @param string $opName
-     * @param string $type
      */
     protected function dispatchEvents(PatchManagerEvent $event, string $opName, string $type): void
     {
@@ -110,14 +92,14 @@ class PatchManager
     }
 
     /**
-     * @param array|Patchable|\Traversable $subject a Patchable instance or a collection of instances
-     * @param Sequence $matchedOperations
+     * @param array<Patchable>|Patchable|\Traversable<Patchable> $subject a Patchable instance or a collection of instances
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
+     * @throws Exception\InvalidJsonRequestContent
      */
     private function handleSubject($subject, Sequence $matchedOperations): void
     {
-        if (is_array($subject) || $subject instanceof \Traversable) {
+        if (is_iterable($subject)) {
             $this->handleMany($subject);
 
             return;
@@ -129,7 +111,7 @@ class PatchManager
     }
 
     /**
-     * @param array|\Traversable $subjects
+     * @param array<Patchable>|\Traversable<Patchable> $subjects
      * @throws Exception\InvalidJsonRequestContent
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest

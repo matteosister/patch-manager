@@ -38,7 +38,6 @@ return (new PhpCsFixer\Config())
         'phpdoc_types_order' => ['null_adjustment' => 'always_first'],
         'protected_to_private' => true,
         'single_blank_line_at_eof' => true,
-        'single_blank_line_before_namespace' => true,
         'single_line_comment_style' => false,
         'single_line_throw' => false,
         'single_quote' => false,

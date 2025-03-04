@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Request;
 
 /**
@@ -9,8 +11,5 @@ namespace Cypress\PatchManager\Request;
  */
 interface Adapter
 {
-    /**
-     * @return null|string
-     */
     public function getRequestBody(): ?string;
 }

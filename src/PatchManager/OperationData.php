@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager;
 
 use Cypress\PatchManager\Request\Operations;
@@ -9,22 +11,11 @@ use PhpOption\Option;
 
 class OperationData extends Map
 {
-    public function __construct(array $elements = [])
-    {
-        parent::__construct($elements);
-    }
-
-    /**
-     * @return Option
-     */
     public function getOp(): Option
     {
         return $this->get(Operations::OP_KEY_NAME);
     }
 
-    /**
-     * @return Map
-     */
     public function getData(): Map
     {
         $operationData = new Map($this->elements);
@@ -41,7 +32,10 @@ class OperationData extends Map
      */
     public function diffKeys(array $keys): Sequence
     {
-        $filtered = array_filter($this->getData()->keys(), fn ($key) => !in_array($key, $keys));
+        $filtered = array_filter(
+            $this->getData()->keys(),
+            static fn ($key) => !in_array($key, $keys)
+        );
 
         return new Sequence($filtered);
     }

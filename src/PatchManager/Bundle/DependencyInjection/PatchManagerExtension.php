@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Bundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
@@ -17,6 +19,7 @@ class PatchManagerExtension extends Extension
      * @param ContainerBuilder $container A ContainerBuilder instance
      *
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
+     * @throws \Exception
      *
      * @api
      */

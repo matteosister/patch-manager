@@ -1,36 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MatchedPatchOperation
 {
-    /**
-     * @var array
-     */
     private array $operationData;
 
-    /**
-     * @var PatchOperationHandler
-     */
     private PatchOperationHandler $handler;
 
-    /**
-     * @param array $operationData
-     * @param PatchOperationHandler $handler
-     */
     private function __construct(array $operationData, PatchOperationHandler $handler)
     {
         $this->operationData = $operationData;
         $this->handler = $handler;
     }
 
-    /**
-     * @param array $operationData
-     * @param PatchOperationHandler $handler
-     * @return MatchedPatchOperation
-     */
     public static function create(array $operationData, PatchOperationHandler $handler): MatchedPatchOperation
     {
         return new self($operationData, $handler);
@@ -47,8 +34,6 @@ class MatchedPatchOperation
 
     /**
      * call handle on the handler
-     *
-     * @param Patchable $patchable
      */
     public function process(Patchable $patchable): void
     {
@@ -59,10 +44,7 @@ class MatchedPatchOperation
         $this->handler->handle($patchable, $options);
     }
 
-    /**
-     * @return string
-     */
-    public function getOpName()
+    public function getOpName(): string
     {
         return $this->handler->getName();
     }

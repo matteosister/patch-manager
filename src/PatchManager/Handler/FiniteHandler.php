@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Handler;
 
 use Cypress\PatchManager\OperationData;
@@ -10,9 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FiniteHandler implements PatchOperationHandler
 {
-    /**
-     * @var FactoryInterface
-     */
     private FactoryInterface $factoryInterface;
 
     /**
@@ -23,10 +22,6 @@ class FiniteHandler implements PatchOperationHandler
         $this->factoryInterface = $factoryInterface;
     }
 
-    /**
-     * @param Patchable $subject
-     * @param OperationData $operationData
-     */
     public function handle(Patchable $subject, OperationData $operationData): void
     {
         $sm = $this->factoryInterface->get($subject);
@@ -39,8 +34,6 @@ class FiniteHandler implements PatchOperationHandler
 
     /**
      * the operation name
-     *
-     * @return string
      */
     public function getName(): string
     {
