@@ -3,7 +3,7 @@
     "description": "A library to manage patch requests",
     "keywords": ["rest", "patch", "api", "symfony", "bundle"],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-json": "*",
         "symfony/property-access": "^6.0 || ^7.0",
         "symfony/http-foundation": "^6.0 || ^7.0",
