@@ -92,12 +92,12 @@ class PatchManager
     }
 
     /**
-     * @param array<Patchable>|Patchable|\Traversable<Patchable> $subject a Patchable instance or a collection of instances
+     * @param iterable|Patchable $subject a Patchable instance or a collection of instances
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      * @throws Exception\InvalidJsonRequestContent
      */
-    private function handleSubject($subject, Sequence $matchedOperations): void
+    private function handleSubject(Patchable|iterable $subject, Sequence $matchedOperations): void
     {
         if (is_iterable($subject)) {
             $this->handleMany($subject);
@@ -116,7 +116,7 @@ class PatchManager
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      */
-    private function handleMany($subjects): void
+    private function handleMany(iterable $subjects): void
     {
         foreach ($subjects as $subject) {
             foreach ($this->operationMatcher->getMatchedOperations($subject) as $matchedPatchOperation) {

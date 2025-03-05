@@ -11,6 +11,9 @@ use PhpOption\Option;
 
 class OperationData extends Map
 {
+    /**
+     * @return Option<string>
+     */
     public function getOp(): Option
     {
         return $this->get(Operations::OP_KEY_NAME);

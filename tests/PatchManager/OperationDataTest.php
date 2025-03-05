@@ -45,10 +45,6 @@ class OperationDataTest extends PatchManagerTestCase
         $this->assertSame('2', $od->getData()->get('test2')->getOrElse(null));
     }
 
-    /**
-     * @param mixed $expected
-     * @param mixed $requiredKeys
-     */
     #[DataProvider("diffKeysProvider")]
     public function testDiffKeys(Sequence $expected, array $requiredKeys): void
     {
