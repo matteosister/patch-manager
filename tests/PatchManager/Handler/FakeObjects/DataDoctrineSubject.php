@@ -18,7 +18,6 @@ class DataDoctrineSubject implements Patchable
 
     /**
      * @param string $method
-     * @param array $args
      */
     public function __call($method, array $args): void
     {

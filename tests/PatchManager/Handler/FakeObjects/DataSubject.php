@@ -16,10 +16,6 @@ class DataSubject implements Patchable
      */
     private $b;
 
-    /**
-     * @param string $method
-     * @param array $args
-     */
     public function __call(string $method, array $args): void
     {
         if ('setB' === $method) {

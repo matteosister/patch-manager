@@ -4,7 +4,6 @@ namespace Cypress\PatchManager\Tests;
 
 use Cypress\PatchManager\Event\PatchManagerEvent;
 use Cypress\PatchManager\Exception\HandlerNotFoundException;
-use Cypress\PatchManager\Handler\DataHandler;
 use Cypress\PatchManager\MatchedPatchOperation;
 use Cypress\PatchManager\OperationMatcher;
 use Cypress\PatchManager\PatchManager;
@@ -12,7 +11,6 @@ use Cypress\PatchManager\Tests\FakeObjects\SubjectA;
 use PhpCollection\Sequence;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 class PatchManagerTest extends PatchManagerTestCase
 {

@@ -10,12 +10,8 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class PatchManagerCompilerPassTest extends PatchManagerTestCase
 {
-    /** @var ObjectProphecy */
     private ObjectProphecy $cb;
 
-    /**
-     * @var PatchManagerCompilerPass
-     */
     private PatchManagerCompilerPass $compilerPass;
 
     public function setUp(): void

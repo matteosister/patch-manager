@@ -22,7 +22,6 @@ class PatchManager
     private bool $strictMode;
 
     /**
-     * @param OperationMatcher $operationMatcher
      * @param bool $strictMode if true throws an error if no handler is found
      */
     public function __construct(OperationMatcher $operationMatcher, bool $strictMode = false)
@@ -79,7 +78,6 @@ class PatchManager
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      * @throws HandlerNotFoundException
-     * @return Sequence
      */
     private function getMatchedOperations($subject): Sequence
     {

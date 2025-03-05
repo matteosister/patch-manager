@@ -11,14 +11,8 @@ use PhpCollection\Sequence;
 
 class OperationMatcherTest extends PatchManagerTestCase
 {
-    /**
-     * @var OperationMatcher
-     */
     private OperationMatcher $matcher;
 
-    /**
-     * @var Sequence
-     */
     private Sequence $ops;
 
     public function setUp(): void
@@ -100,7 +94,6 @@ class OperationMatcherTest extends PatchManagerTestCase
 
     /**
      * @param string $name
-     * @return \Closure
      */
     private function handlerNameMatcher($name): \Closure
     {

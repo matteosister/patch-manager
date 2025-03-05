@@ -24,7 +24,6 @@ class Operations
      * @throws InvalidJsonRequestContent
      * @throws MissingOperationNameRequest
      * @throws MissingOperationRequest
-     * @return Sequence
      */
     public function all(): Sequence
     {
@@ -66,10 +65,6 @@ class Operations
         }
     }
 
-    /**
-     * @param array $operations
-     * @return Sequence
-     */
     private function toSequence(array $operations): Sequence
     {
         $operations = $this->isAssociative($operations) ? [$operations] : $operations;

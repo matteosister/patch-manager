@@ -23,10 +23,6 @@ class MatchedPatchOperation
         return new self($operationData, $handler);
     }
 
-    /**
-     * @param string $operationName
-     * @return bool
-     */
     public function matchFor(string $operationName): bool
     {
         return $operationName === $this->handler->getName();

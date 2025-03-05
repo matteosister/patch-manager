@@ -22,7 +22,7 @@ return (new PhpCsFixer\Config())
         'no_singleline_whitespace_before_semicolons' => true,
         'no_spaces_after_function_name' => true,
         'no_spaces_around_offset' => true,
-        'no_superfluous_phpdoc_tags' => false,
+        'no_superfluous_phpdoc_tags' => ['allow_mixed' => true, 'remove_inheritdoc' => false, 'allow_unused_params' => true],
         'no_unused_imports' => true,
         'no_useless_else' => true,
         'no_whitespace_before_comma_in_array' => true,
