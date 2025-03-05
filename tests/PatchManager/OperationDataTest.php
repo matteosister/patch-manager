@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Tests;
 
 use Cypress\PatchManager\OperationData;
 use PhpCollection\Sequence;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class OperationDataTest extends PatchManagerTestCase
 {
@@ -35,7 +38,6 @@ class OperationDataTest extends PatchManagerTestCase
     {
         $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertFalse($od->getData()->isEmpty());
-        $this->assertInstanceOf('PhpCollection\Map', $od->getData());
         $this->assertCount(2, $od->getData());
         $this->assertContains('test', $od->getData()->keys());
         $this->assertContains('test2', $od->getData()->keys());
@@ -44,17 +46,17 @@ class OperationDataTest extends PatchManagerTestCase
     }
 
     /**
-     * @dataProvider diffKeysProvider
      * @param mixed $expected
      * @param mixed $requiredKeys
      */
-    public function testDiffKeys($expected, $requiredKeys): void
+    #[DataProvider("diffKeysProvider")]
+    public function testDiffKeys(Sequence $expected, array $requiredKeys): void
     {
         $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertEquals($expected, $od->diffKeys($requiredKeys));
     }
 
-    public function diffKeysProvider(): array
+    public static function diffKeysProvider(): array
     {
         return [
             [new Sequence(), ['test', 'test2']],

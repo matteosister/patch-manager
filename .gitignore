@@ -8,3 +8,4 @@ composer.lock
 /.coveralls.yml
 /clover.xml
 /coveralls-upload.json
+/rector.php
