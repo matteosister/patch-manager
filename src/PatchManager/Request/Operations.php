@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Request;
 
 use Cypress\PatchManager\Exception\InvalidJsonRequestContent;
@@ -11,14 +13,8 @@ class Operations
 {
     public const OP_KEY_NAME = 'op';
 
-    /**
-     * @var Adapter
-     */
     private Adapter $adapter;
 
-    /**
-     * @param Adapter $adapter
-     */
     public function __construct(Adapter $adapter)
     {
         $this->adapter = $adapter;
@@ -28,7 +24,6 @@ class Operations
      * @throws InvalidJsonRequestContent
      * @throws MissingOperationNameRequest
      * @throws MissingOperationRequest
-     * @return Sequence
      */
     public function all(): Sequence
     {
@@ -47,17 +42,19 @@ class Operations
     }
 
     /**
-     * @param string $string
      * @throws InvalidJsonRequestContent
      * @throws MissingOperationRequest
-     * @return array
      */
     private function parseJson(?string $string): array
     {
-        try {
-            $json = json_decode($string, true, 512, JSON_THROW_ON_ERROR);
+        if (is_null($string)) {
+            throw new InvalidJsonRequestContent();
+        }
 
-            //we need this control because json_decode('2', true, 512, JSON_THROW_ON_ERROR) returns a valid result: int(2)
+        try {
+            $json = json_decode($string, associative: true, flags: JSON_THROW_ON_ERROR);
+
+            // we need this control because json_decode('2', true, 512, JSON_THROW_ON_ERROR) returns a valid result: int(2)
             if (!is_array($json)) {
                 throw new MissingOperationRequest();
             }
@@ -68,10 +65,6 @@ class Operations
         }
     }
 
-    /**
-     * @param array $operations
-     * @return Sequence
-     */
     private function toSequence(array $operations): Sequence
     {
         $operations = $this->isAssociative($operations) ? [$operations] : $operations;
@@ -79,11 +72,7 @@ class Operations
         return new Sequence($operations);
     }
 
-    /**
-     * @param array $arr
-     * @return bool
-     */
-    private function isAssociative($arr): bool
+    private function isAssociative(array $arr): bool
     {
         return array_keys($arr) !== range(0, count($arr) - 1);
     }

@@ -10,11 +10,23 @@ on:
 jobs:
   test:
 
-    name: Test PHP ${{ matrix.php-versions }}
+    name: Test PHP ${{ matrix.php.version }} ${{ matrix.php.composer_flags }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0', '8.1', '8.2']
+        php:
+          - version: '8.2'
+            composer_flags: --prefer-lowest
+          - version: '8.3'
+            composer_flags: --prefer-lowest
+          - version: '8.4'
+            composer_flags: --prefer-lowest
+          - version: '8.2'
+            composer_flags: --prefer-stable
+          - version: '8.3'
+            composer_flags: --prefer-stable
+          - version: '8.4'
+            composer_flags: --prefer-stable
 
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +39,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php.version }}
           extensions: curl, mbstring, intl, libxml, simplexml
           coverage: xdebug
 
@@ -40,17 +52,17 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ matrix.php.composer_flags }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-${{ matrix.php.composer_flags }}-
 
       - name: Install dependencies
-        run: (test -d vendor && echo vendor directory exists) || composer install --prefer-dist --no-progress --no-suggest
+        run: (test -d vendor && echo vendor directory exists) || composer update ${{ matrix.php.composer_flags }} --no-progress --no-suggest
 
       - name: Run PHPUnit
         run: ./bin/phpunit --coverage-text --coverage-clover clover.xml
 
       - name: Upload Scrutinizer coverage
-        if: matrix.php-versions == '8.0'
+        if: matrix.php.version == '8.2' && matrix.php.composer_flags == '--prefer-stable'
         uses: sudo-bot/action-scrutinizer@latest
         with:
-          cli-args: "--format=php-clover clover.xml"
+          cli-args: "--format=php-clover clover.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"

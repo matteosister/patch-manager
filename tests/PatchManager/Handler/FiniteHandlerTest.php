@@ -15,14 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FiniteHandlerTest extends PatchManagerTestCase
 {
-    /**
-     * @var FiniteHandler
-     */
     private FiniteHandler $handler;
 
-    /**
-     * @var StateMachine
-     */
     private StateMachine $stateMachine;
 
     public function setUp(): void

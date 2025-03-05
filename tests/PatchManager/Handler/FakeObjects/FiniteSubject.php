@@ -7,9 +7,6 @@ use Finite\StatefulInterface;
 
 class FiniteSubject implements StatefulInterface, Patchable
 {
-    /**
-     * @var string
-     */
     private string $state;
 
     public function __construct()
@@ -19,8 +16,6 @@ class FiniteSubject implements StatefulInterface, Patchable
 
     /**
      * Sets the object state
-     *
-     * @return string
      */
     public function getFiniteState(): string
     {

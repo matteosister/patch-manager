@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Bundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
@@ -17,6 +19,7 @@ class PatchManagerExtension extends Extension
      * @param ContainerBuilder $container A ContainerBuilder instance
      *
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
+     * @throws \Exception
      *
      * @api
      */
@@ -34,11 +37,6 @@ class PatchManagerExtension extends Extension
         $this->handleGenericConfig($config, $container, $loaderHandlers);
     }
 
-    /**
-     * @param array $config
-     * @param ContainerBuilder $container
-     * @param Loader\XmlFileLoader $loaderHandlers
-     */
     private function handleGenericConfig(
         array $config,
         ContainerBuilder $container,
@@ -60,10 +58,6 @@ class PatchManagerExtension extends Extension
         $container->setParameter('patch_manager.strict_mode', $config['strict_mode']);
     }
 
-    /**
-     * @param Loader\XmlFileLoader $loaderHandlers
-     * @param ContainerBuilder $container
-     */
     private function handleStateMachine(Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container): void
     {
         if (!interface_exists('Finite\Factory\FactoryInterface')) {

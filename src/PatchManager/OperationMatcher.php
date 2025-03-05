@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager;
 
 use Cypress\PatchManager\Request\Operations;
@@ -10,28 +12,16 @@ use PhpCollection\Sequence;
  */
 class OperationMatcher
 {
-    /**
-     * @var Sequence
-     */
     private Sequence $handlers;
 
-    /**
-     * @var Operations
-     */
     private Operations $operations;
 
-    /**
-     * @param Operations $operations
-     */
     public function __construct(Operations $operations)
     {
         $this->handlers = new Sequence();
         $this->operations = $operations;
     }
 
-    /**
-     * @param PatchOperationHandler $handler
-     */
     public function addHandler(PatchOperationHandler $handler): void
     {
         $this->handlers->add($handler);
@@ -43,7 +33,6 @@ class OperationMatcher
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      * @throws Exception\InvalidJsonRequestContent
-     * @return Sequence
      */
     public function getMatchedOperations($subject): Sequence
     {
@@ -73,7 +62,6 @@ class OperationMatcher
      * @throws Exception\InvalidJsonRequestContent
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
-     * @return Sequence
      */
     public function getUnmatchedOperations($subject): Sequence
     {

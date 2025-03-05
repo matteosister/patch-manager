@@ -21,9 +21,6 @@ abstract class PatchManagerTestCase extends TestCase
     }
 
     /**
-     * @param null|string $name
-     * @param bool $canHandle
-     *
      * @return \Prophecy\Prophecy\ObjectProphecy
      */
     protected function mockHandler(?string $name, bool $canHandle = true)
@@ -41,7 +38,6 @@ abstract class PatchManagerTestCase extends TestCase
 
     /**
      * @param null $handlerName
-     * @return MatchedPatchOperation
      */
     protected function getMatchedPatchOperation($handlerName = null): MatchedPatchOperation
     {
