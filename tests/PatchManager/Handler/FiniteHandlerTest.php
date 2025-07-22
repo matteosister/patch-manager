@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Tests\Handler;
 
 use Cypress\PatchManager\Handler\FiniteHandler;
