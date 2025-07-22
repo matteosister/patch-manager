@@ -8,16 +8,12 @@ use Cypress\PatchManager\MatchedPatchOperation;
 use Cypress\PatchManager\Patchable;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class PatchManagerEvent extends Event
+abstract class PatchManagerEvent extends Event
 {
-    private MatchedPatchOperation $matchedPatchOperation;
-
-    private Patchable $subject;
-
-    public function __construct(MatchedPatchOperation $matchedPatchOperation, Patchable $subject)
-    {
-        $this->matchedPatchOperation = $matchedPatchOperation;
-        $this->subject = $subject;
+    public function __construct(
+        private readonly MatchedPatchOperation $matchedPatchOperation,
+        private readonly Patchable $subject
+    ) {
     }
 
     public function getMatchedPatchOperation(): MatchedPatchOperation

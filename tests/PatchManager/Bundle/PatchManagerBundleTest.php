@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Tests\Bundle;
 
 use Cypress\PatchManager\Bundle\DependencyInjection\PatchManagerCompilerPass;
 use Cypress\PatchManager\Bundle\PatchManagerBundle;
 use Cypress\PatchManager\PatchOperationHandler;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PatchManagerBundleTest extends PatchManagerTestCase
 {
-    public function testBuild(): void
+    #[Test]
+    public function buildShouldSucceed(): void
     {
         $cb = $this->prophesize(ContainerBuilder::class);
         $cb->addCompilerPass(new PatchManagerCompilerPass())->shouldBeCalled()->willReturn($cb->reveal());

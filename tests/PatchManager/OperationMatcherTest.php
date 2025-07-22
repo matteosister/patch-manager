@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Tests;
 
 use Cypress\PatchManager\MatchedPatchOperation;
@@ -8,6 +10,7 @@ use Cypress\PatchManager\Request\Operations;
 use Cypress\PatchManager\Tests\FakeObjects\SubjectA;
 use Mockery as m;
 use PhpCollection\Sequence;
+use PHPUnit\Framework\Attributes\Test;
 
 class OperationMatcherTest extends PatchManagerTestCase
 {
@@ -21,23 +24,26 @@ class OperationMatcherTest extends PatchManagerTestCase
         $operations = m::mock(Operations::class);
         $this->ops = new Sequence();
         $this->ops->add(['op' => 'data']);
-        $operations->shouldReceive('all')->andReturn($this->ops)->byDefault();
+        $operations->allows('all')->andReturns($this->ops)->byDefault();
         $this->matcher = new OperationMatcher($operations);
     }
 
-    public function testGetMatchedOperationsWithoutHandlers(): void
+    #[Test]
+    public function getMatchedOperationsWithoutHandlers(): void
     {
         $this->assertEquals(new Sequence(), $this->matcher->getMatchedOperations(new SubjectA()));
     }
 
-    public function testGetMatchedOperationsWithHandlerNotMatching(): void
+    #[Test]
+    public function getMatchedOperationsWithHandlerNotMatching(): void
     {
         $this->matcher->addHandler($this->mockHandler('method')->reveal());
         $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
         $this->assertCount(0, $this->matcher->getMatchedOperations(new SubjectA()));
     }
 
-    public function testGetMatchedOperationsWithMatchingHandler(): void
+    #[Test]
+    public function getMatchedOperationsWithMatchingHandler(): void
     {
         $this->matcher->addHandler($this->mockHandler('data')->reveal());
         $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
@@ -49,7 +55,8 @@ class OperationMatcherTest extends PatchManagerTestCase
         );
     }
 
-    public function testGetMatchedOperationsWithMultipleOperationsMatching(): void
+    #[Test]
+    public function getMatchedOperationsWithMultipleOperationsMatching(): void
     {
         $this->ops->add(['op' => 'data']);
         $this->matcher->addHandler($this->mockHandler('data')->reveal());
@@ -58,7 +65,8 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->assertCount(2, $mpos->filter($this->handlerNameMatcher('data')));
     }
 
-    public function testGetMatchedOperationsWithMultipleOperationsMatchingMultipleHandlers(): void
+    #[Test]
+    public function getMatchedOperationsWithMultipleOperationsMatchingMultipleHandlers(): void
     {
         $this->ops->add(['op' => 'method']);
         $this->matcher->addHandler($this->mockHandler('data')->reveal());
@@ -72,7 +80,8 @@ class OperationMatcherTest extends PatchManagerTestCase
         );
     }
 
-    public function testGetUnmatchedOperationsWithHandlerNotMatching(): void
+    #[Test]
+    public function getUnmatchedOperationsWithHandlerNotMatching(): void
     {
         $this->matcher->addHandler($this->mockHandler('method')->reveal());
         $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
@@ -81,7 +90,8 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->assertEquals(new Sequence(['data']), $this->matcher->getUnmatchedOperations(new SubjectA()));
     }
 
-    public function testHandlerThatRespondsFalseToCanHandle(): void
+    #[Test]
+    public function handlerThatRespondsFalseToCanHandle(): void
     {
         $this->matcher->addHandler($this->mockHandler('data', false)->reveal());
         $this->assertCount(0, $this->matcher->getMatchedOperations(new SubjectA()));
@@ -92,11 +102,8 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->assertEquals(new Sequence(['data']), $this->matcher->getUnmatchedOperations(new SubjectA()));
     }
 
-    /**
-     * @param string $name
-     */
-    private function handlerNameMatcher($name): \Closure
+    private function handlerNameMatcher(string $name): \Closure
     {
-        return fn (MatchedPatchOperation $mpo) => $mpo->matchFor($name);
+        return static fn (MatchedPatchOperation $mpo) => $mpo->matchFor($name);
     }
 }

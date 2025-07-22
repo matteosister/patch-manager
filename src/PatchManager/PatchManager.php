@@ -6,6 +6,8 @@ namespace Cypress\PatchManager;
 
 use Cypress\PatchManager\Event\PatchManagerEvent;
 use Cypress\PatchManager\Event\PatchManagerEvents;
+use Cypress\PatchManager\Event\PostHandlerInvocationEvent;
+use Cypress\PatchManager\Event\PreHandlerInvocationEvent;
 use Cypress\PatchManager\Exception\HandlerNotFoundException;
 use PhpCollection\Sequence;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -36,13 +38,13 @@ class PatchManager
     }
 
     /**
-     * @param array<Patchable>|Patchable|\Traversable $subject a Patchable instance or a collection of instances
+     * @param iterable|Patchable $subject a Patchable instance or a collection of instances
      * @throws Exception\InvalidJsonRequestContent
      * @throws Exception\MissingOperationNameRequest
      * @throws Exception\MissingOperationRequest
      * @throws HandlerNotFoundException
      */
-    public function handle($subject): void
+    public function handle(Patchable|iterable $subject): void
     {
         $matchedOperations = $this->getMatchedOperations($subject);
         $this->handleSubject($subject, $matchedOperations);
@@ -50,11 +52,27 @@ class PatchManager
 
     protected function doHandle(MatchedPatchOperation $matchedPatchOperation, Patchable $subject): void
     {
-        $event = new PatchManagerEvent($matchedPatchOperation, $subject);
-        $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_PRE);
+        $this->dispatchEvents(
+            event: new PreHandlerInvocationEvent($matchedPatchOperation, $subject),
+            opName: $matchedPatchOperation->getOpName(),
+            type: PatchManagerEvents::PATCH_MANAGER_PRE
+        );
 
-        $matchedPatchOperation->process($subject);
-        $this->dispatchEvents($event, $matchedPatchOperation->getOpName(), PatchManagerEvents::PATCH_MANAGER_POST);
+        $exception = null;
+
+        try {
+            $matchedPatchOperation->process($subject);
+        } catch (\Throwable $e) {
+            $exception = $e;
+
+            throw $e;
+        } finally {
+            $this->dispatchEvents(
+                event: new PostHandlerInvocationEvent($matchedPatchOperation, $subject, $exception),
+                opName: $matchedPatchOperation->getOpName(),
+                type: PatchManagerEvents::PATCH_MANAGER_POST
+            );
+        }
     }
 
     /**
