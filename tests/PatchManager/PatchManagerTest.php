@@ -14,6 +14,7 @@ use Cypress\PatchManager\Request\Adapter;
 use Cypress\PatchManager\Request\Operations;
 use Cypress\PatchManager\Tests\FakeObjects\SubjectA;
 use PhpCollection\Sequence;
+use PHPUnit\Framework\Attributes\Test;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,7 +46,8 @@ class PatchManagerTest extends PatchManagerTestCase
         $this->patchManager->setEventDispatcherInterface($this->eventDispatcher->reveal());
     }
 
-    public function testStrictMode(): void
+    #[Test]
+    public function strictMode(): void
     {
         $this->expectException(HandlerNotFoundException::class);
         $this->expectExceptionMessage("test");
@@ -54,7 +56,8 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle(new SubjectA());
     }
 
-    public function testStrictModeMultipleOps(): void
+    #[Test]
+    public function gtrictModeMultipleOps(): void
     {
         $this->expectException(HandlerNotFoundException::class);
         $this->expectExceptionMessage("test, test2");
@@ -63,7 +66,8 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle(new SubjectA());
     }
 
-    public function testArraySubject(): void
+    #[Test]
+    public function arraySubject(): void
     {
         $handler = $this->mockHandler('data');
         $handler->handle(Argument::any(), Argument::any())->shouldBeCalled();
@@ -84,7 +88,8 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle([new SubjectA(), new FakeObjects\SubjectB()]);
     }
 
-    public function testSequenceSubject(): void
+    #[Test]
+    public function sequenceSubject(): void
     {
         $handler = $this->mockHandler('data');
         $handler->handle(Argument::any(), Argument::any())->shouldBeCalled();
@@ -112,7 +117,8 @@ class PatchManagerTest extends PatchManagerTestCase
         $pm->handle(new Sequence([new SubjectA(), new FakeObjects\SubjectB()]));
     }
 
-    public function testHandlerThrowsAnExceptionAndSendEvents(): void
+    #[Test]
+    public function handlerThrowsAnExceptionAndSendEvents(): void
     {
         $handler = $this->prophesize(PatchOperationHandler::class);
         $handler->configureOptions(Argument::any())->shouldBeCalled();

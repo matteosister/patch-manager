@@ -7,12 +7,14 @@ namespace Cypress\PatchManager\Tests\Bundle\RequestAdapter;
 use Cypress\PatchManager\Bundle\RequestAdapter\RequestStackAdapter;
 use Cypress\PatchManager\Request\Operations;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackAdapterTest extends PatchManagerTestCase
 {
-    public function testCall(): void
+    #[Test]
+    public function callShouldBeResolved(): void
     {
         $currentRequest = $this->prophesize(Request::class);
         $currentRequest->getContent()->willReturn('{"op":"data"}');

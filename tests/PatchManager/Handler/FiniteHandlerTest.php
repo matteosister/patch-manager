@@ -13,6 +13,7 @@ use Finite\State\State;
 use Finite\State\StateInterface;
 use Finite\StateMachine\StateMachine;
 use Mockery as m;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FiniteHandlerTest extends PatchManagerTestCase
@@ -37,12 +38,14 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $this->handler = new FiniteHandler($finiteFactory);
     }
 
-    public function testGetName(): void
+    #[Test]
+    public function getNameShouldReturnTheHandlerIdentifier(): void
     {
         $this->assertEquals('sm', $this->handler->getName());
     }
 
-    public function testHandleOk(): void
+    #[Test]
+    public function handleShouldSucceed(): void
     {
         $patchable = new FiniteSubject();
         $this->stateMachine->setObject($patchable);
@@ -61,7 +64,8 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $this->assertEquals('s2', $patchable->getFiniteState());
     }
 
-    public function testHandleWithException(): void
+    #[Test]
+    public function handleShouldReturnAnException(): void
     {
         $this->expectException(StateException::class);
         $patchable = new FiniteSubject();
@@ -80,7 +84,8 @@ class FiniteHandlerTest extends PatchManagerTestCase
         );
     }
 
-    public function testHandleWrongWithCheck(): void
+    #[Test]
+    public function handleWithWrongCheck(): void
     {
         $patchable = new FiniteSubject();
         $this->stateMachine->setObject($patchable);
@@ -99,7 +104,8 @@ class FiniteHandlerTest extends PatchManagerTestCase
         $this->assertEquals('s1', $patchable->getFiniteState());
     }
 
-    public function testConfigureOptions(): void
+    #[Test]
+    public function shouldConfigureOptions(): void
     {
         $or = new OptionsResolver();
         $this->handler->configureOptions($or);

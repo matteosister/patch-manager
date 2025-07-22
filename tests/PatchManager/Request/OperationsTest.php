@@ -10,10 +10,12 @@ use Cypress\PatchManager\Exception\MissingOperationRequest;
 use Cypress\PatchManager\Request\Adapter;
 use Cypress\PatchManager\Request\Operations;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class OperationsTest extends PatchManagerTestCase
 {
-    public function testRequestWithInvalidJson(): void
+    #[Test]
+    public function requestWithInvalidJson(): void
     {
         $this->expectException(InvalidJsonRequestContent::class);
         $adapter = $this->prophesize(Adapter::class);
@@ -22,7 +24,8 @@ class OperationsTest extends PatchManagerTestCase
         $operations->all();
     }
 
-    public function testExeceptionWithNullRequest(): void
+    #[Test]
+    public function exceptionWithNullRequest(): void
     {
         $this->expectException(InvalidJsonRequestContent::class);
         $adapter = $this->prophesize(Adapter::class);
@@ -31,7 +34,8 @@ class OperationsTest extends PatchManagerTestCase
         $operations->all();
     }
 
-    public function testCorrectOperationsNumberWithOneOperation(): void
+    #[Test]
+    public function correctOperationsNumberWithOneOperation(): void
     {
         $adapter = $this->prophesize(Adapter::class);
         $adapter->getRequestBody()->willReturn('{"op": "data"}');
@@ -42,7 +46,8 @@ class OperationsTest extends PatchManagerTestCase
         $this->assertEquals('data', $op['op']);
     }
 
-    public function testCorrectOperationsNumberWithMultipleOperation(): void
+    #[Test]
+    public function correctOperationsNumberWithMultipleOperation(): void
     {
         $adapter = $this->prophesize(Adapter::class);
         $adapter->getRequestBody()->willReturn('[{"op": "data"},{"op": "data2"}]');
@@ -58,7 +63,8 @@ class OperationsTest extends PatchManagerTestCase
         $this->assertEquals('data2', $op2['op']);
     }
 
-    public function testExeceptionWithEmptyRequest(): void
+    #[Test]
+    public function execeptionWithEmptyRequest(): void
     {
         $this->expectException(MissingOperationRequest::class);
         $adapter = $this->prophesize(Adapter::class);
@@ -67,7 +73,8 @@ class OperationsTest extends PatchManagerTestCase
         $operations->all();
     }
 
-    public function testExeceptionWithOperationWithoutOp(): void
+    #[Test]
+    public function exceptionWithOperationWithoutOp(): void
     {
         $this->expectException(MissingOperationNameRequest::class);
         $adapter = $this->prophesize(Adapter::class);
@@ -76,7 +83,8 @@ class OperationsTest extends PatchManagerTestCase
         $operations->all();
     }
 
-    public function testExeceptionWithMultipleOperationWithoutOp(): void
+    #[Test]
+    public function exceptionWithMultipleOperationWithoutOp(): void
     {
         $this->expectException(MissingOperationNameRequest::class);
         $adapter = $this->prophesize(Adapter::class);
