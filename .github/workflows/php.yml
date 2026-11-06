@@ -15,21 +15,21 @@ jobs:
     strategy:
       matrix:
         php:
-          - version: '8.2'
-            composer_flags: --prefer-lowest
           - version: '8.3'
             composer_flags: --prefer-lowest
           - version: '8.4'
             composer_flags: --prefer-lowest
-          - version: '8.2'
-            composer_flags: --prefer-stable
+          - version: '8.5'
+            composer_flags: --prefer-lowest
           - version: '8.3'
             composer_flags: --prefer-stable
           - version: '8.4'
+            composer_flags: --prefer-stable
+          - version: '8.5'
             composer_flags: --prefer-stable
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
         with:
           # Fetch 10 commits or Scrutinizer will throw ("Failed to retrieve commit parents.
           # If you use a shallow git checkout, please checkout at least a depth of one."),
@@ -62,7 +62,7 @@ jobs:
         run: ./bin/phpunit --coverage-text --coverage-clover clover.xml
 
       - name: Upload Scrutinizer coverage
-        if: matrix.php.version == '8.2' && matrix.php.composer_flags == '--prefer-stable'
+        if: matrix.php.version == '8.3' && matrix.php.composer_flags == '--prefer-stable'
         uses: sudo-bot/action-scrutinizer@latest
         with:
           cli-args: "--format=php-clover clover.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"

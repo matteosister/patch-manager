@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Tests\Bundle\DependencyInjection;
 
 use Cypress\PatchManager\Bundle\DependencyInjection\PatchManagerCompilerPass;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -24,7 +27,8 @@ class PatchManagerCompilerPassTest extends PatchManagerTestCase
         $this->compilerPass = new PatchManagerCompilerPass();
     }
 
-    public function testProcessWithoutDefinition(): void
+    #[Test]
+    public function processWithoutDefinition(): void
     {
         try {
             $this->cb->hasDefinition("patch_manager.operation_matcher")->willReturn(false);
@@ -36,7 +40,8 @@ class PatchManagerCompilerPassTest extends PatchManagerTestCase
         $this->assertTrue(true);
     }
 
-    public function testProcess(): void
+    #[Test]
+    public function shouldProcessSucceed(): void
     {
         $this->cb->findTaggedServiceIds()->willReturn(['test.service' => 'test', 'test.service2' => 'test2']);
         $definition = $this->prophesize(Definition::class);

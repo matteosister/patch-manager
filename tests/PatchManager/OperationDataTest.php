@@ -7,34 +7,40 @@ namespace Cypress\PatchManager\Tests;
 use Cypress\PatchManager\OperationData;
 use PhpCollection\Sequence;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class OperationDataTest extends PatchManagerTestCase
 {
-    public function testGetOpWithEmptyData(): void
+    #[Test]
+    public function getOpWithEmptyData(): void
     {
         $od = new OperationData();
         $this->assertNull($od->getOp()->getOrElse(null));
     }
 
-    public function testGetOpWithData(): void
+    #[Test]
+    public function getOpWithData(): void
     {
         $od = new OperationData(['op' => 'data']);
         $this->assertEquals('data', $od->getOp()->getOrElse(null));
     }
 
-    public function testGetDataWithEmptyData(): void
+    #[Test]
+    public function getDataWithEmptyData(): void
     {
         $od = new OperationData();
         $this->assertTrue($od->getData()->isEmpty());
     }
 
-    public function testGetDataWithOpOnly(): void
+    #[Test]
+    public function getDataWithOpOnly(): void
     {
         $od = new OperationData(['op' => 'data']);
         $this->assertTrue($od->getData()->isEmpty());
     }
 
-    public function testGetDataWithData(): void
+    #[Test]
+    public function getDataWithData(): void
     {
         $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertFalse($od->getData()->isEmpty());
@@ -46,7 +52,8 @@ class OperationDataTest extends PatchManagerTestCase
     }
 
     #[DataProvider("diffKeysProvider")]
-    public function testDiffKeys(Sequence $expected, array $requiredKeys): void
+    #[Test]
+    public function diffKeys(Sequence $expected, array $requiredKeys): void
     {
         $od = new OperationData(['op' => 'data', 'test' => 1, 'test2' => '2']);
         $this->assertEquals($expected, $od->diffKeys($requiredKeys));

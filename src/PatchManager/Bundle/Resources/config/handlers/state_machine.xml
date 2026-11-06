@@ -6,7 +6,6 @@
 
     <services>
         <service id="patch_manager.handler.state_machine" public="false" class="Cypress\PatchManager\Handler\FiniteHandler">
-            <argument type="service" id="finite.factory" />
         </service>
     </services>
 </container>

@@ -11,7 +11,7 @@ use PhpCollection\Sequence;
 
 class Operations
 {
-    public const OP_KEY_NAME = 'op';
+    public const string OP_KEY_NAME = 'op';
 
     private Adapter $adapter;
 
