@@ -21,7 +21,7 @@ class FiniteHandler implements PatchOperationHandler
 
     public function handle(Patchable $subject, OperationData $operationData): void
     {
-        $transition = $operationData->get('transition')->get();
+        $transition = (string) $operationData->get('transition')->get();
         if ($operationData->get('check')->get() && !$this->stateMachine->can($subject, $transition)) {
             return;
         }
