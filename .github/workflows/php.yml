@@ -23,9 +23,11 @@ jobs:
             composer_flags: --prefer-stable
           - version: '8.4'
             composer_flags: --prefer-stable
+          - version: '8.5'
+            composer_flags: --prefer-stable
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
         with:
           # Fetch 10 commits or Scrutinizer will throw ("Failed to retrieve commit parents.
           # If you use a shallow git checkout, please checkout at least a depth of one."),
