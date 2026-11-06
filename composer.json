@@ -5,13 +5,13 @@
     "require": {
         "php": "^8.3",
         "ext-json": "*",
-        "symfony/property-access": "^6.0 || ^7.0",
-        "symfony/http-foundation": "^6.0 || ^7.0",
-        "symfony/options-resolver": "^6.0 || ^7.0",
-        "symfony/dependency-injection": "^6.0 || ^7.0",
-        "symfony/http-kernel": "^6.0 || ^7.0",
-        "symfony/config": "^6.0 || ^7.0",
-        "symfony/event-dispatcher": "^6.0 || ^7.0",
+        "symfony/property-access": "^6.0 || ^7.0 || ^8.0",
+        "symfony/http-foundation": "^6.0 || ^7.0 || ^8.0",
+        "symfony/options-resolver": "^6.0 || ^7.0 || ^8.0",
+        "symfony/dependency-injection": "^6.0 || ^7.0 || ^8.0",
+        "symfony/http-kernel": "^6.0 || ^7.0 || ^8.0",
+        "symfony/config": "^6.0 || ^7.0 || ^8.0",
+        "symfony/event-dispatcher": "^6.0 || ^7.0 || ^8.0",
         "mattiabasone/phpcollection": "^1.0.0"
     },
     "require-dev": {

@@ -19,6 +19,8 @@ jobs:
             composer_flags: --prefer-lowest
           - version: '8.4'
             composer_flags: --prefer-lowest
+          - version: '8.5'
+            composer_flags: --prefer-lowest
           - version: '8.3'
             composer_flags: --prefer-stable
           - version: '8.4'
