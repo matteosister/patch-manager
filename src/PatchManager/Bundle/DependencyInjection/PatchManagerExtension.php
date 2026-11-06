@@ -60,7 +60,7 @@ class PatchManagerExtension extends Extension
 
     private function handleStateMachine(Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container): void
     {
-        if (!interface_exists('Finite\Factory\FactoryInterface')) {
+        if (!class_exists('Finite\\StateMachine')) {
             $msg = 'If you want to use the patch manager with "op": "sm" you should install ';
             $msg .= 'the finite library. See https://github.com/yohang/Finite';
 

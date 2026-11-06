@@ -7,12 +7,10 @@ namespace Cypress\PatchManager\Tests\Handler;
 use Cypress\PatchManager\Handler\FiniteHandler;
 use Cypress\PatchManager\OperationData;
 use Cypress\PatchManager\Tests\Handler\FakeObjects\FiniteSubject;
+use Cypress\PatchManager\Tests\Handler\FakeObjects\FiniteSubjectState;
 use Cypress\PatchManager\Tests\PatchManagerTestCase;
-use Finite\Exception\StateException;
-use Finite\State\State;
-use Finite\State\StateInterface;
-use Finite\StateMachine\StateMachine;
-use Mockery as m;
+use Finite\Exception\TransitionNotReachableException;
+use Finite\StateMachine;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,15 +25,7 @@ class FiniteHandlerTest extends PatchManagerTestCase
         parent::setUp();
         $this->stateMachine = new StateMachine();
 
-        // Define states
-        $this->stateMachine->addState(new State('s1', StateInterface::TYPE_INITIAL));
-        $this->stateMachine->addState('s2');
-        $this->stateMachine->addState(new State('s3', StateInterface::TYPE_FINAL));
-
-        $finiteFactory = m::mock('Finite\Factory\FactoryInterface');
-        $finiteFactory->shouldReceive('get')->andReturn($this->stateMachine);
-
-        $this->handler = new FiniteHandler($finiteFactory);
+        $this->handler = new FiniteHandler($this->stateMachine);
     }
 
     #[Test]
@@ -48,33 +38,20 @@ class FiniteHandlerTest extends PatchManagerTestCase
     public function handleShouldSucceed(): void
     {
         $patchable = new FiniteSubject();
-        $this->stateMachine->setObject($patchable);
-        $this->stateMachine->initialize();
-
-        // Define transitions
-        $this->stateMachine->addTransition('t12', 's1', 's2');
-        $this->stateMachine->addTransition('t23', 's2', 's3');
-
         $this->handler->handle(
             $patchable,
             new OperationData(
                 ['op' => 'finite', 'transition' => 't12', 'check' => false]
             )
         );
-        $this->assertEquals('s2', $patchable->getFiniteState());
+        $this->assertSame(FiniteSubjectState::S2, $patchable->getFiniteState());
     }
 
     #[Test]
     public function handleShouldReturnAnException(): void
     {
-        $this->expectException(StateException::class);
+        $this->expectException(TransitionNotReachableException::class);
         $patchable = new FiniteSubject();
-        $this->stateMachine->setObject($patchable);
-        $this->stateMachine->initialize();
-
-        // Define transitions
-        $this->stateMachine->addTransition('t12', 's1', 's2');
-        $this->stateMachine->addTransition('t23', 's2', 's3');
 
         $this->handler->handle(
             $patchable,
@@ -88,12 +65,6 @@ class FiniteHandlerTest extends PatchManagerTestCase
     public function handleWithWrongCheck(): void
     {
         $patchable = new FiniteSubject();
-        $this->stateMachine->setObject($patchable);
-        $this->stateMachine->initialize();
-
-        // Define transitions
-        $this->stateMachine->addTransition('t12', 's1', 's2');
-        $this->stateMachine->addTransition('t23', 's2', 's3');
 
         $this->handler->handle(
             $patchable,
@@ -101,7 +72,7 @@ class FiniteHandlerTest extends PatchManagerTestCase
                 ['op' => 'finite', 'transition' => 't23', 'check' => true]
             )
         );
-        $this->assertEquals('s1', $patchable->getFiniteState());
+        $this->assertSame(FiniteSubjectState::S1, $patchable->getFiniteState());
     }
 
     #[Test]
