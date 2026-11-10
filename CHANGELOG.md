@@ -1,6 +1,27 @@
 CHANGELOG
 =========
 
+6.0.0
+-----
+- Drop support for PHP < 8.3
+- Add support for Symfony 8
+- Update CI
+
+5.0.0
+-----
+- Drop support for Symfony 4 and 5
+- Improve CI checks
+- Add strict types declaration
+- Remove unneeded phpdoc
+
+4.0.1
+-----
+- Add support for Symfony 6.0
+
+4.0.0
+-----
+- Drop support for PHP < 8.0
+
 3.0.0
 -----
 - Removed unsafe handlers that allowed modifying arbitrary data for a potential attacker
