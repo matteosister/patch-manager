@@ -8,7 +8,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class PatchManagerExtension extends Extension
 {
@@ -28,19 +28,19 @@ class PatchManagerExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loaderHandlers = new Loader\XmlFileLoader(
+        $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loaderHandlers = new Loader\PhpFileLoader(
             $container,
             new FileLocator(__DIR__.'/../Resources/config/handlers')
         );
-        $loader->load('services.xml');
+        $loader->load('services.php');
         $this->handleGenericConfig($config, $container, $loaderHandlers);
     }
 
     private function handleGenericConfig(
         array $config,
         ContainerBuilder $container,
-        Loader\XmlFileLoader $loaderHandlers
+        Loader\PhpFileLoader $loaderHandlers
     ): void {
         if ($config['dispatch_events']) {
             $patchManagerDefinition = $container->getDefinition('patch_manager');
@@ -58,7 +58,7 @@ class PatchManagerExtension extends Extension
         $container->setParameter('patch_manager.strict_mode', $config['strict_mode']);
     }
 
-    private function handleStateMachine(Loader\XmlFileLoader $loaderHandlers, ContainerBuilder $container): void
+    private function handleStateMachine(Loader\PhpFileLoader $loaderHandlers, ContainerBuilder $container): void
     {
         if (!class_exists('Finite\\StateMachine')) {
             $msg = 'If you want to use the patch manager with "op": "sm" you should install ';
@@ -66,7 +66,7 @@ class PatchManagerExtension extends Extension
 
             throw new \RuntimeException($msg);
         }
-        $loaderHandlers->load('state_machine.xml');
+        $loaderHandlers->load('state_machine.php');
         $smHandlerDefinition = $container->getDefinition('patch_manager.handler.state_machine');
         $smHandlerDefinition->addTag('patch_manager.handler');
     }
