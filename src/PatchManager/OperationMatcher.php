@@ -65,9 +65,15 @@ class OperationMatcher
      */
     public function getUnmatchedOperations($subject): Sequence
     {
+        $matchedOperations = $this->getMatchedOperations($subject);
+
         return $this->operations
             ->all()
-            ->filter(fn (array $operationData) => $operationData !== $this->getMatchedOperations($subject))
-            ->map(fn (array $operationData) => $operationData['op']);
+            ->filterNot(
+                static fn (array $operationData) => $matchedOperations
+                ->find(static fn (MatchedPatchOperation $matched) => $matched->matchFor($operationData[Operations::OP_KEY_NAME]))
+                ->isDefined()
+            )
+            ->map(static fn (array $operationData) => $operationData[Operations::OP_KEY_NAME]);
     }
 }

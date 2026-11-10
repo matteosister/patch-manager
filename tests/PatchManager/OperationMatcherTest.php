@@ -81,6 +81,32 @@ class OperationMatcherTest extends PatchManagerTestCase
     }
 
     #[Test]
+    public function getUnmatchedOperationsWithAllOperationsMatching(): void
+    {
+        $this->ops->add(['op' => 'data', 'property' => 'name', 'value' => 'updated']);
+        $this->ops->add(['op' => 'method']);
+        $this->matcher->addHandler($this->mockHandler('data')->reveal());
+        $this->matcher->addHandler($this->mockHandler('method')->reveal());
+
+        $this->assertEquals(new Sequence(), $this->matcher->getUnmatchedOperations(new SubjectA()));
+    }
+
+    #[Test]
+    public function getUnmatchedOperationsWithSomeOperationsMatching(): void
+    {
+        $this->ops->add(['op' => 'unknown']);
+        $this->ops->add(['op' => 'method']);
+        $this->ops->add(['op' => 'unknown', 'value' => 'another']);
+        $this->matcher->addHandler($this->mockHandler('data')->reveal());
+        $this->matcher->addHandler($this->mockHandler('method', false)->reveal());
+
+        $this->assertEquals(
+            new Sequence(['unknown', 'method', 'unknown']),
+            $this->matcher->getUnmatchedOperations(new SubjectA())
+        );
+    }
+
+    #[Test]
     public function getUnmatchedOperationsWithHandlerNotMatching(): void
     {
         $this->matcher->addHandler($this->mockHandler('method')->reveal());
