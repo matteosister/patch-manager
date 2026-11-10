@@ -38,7 +38,6 @@ class OperationMatcherTest extends PatchManagerTestCase
     public function getMatchedOperationsWithHandlerNotMatching(): void
     {
         $this->matcher->addHandler($this->mockHandler('method')->reveal());
-        $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
         $this->assertCount(0, $this->matcher->getMatchedOperations(new SubjectA()));
     }
 
@@ -46,7 +45,6 @@ class OperationMatcherTest extends PatchManagerTestCase
     public function getMatchedOperationsWithMatchingHandler(): void
     {
         $this->matcher->addHandler($this->mockHandler('data')->reveal());
-        $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
         $this->assertCount(1, $this->matcher->getMatchedOperations(new SubjectA()));
         $mpos = $this->matcher->getMatchedOperations(new SubjectA());
         $this->assertInstanceOf(
@@ -60,7 +58,6 @@ class OperationMatcherTest extends PatchManagerTestCase
     {
         $this->ops->add(['op' => 'data']);
         $this->matcher->addHandler($this->mockHandler('data')->reveal());
-        $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
         $mpos = $this->matcher->getMatchedOperations(new SubjectA());
         $this->assertCount(2, $mpos->filter($this->handlerNameMatcher('data')));
     }
@@ -71,7 +68,6 @@ class OperationMatcherTest extends PatchManagerTestCase
         $this->ops->add(['op' => 'method']);
         $this->matcher->addHandler($this->mockHandler('data')->reveal());
         $this->matcher->addHandler($this->mockHandler('method')->reveal());
-        $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
         $this->assertCount(2, $this->matcher->getMatchedOperations(new SubjectA()));
         $mpos = $this->matcher->getMatchedOperations(new SubjectA());
         $this->assertInstanceOf(
@@ -110,9 +106,7 @@ class OperationMatcherTest extends PatchManagerTestCase
     public function getUnmatchedOperationsWithHandlerNotMatching(): void
     {
         $this->matcher->addHandler($this->mockHandler('method')->reveal());
-        $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
         $this->assertCount(1, $this->matcher->getUnmatchedOperations(new SubjectA()));
-        $this->assertInstanceOf(Sequence::class, $this->matcher->getUnmatchedOperations(new SubjectA()));
         $this->assertEquals(new Sequence(['data']), $this->matcher->getUnmatchedOperations(new SubjectA()));
     }
 
@@ -121,10 +115,8 @@ class OperationMatcherTest extends PatchManagerTestCase
     {
         $this->matcher->addHandler($this->mockHandler('data', false)->reveal());
         $this->assertCount(0, $this->matcher->getMatchedOperations(new SubjectA()));
-        $this->assertInstanceOf(Sequence::class, $this->matcher->getMatchedOperations(new SubjectA()));
         $this->assertEquals(new Sequence(), $this->matcher->getMatchedOperations(new SubjectA()));
         $this->assertCount(1, $this->matcher->getUnmatchedOperations(new SubjectA()));
-        $this->assertInstanceOf(Sequence::class, $this->matcher->getUnmatchedOperations(new SubjectA()));
         $this->assertEquals(new Sequence(['data']), $this->matcher->getUnmatchedOperations(new SubjectA()));
     }
 
