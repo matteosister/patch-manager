@@ -7,6 +7,7 @@ use Cypress\PatchManager\OperationMatcher;
 use Cypress\PatchManager\PatchManager;
 use Cypress\PatchManager\Request\Operations;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $container): void {
