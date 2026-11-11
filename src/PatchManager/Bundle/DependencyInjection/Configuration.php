@@ -11,8 +11,6 @@ class Configuration implements ConfigurationInterface
 {
     /**
      * Generates the configuration tree builder.
-     *
-     * @return TreeBuilder The tree builder
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
@@ -30,7 +28,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('alias')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(fn ($value) => 0 === preg_match('#^[a-zA-Z0-9_]+$#', $value))
+                        ->ifTrue(static fn ($value) => 0 === preg_match('#^[a-zA-Z0-9_]+$#', $value))
                         ->thenInvalid('Alias should be a string containing letters and underscore. "%s" given')
                     ->end()
                 ->end()

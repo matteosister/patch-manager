@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Tests;
 
-use Cypress\PatchManager\MatchedPatchOperation;
 use Cypress\PatchManager\Patchable as PatchableInterface;
 use Cypress\PatchManager\PatchOperationHandler;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 
 abstract class PatchManagerTestCase extends TestCase
 {
@@ -21,9 +23,9 @@ abstract class PatchManagerTestCase extends TestCase
     }
 
     /**
-     * @return \Prophecy\Prophecy\ObjectProphecy
+     * @return ObjectProphecy<PatchOperationHandler>
      */
-    protected function mockHandler(?string $name, bool $canHandle = true)
+    protected function mockHandler(?string $name, bool $canHandle = true): ObjectProphecy
     {
         $handler = $this->prophesize(PatchOperationHandler::class);
         if (!is_null($name)) {
@@ -34,13 +36,5 @@ abstract class PatchManagerTestCase extends TestCase
         $handler->handle(Argument::type(PatchableInterface::class), Argument::any());
 
         return $handler;
-    }
-
-    /**
-     * @param null $handlerName
-     */
-    protected function getMatchedPatchOperation($handlerName = null): MatchedPatchOperation
-    {
-        return MatchedPatchOperation::create([], $this->mockHandler($handlerName)->reveal());
     }
 }

@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class PatchManagerCompilerPass implements CompilerPassInterface
 {
-    public const PATCH_MANAGER_HANDLER_TAG = 'patch_manager.handler';
+    public const string PATCH_MANAGER_HANDLER_TAG = 'patch_manager.handler';
 
     /**
      * You can modify the container here before it is dumped to PHP code.

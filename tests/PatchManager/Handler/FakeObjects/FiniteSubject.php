@@ -1,33 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cypress\PatchManager\Tests\Handler\FakeObjects;
 
 use Cypress\PatchManager\Patchable;
-use Finite\StatefulInterface;
+use Finite\State;
+use Finite\Transition\Transition;
 
-class FiniteSubject implements StatefulInterface, Patchable
+enum FiniteSubjectState: string implements State
 {
-    private string $state;
+    case S1 = 's1';
+    case S2 = 's2';
+    case S3 = 's3';
 
-    public function __construct()
+    public static function getTransitions(): array
     {
-        $this->state = 's1';
+        return [
+            new Transition('t12', [self::S1], self::S2),
+            new Transition('t23', [self::S2], self::S3),
+        ];
     }
+}
 
-    /**
-     * Sets the object state
-     */
-    public function getFiniteState(): string
+class FiniteSubject implements Patchable
+{
+    private FiniteSubjectState $state = FiniteSubjectState::S1;
+
+    public function getFiniteState(): FiniteSubjectState
     {
         return $this->state;
     }
 
-    /**
-     * Sets the object state
-     *
-     * @param string $state
-     */
-    public function setFiniteState($state): void
+    public function setFiniteState(FiniteSubjectState $state): void
     {
         $this->state = $state;
     }

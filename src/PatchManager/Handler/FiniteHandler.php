@@ -7,26 +7,25 @@ namespace Cypress\PatchManager\Handler;
 use Cypress\PatchManager\OperationData;
 use Cypress\PatchManager\Patchable;
 use Cypress\PatchManager\PatchOperationHandler;
-use Finite\Factory\FactoryInterface;
+use Finite\StateMachine;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FiniteHandler implements PatchOperationHandler
 {
-    private FactoryInterface $factoryInterface;
+    private StateMachine $stateMachine;
 
-    public function __construct(FactoryInterface $factoryInterface)
+    public function __construct(StateMachine $stateMachine)
     {
-        $this->factoryInterface = $factoryInterface;
+        $this->stateMachine = $stateMachine;
     }
 
     public function handle(Patchable $subject, OperationData $operationData): void
     {
-        $sm = $this->factoryInterface->get($subject);
-        $transition = $operationData->get('transition')->get();
-        if ($operationData->get('check')->get() && !$sm->can($transition)) {
+        $transition = (string) $operationData->get('transition')->get();
+        if ($operationData->get('check')->get() && !$this->stateMachine->can($subject, $transition)) {
             return;
         }
-        $sm->apply($transition);
+        $this->stateMachine->apply($subject, $transition);
     }
 
     /**
